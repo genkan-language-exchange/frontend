@@ -19,25 +19,25 @@ export default {
         {
           chat_id: 1,
           user_to: 'pikamee',
-          latest_msg: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, ea.',
+          latest_msg: 'big yabai',
           time: moment().format('LT')
         },
         {
           chat_id: 2,
-          user_to: 'iceman',
-          latest_msg: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellendus consequatur porro nulla!',
+          user_to: 'kazunori',
+          latest_msg: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quod esse animi, accusamus consequatur beatae quaerat quasi sed ut dignissimos voluptates, nobis illo. Corporis, eos.',
           time: moment().format('LT')
         },
         {
           chat_id: 3,
-          user_to: 'robsice',
-          latest_msg: 'Lorem ipsum dolor sit.',
+          user_to: 'jiyoung',
+          latest_msg: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, ut omnis aliquid totam non ipsa eum, voluptate odio quo dolorem, a quod. Hic, ex distinctio.',
           time: moment().format('LT')
         },
         {
           chat_id: 4,
-          user_to: 'tomo',
-          latest_msg: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+          user_to: 'tomoyo',
+          latest_msg: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, vero.',
           time: moment().format('LT')
         }
       ] // end chats array

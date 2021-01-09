@@ -1,9 +1,9 @@
 <template>
   <div v-if="chatData != null">
     <div id="conversation-header">
-      <p id="close" @click="$emit('close')">&times;</p>
+      <p id="close" @click="closeChat()">&times;</p>
       <div v-for="chatuser in chatData.members" :key="chatuser">
-        <h4 v-if="chatuser !== user" @click="$emit('info', chatuser)">{{chatuser}}</h4>
+        <h4 v-if="chatuser !== user" @click="userInfo(chatuser)">{{chatuser}}</h4>
       </div>
     </div> <!-- end conversation-header -->
     <div id="conversation-box" ref="messages">
@@ -25,24 +25,36 @@
 
       </div> <!-- end v-for -->
     </div> <!-- end conversation-box -->
-    <form id="user-input" action="" @submit="e => e.preventDefault()">
-      <textarea />
+    <form id="user-input" action="" @submit.prevent="sendMessage">
+      <textarea v-model="enteredMessage" />
       <input type="submit" value="Send" />
     </form>
   </div>
 </template>
 
 <script>
+  import moment from 'moment'
   import chats from '@/data/chats.js'
   export default {
     props: {
       selectedChat: Number,      
     },
-    emits: ['close', 'info'],
+    // emits: ['close','info'],
+    emits: {
+      'close': () => true,
+      'info': (id) => {
+        if (id) return true;
+        else {
+          console.warn('no id found')
+          return false;
+        }
+      },
+    },
     data() {
       return {
         chatData: null,
-        user: 'germ'
+        user: 'germ',
+        enteredMessage: '',
       }
     },
     methods: {
@@ -52,20 +64,37 @@
         this.chatData = chatData[0]
       },
       scrollToBottom() {
-        if (this.$refs.messages == undefined) return
-        const el = this.$refs.messages
-        // if (el.scrollTop < el.scrollHeight - el.clientHeight)
-        el.scrollTop = el.scrollHeight
+        this.$nextTick(() => {
+          if (this.$refs.messages == undefined) return
+          const el = this.$refs.messages
+          el.scrollTop = el.scrollHeight
+        })
+      },
+      closeChat() {
+        this.$emit('close')
+      },
+      userInfo(user_id) {
+        this.$emit('info', user_id)
+      },
+      sendMessage() {
+        this.chatData.messages.push({
+          message_id: 1,
+          from: 'germ',
+          content: this.enteredMessage.trim(),
+          time: moment().format('LT')
+        })
+        this.scrollToBottom()
+        this.enteredMessage = ''
       }
     },
     mounted() {
       this.findChat()
-      this.$nextTick(() => this.scrollToBottom())
+      this.scrollToBottom()
     },
     watch: {
       selectedChat: function() {
         this.findChat()
-        this.$nextTick(() => this.scrollToBottom())
+        this.scrollToBottom()
       }
     }
   }

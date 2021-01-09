@@ -39,24 +39,24 @@ export default [
   },
   {
     chat_id: 2,
-    members: ['iceman', 'germ'],
+    members: ['kazunori', 'germ'],
     messages: [
       {
         message_id: 1,
-        from: 'iceman',
-        content: 'immersion',
+        from: 'kazunori',
+        content: 'Lorem ipsum dolor sit amet.',
         time: moment().format('LT')
       },
       {
         message_id: 2,
         from: 'germ',
-        content: 'hello',
+        content: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit.',
         time: moment().format('LT')
       },
       {
         message_id: 3, 
-        from: 'iceman',
-        content: 'i don\'t like v-tubers :eugh:',
+        from: 'kazunori',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita nobis itaque quasi quisquam repellendus exercitationem facere numquam.',
         time: moment().format('LT')
       },
       {
@@ -67,49 +67,49 @@ export default [
       },
       {
         message_id: 5,
-        from: 'iceman',
-        content: 'cringe',
+        from: 'kazunori',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, quod esse animi, accusamus consequatur beatae quaerat quasi sed ut dignissimos voluptates, nobis illo. Corporis, eos.',
         time: moment().format('LT')
       },
     ],
   },
   {
     chat_id: 3,
-    members: ['robs', 'germ'],
+    members: ['jiyoung', 'germ'],
     messages: [
       {
         message_id: 1,
-        from: 'robs',
-        content: 'hydration',
+        from: 'jiyoung',
+        content: 'Lorem ipsum dolor sit amet.',
         time: moment().format('LT')
       },
       {
         message_id: 2,
         from: 'germ',
-        content: 'hello',
+        content: 'Lorem, ipsum.',
         time: moment().format('LT')
       },
       {
         message_id: 3, 
-        from: 'robs',
-        content: 'remember to stay hydrated',
+        from: 'jiyoung',
+        content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.',
         time: moment().format('LT')
       },
       {
         message_id: 4,
         from: 'germ',
-        content: 'nice boat',
+        content: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, rerum.',
         time: moment().format('LT')
       },
       {
         message_id: 5,
-        from: 'robs',
-        content: 'cringe',
+        from: 'jiyoung',
+        content: '?',
         time: moment().format('LT')
       },
       {
         message_id: 6, 
-        from: 'robs',
+        from: 'jiyoung',
         content: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis iure obcaecati nesciunt tempore animi omnis laborum neque aliquid laboriosam, dolorem quibusdam earum dolore cum vero culpa eaque dignissimos enim sint!',
         time: moment().format('LT')
       },
@@ -121,26 +121,62 @@ export default [
       },
       {
         message_id: 8, 
-        from: 'robs',
-        content: 'remember to stay hydrated',
+        from: 'jiyoung',
+        content: 'Lorem, ipsum dolor.',
         time: moment().format('LT')
       },
       {
         message_id: 9,
         from: 'germ',
-        content: 'nice boat',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
         time: moment().format('LT')
       },
       {
         message_id: 10, 
-        from: 'robs',
-        content: 'remember to stay hydrated',
+        from: 'jiyoung',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, dolore!',
         time: moment().format('LT')
       },
       {
         message_id: 11,
         from: 'germ',
-        content: 'nice boat',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat, ut omnis aliquid totam non ipsa eum, voluptate odio quo dolorem, a quod. Hic, ex distinctio.',
+        time: moment().format('LT')
+      },
+    ],
+  },
+  {
+    chat_id: 4,
+    members: ['tomo', 'germ'],
+    messages: [
+      {
+        message_id: 1,
+        from: 'tomo',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+        time: moment().format('LT')
+      },
+      {
+        message_id: 2,
+        from: 'germ',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, voluptatem. Nemo sapiente odit excepturi aperiam.',
+        time: moment().format('LT')
+      },
+      {
+        message_id: 3, 
+        from: 'tomo',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde sit culpa harum doloribus.',
+        time: moment().format('LT')
+      },
+      {
+        message_id: 4,
+        from: 'germ',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, obcaecati impedit repellat cum quos laboriosam architecto corrupti hic dolor similique.',
+        time: moment().format('LT')
+      },
+      {
+        message_id: 5,
+        from: 'tomo',
+        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, vero.',
         time: moment().format('LT')
       },
     ],

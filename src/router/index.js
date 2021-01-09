@@ -10,10 +10,8 @@ const routes = [
   {
     path: '/chat',
     name: 'Chat',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Chat.vue')
+    // lazy loading
+    component: () => import('../views/Chat.vue')
   },
   {
     path: '/stories',
@@ -35,6 +33,11 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (!navigator.onLine) next({ name: 'Home' })
+  else next()
 })
 
 export default router

@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
-    <div class="avatar" @click="$emit('info', chat.user_to)">
+    <div class="avatar" @click="userInfo(chat.user_to)">
       <img src="@/assets/usure.png" alt="avatar" draggable="false">
     </div>
-    <div class="info" @click="$emit('selectChat', chat.chat_id)" >
+    <div class="info" @click="selectChat(chat.chat_id)" >
       <div class="to-time">
         <h4>{{chat.user_to}}</h4>
         <p>{{chat.time}}</p>
@@ -21,6 +21,12 @@
     methods: {
       textTruncate(str, maxlen) {
         return str.length > maxlen ? `${str.substring(0, maxlen)}...` : str
+      },
+      userInfo(user_id) {
+        this.$emit('info', user_id)
+      },
+      selectChat(chat_id) {
+        this.$emit('selectChat', chat_id)
       }
     }
   }

@@ -8,10 +8,12 @@
         <div :key="chat.chat_id" v-for="chat in filteredChats" class="chat-link">
           <ChatLink :chat=chat @selectChat='selectChat' @info='findUserInfo' />
         </div>
-      </template>
-      <div v-else :key="chat.chat_id" v-for="chat in chats" class="chat-link">
-        <ChatLink :chat=chat @selectChat='selectChat' @info='findUserInfo' />
-      </div> <!-- end chat-link -->
+      </template> <!-- end v-if -->
+      <template v-else>
+        <div :key="chat.chat_id" v-for="chat in chats" class="chat-link">
+          <ChatLink :chat=chat @selectChat='selectChat' @info='findUserInfo' />
+        </div>
+      </template> <!-- end v-else -->
     </div> <!-- end passport-left -->
     <div id="passport-right">
       <div id="placeholder" v-if="selectedChat === 0">
@@ -37,7 +39,10 @@
       Chatroom,
     },
     props: {
-      chats: Array,
+      chats: {
+        type: Array,
+        required: true,
+      },
     },
     data() {
       return {
@@ -54,7 +59,12 @@
         this.selectedChat = 0
       },
       searchForChat() {
-        !this.chats ? [] : this.filteredChats = this.chats.filter(chat => chat.user_to.toLowerCase().includes(this.searchString.trim().toLowerCase()))
+        !this.chats ? [] : this.filteredChats = this.chats.filter(chat => {
+          let result = chat.user_to.toLowerCase().includes(this.searchString.trim().toLowerCase())
+          // search the string backwards if no result because why not
+          if (!result) result = chat.user_to.toLowerCase().includes(this.searchString.trim().toLowerCase().split('').reverse().join(''))
+          return result
+        })
       },
       findUserInfo(val) {
         console.log(val)
@@ -171,6 +181,12 @@
     border: 0;
     border-bottom: 2px solid #dcdde1;
     color: #dcdde1;
+  }
+
+  #chat-search input:focus {
+    border-bottom: #8c7ae6 2px solid;
+    background-color: #7f8fa6;
+    font-weight: bold;
   }
 
   .no-select {
