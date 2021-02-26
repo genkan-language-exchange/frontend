@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import PassportCard from '@/components/PassportCard.vue'
+import PassportCard from '@/components/profile/PassportCard.vue'
 
 export default {
   name: 'Passport',
@@ -35,15 +35,14 @@ export default {
       user_goal: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore nisi minus quos ducimus, sapiente consequuntur.'
     }
   }
-
 }
 </script>
 
 <style scoped>
-  div {
-    height: 100vh;
-    margin: auto 0;
-    display: flex;
-    justify-content: center;
-  }
+div {
+  height: 100vh;
+  margin: auto 0;
+  display: flex;
+  justify-content: center;
+}
 </style>

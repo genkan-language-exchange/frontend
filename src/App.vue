@@ -1,18 +1,34 @@
 <template>
-  <div id="app">
-    <NavBar />
-    <router-view />
-  </div>
+<div id="app">
+  <NavBar />
+  <router-view />
+</div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue'
 
 export default {
-  name: 'Main',
-  components: {
-    NavBar
+name: 'Main',
+components: {
+  NavBar
+},
+data () {
+  return {
+    isMobile: true,
   }
+},
+methods: {
+  checkWidth() {
+    this.isMobile = window.innerWidth < 1100
+  }
+},
+mounted() {
+  window.addEventListener('resize', () => this.checkWidth())
+},
+beforeUnmount() {
+  window.removeEventListener('resize', () => this.checkWidth())
+}
 }
 </script>
 
@@ -25,7 +41,7 @@ html, body {
 }
 
 #app {
-  font-family: 'Roboto', Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -46,4 +62,10 @@ html, body {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+/* @media (prefers-color-scheme: light) {
+  html, body {
+    background-color: #f5f6fa;
+  }
+} */
 </style>
