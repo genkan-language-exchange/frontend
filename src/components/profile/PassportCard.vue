@@ -1,130 +1,120 @@
 <template>
-<div id="profile-container">
-  <div id="passport-left">
-    <h1>Passport</h1>
-    <div id="avatar">
-      <img ref="avatar" src='@/assets/avatar1.png' alt="user avatar" draggable="false">
+  <div id="base" v-if="user._id">
+    <div id="head">
+      <template v-if="!user.avatar">
+        <div id="avatar-outer">
+          <span v-if="newUser" class="material-icons new-icon">fiber_new</span>
+          <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
+            <img ref="avatar" src='@/assets/avatar1.png' alt="User" draggable="false">
+          </div>
+        </div>
+      </template>
+      <div>
+        <div id="user-name-age">
+          <h2 :style="isMobile ? {} : { width: '300px' }">{{user.name}}.{{user.identifier}}</h2>
+          <p>{{user.matchSettings.age}} years old</p>
+        </div>
+        <div id="user-lang">
+          <p>Speaks: {{user.matchSettings.languageKnow.join(', ')}}</p>
+          <p>Learns: {{user.matchSettings.languageLearn.join(', ')}}</p>
+        </div>
+      </div>
     </div>
-    <h2>{{user_name}}{{user_identifier}}</h2>
+
   </div>
-  <div id="passport-right">
-    <div class="section user-loc">
-      <p>From: {{user_from}}</p>
-      <p>Lives in: {{user_lives}}</p> <!-- hide "Lives in" based on privacy settings -->
-    </div>
-    <div class="section">
-      <p>Learning: <span :key="user_learns[lang]" v-for="lang in user_learns">{{lang}}</span></p>
-      <p>Speaks: <span :key="user_speaks[lang]" v-for="lang in user_speaks">{{lang}}</span></p>
-    </div>
-    <div class="section">
-      <p>Introduction:<br />{{user_intro}}</p>
-    </div>
-    <div class="section">
-      <p>Language Goal: {{user_goal}}<br /></p>
-    </div>
-  </div>
-</div>
 </template>
 
 <script>
+import checkAccountAge from '../../util/checkAccountAge.js'
 export default {
   props: {
-    avatar: String,
-    user_name: String,
-    user_identifier: String,
-    user_from: String,
-    user_lives: String,
-    user_learns: Array,
-    user_speaks: Array,
-    user_intro: String,
-    user_goal: String,
+    user: Object
+  },
+  data() {
+    return {
+      isMobile: Boolean
+    }
+  },
+  methods: {
+    checkWidth() {
+      this.isMobile = window.innerWidth < 1100
+    }
+  },
+  computed: {
+    newUser() {
+      return checkAccountAge(this.user.matchSettings.accountCreated)
+    },
   },
   mounted() {
+    window.addEventListener('resize', () => this.checkWidth())
     // prevent avatars from being saved by others
     document.addEventListener('copy', e => e.preventDefault())
     this.$refs.avatar.addEventListener('contextmenu', e => e.preventDefault())
   },
-  unmounted() {
+  beforeUnmount() {
+    window.removeEventListener('resize', () => this.checkWidth())
     document.removeEventListener('copy', e => e.preventDefault())
-  }
+  },
 }
 </script>
 
 <style scoped>
-#profile-container {
-  box-sizing: border-box;
-  height: 600px;
-  width: 900px;
-  background-color: #718093;
-  box-shadow: 0 0 10px 10px rgba(0,0,0,0.3), 0 0 5px 5px #353b48;
-  border-radius: 15px;
-  display: flex;
-  font-size: 1.8rem;
-  font-family: 'Sriracha', sans-serif;
-}
-
-#passport-left, #passport-right {
-  width: 50%;
-  padding: 50px 0;
-  box-sizing: border-box;
+h1, h2, h3, p, a, ul, li { margin: 0; }
+#base {
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-}
-
-#passport-left {
-  border-right: 1px solid #dcdde1;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#passport-left h1 {
-  font-size: 4rem;
-}
-
-#passport-right {
-  border-left: 1px solid #dcdde1;
-  padding: 10px 15px;
-  align-items: flex-start;
   text-align: left;
-  /* overflow-y: scroll; */
 }
-
+#head {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#avatar-outer { position: relative; }
 #avatar {
-  width: 150px;
-  height: 150px;
-  border: 2px solid #dcdde1;
-  border-radius: 50%;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  min-height: 100px;
+  margin-right: 10px;
+  border: 1px solid #fff;
+  background-color: #fff;
   overflow: hidden;
+  border-radius: 0 50% 50% 50%;
+  box-sizing: border-box;
 }
-
 #avatar img {
   height: 100%;
   width: 100%;
+  object-fit: cover;
 }
-
-.user-loc {
+.new-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #8c7ae6;
+  background-color: rgba(255,255,255,0.75);
+  border-radius: 0 0 5px 0;
+  font-size: 3rem;
+}
+#user-name-age {
+  width: 200px;
+  margin-bottom: 15px;
+}
+#user-name-age h2 {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1.8rem;
+}
+#user-name-age, #user-lang {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: flex-start;
 }
-
-.section {
-  width: 100%;
-  border-bottom: 2px solid #dcdde1;
-}
-
-.section p span::after {
-  content:', '
-}
-
-.section p span:last-child:after {
-  content:''
-}
-
-.section:last-child {
-  border-bottom: 0;
-}
-
-h1, h2, p, span .no-select {
+.no-select {
 -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */

@@ -1,24 +1,33 @@
 <template>
-  <div class="card" :style="newUser ? 'box-shadow: 0 0 8px 5px rgba(140, 122, 230, 0.4);' : 'box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.15);'">
+  <div
+    class="card"
+    :style="newUser ? 'box-shadow: 0 0 8px 5px rgba(140, 122, 230, 0.4);' : 'box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.15);'"
+    @click.prevent="() => goToPassport(user.name, user.identifier)"
+  >
     <div class="head">
+      <div class="status" :class="onlineRecently ? 'online' : 'offline'"></div>
       <div class="avatar"></div>
     </div>
-    <div class="info">
-      <h3>
-        <span v-if="newUser" class="material-icons">fiber_new</span>
-        {{user.name}}
-      </h3>
 
+    <div class="info">
+      <div>
+        <h3>
+          <span v-if="newUser" class="material-icons">fiber_new</span>
+          {{user.name}}
+        </h3>
+      </div>
       <div>
         <p>Speaks: {{user.matchSettings.languageKnow.join(', ')}}</p>
         <p>Learns: {{user.matchSettings.languageLearn.join(', ')}}</p>
       </div>
     </div>
+    
   </div>
 </template>
 
 <script>
-import moment from 'moment'
+import checkAccountAge from '../../util/checkAccountAge.js'
+import checkLastOnline from '../../util/checkLastOnline.js'
 export default {
   props: {
     user: {
@@ -26,21 +35,19 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      newUser: false,
-    }
-  },
   methods: {
-    isUserNew() {
-      const accountCreated = moment(this.user.matchSettings.accountCreated)
-      const now = moment(Date.now())
-      this.newUser = now.diff(accountCreated) < (1000 * 60 * 60 * 24 * 7)
+    goToPassport(name, identifier) {
+      this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}`} })
     }
   },
-  mounted() {
-    this.isUserNew()
-  }
+  computed: {
+    newUser() {
+      return checkAccountAge(this.user.matchSettings.accountCreated)
+    },
+    onlineRecently() {
+      return checkLastOnline(this.user.matchSettings.lastSeen)
+    }
+  },
 }
 </script>
 
@@ -62,6 +69,23 @@ export default {
 .head {
   display: flex;
   align-items: flex-start;
+  position: relative;
+}
+.status {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  border: 3px solid #2f3640;
+}
+.online {
+  background-color: chartreuse;
+}
+.offline {
+  background-color: #353b48;
 }
 .avatar {
   width: 75px;

@@ -1,34 +1,37 @@
 <template>
-<div id="app">
-  <NavBar />
-  <router-view />
-</div>
+  <div id="app">
+    <NavBar />
+    <router-view />
+  </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar.vue'
 
 export default {
-name: 'Main',
-components: {
-  NavBar
-},
-data () {
-  return {
-    isMobile: true,
+  name: 'Main',
+  components: {
+    NavBar
+  },
+  data () {
+    return {
+      isMobile: false,
+    }
+  },
+  provide: {
+    currentUser: 'japaneseuser.0101'
   }
-},
-methods: {
-  checkWidth() {
-    this.isMobile = window.innerWidth < 1100
-  }
-},
-mounted() {
-  window.addEventListener('resize', () => this.checkWidth())
-},
-beforeUnmount() {
-  window.removeEventListener('resize', () => this.checkWidth())
-}
+  // methods: {
+  //   checkWidth() {
+  //     this.isMobile = window.innerWidth < 1100
+  //   }
+  // },
+  // mounted() {
+  //   window.addEventListener('resize', () => this.checkWidth())
+  // },
+  // beforeUnmount() {
+  //   window.removeEventListener('resize', () => this.checkWidth())
+  // }
 }
 </script>
 
