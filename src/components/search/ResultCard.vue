@@ -75,7 +75,6 @@ export default {
   position: absolute;
   width: 15px;
   height: 15px;
-  z-index: 100;
   top: 0;
   left: 0;
   border-radius: 50%;

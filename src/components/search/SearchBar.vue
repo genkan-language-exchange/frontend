@@ -63,6 +63,7 @@ form {
   box-sizing: border-box;
   width: 100%;
   background-color: #353b48;
+  z-index: 50;
 }
 fieldset {
   border: none;
