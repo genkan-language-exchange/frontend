@@ -57,7 +57,7 @@ export default {
 <style scoped>
 form {
   position: sticky;
-  top: 60px;
+  top: 62px;
   margin: 60px auto 0;
   padding: 5px;
   box-sizing: border-box;
@@ -72,6 +72,7 @@ button {
   width: 25%;
   box-sizing: border-box;
   padding: 8px;
+  margin: 0 5px;
   border: none;
   color: #dcdde1;
   background-color: #353b48;

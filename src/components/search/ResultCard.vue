@@ -58,7 +58,7 @@ export default {
   box-sizing: border-box;
   border-radius: 10px;
   padding: 10px;
-  margin: 15px auto;
+  margin: 35px auto;
   display: flex;
   flex-direction: row;
   transition: background-color 0.2s ease-out;

@@ -1,16 +1,18 @@
 <template>
   <template v-if="!users.length">
     <div id="loading">
-      <LoadSpinner />
+      <TheLoadSpinner />
     </div>
   </template>
   <template v-else>
     <SearchBar @filter="filterSettings" />
-    <div v-for="user in filteredUsers" :key="user._id">
-      <template v-if="user.active && user.accountStatus !=='banned'">
-        <ResultCard :user="user" />
-      </template>
-    </div>
+    <transition-group tag="div" name="user-list">
+      <div v-for="user in filteredUsers" :key="user._id">
+        <template v-if="user.active && user.accountStatus !=='banned'">
+          <ResultCard :user="user" />
+        </template>
+      </div>
+    </transition-group>
   </template>
 </template>
 
@@ -18,7 +20,7 @@
 import { getUsersMany } from '../api/userApi'
 import SearchBar from '@/components/search/SearchBar.vue'
 import ResultCard from '@/components/search/ResultCard.vue'
-import LoadSpinner from '@/components/LoadSpinner.vue'
+import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
 
 import checkAccountAge from '../util/checkAccountAge.js'
 import checkLastOnline from '../util/checkLastOnline.js'
@@ -26,7 +28,7 @@ import checkLastOnline from '../util/checkLastOnline.js'
 export default {
   name: 'Search',
   components: {
-    LoadSpinner,
+    TheLoadSpinner,
     SearchBar,
     ResultCard
   },
@@ -73,9 +75,13 @@ export default {
 
 <style scoped>
 #loading {
-  margin-top: 150px;
+  display: flex;
+  justify-content: center;
 }
-div {
+.user-list {
+  overflow-x: hidden;
+}
+.user-list>div {
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
@@ -84,5 +90,32 @@ div {
 }
 h2 {
   font-size: 1.8rem;
+}
+
+.user-list-enter-from {
+  opacity: 0;
+}
+.user-list-enter-to {
+  opacity: 1;
+}
+.user-list-enter-active {
+  transition: all 0.3s ease-out;  
+}
+
+
+.user-list-leave-from {
+  opacity: 1;
+}
+.user-list-leave-to {
+  opacity: 0;
+}
+.user-list-leave-active {
+  transition: all 0.3s ease-out;
+  position: absolute;
+  width: 100%;
+}
+
+.user-list-move {
+  transition: transform 0.5s ease;
 }
 </style>

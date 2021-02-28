@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Chat from '../views/Chat.vue'
 
 const router = createRouter({
@@ -31,6 +31,15 @@ const router = createRouter({
     {
       path: '/passport',
       name: 'Passport',
+      component: () => import('../views/Passport.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/passport/:id',
+      name: 'Passport',
+      props: true,
       component: () => import('../views/Passport.vue'),
       meta: {
         requiresAuth: true,

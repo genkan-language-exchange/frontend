@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <NavBar />
-    <router-view />
+    <TheNavBar />
+    <router-view v-slot="slotProps">
+      <!-- <transition name="route" mode="out-in"> -->
+        <component :is="slotProps.Component"></component>
+      <!-- </transition> -->
+    </router-view>
   </div>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
+import TheNavBar from '@/components/TheNavBar.vue'
 
 export default {
   name: 'Main',
   components: {
-    NavBar
+    TheNavBar
   },
   data () {
     return {
@@ -55,7 +59,9 @@ html, body {
   font-family: 'Kosugi Maru', sans-serif;
   */
 }
-
+#loading {
+  margin-top: 150px;
+}
 .no-select {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -65,6 +71,31 @@ html, body {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+/* .route-enter-from {
+  opacity: 0;
+}
+.route-enter-to {
+  opacity: 1;
+}
+.route-enter-active {
+  animation: slide 0.4s ease-out;
+}
+.route-leave-active {
+  animation: slide 0.4s ease-in;
+}
+
+@keyframes slide {
+  from {
+    opacity: 0;
+    transform: translateX(-45px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} */
 
 /* @media (prefers-color-scheme: light) {
   html, body {
