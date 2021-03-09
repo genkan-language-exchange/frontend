@@ -21,7 +21,7 @@
 
 <style scoped>
 .next-button {
-  position: absolute;
+  display: flex;
   padding: 0;
   border: 0;
   outline: 0;

@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import { langPopular, langAll } from '../data/languages'
-import TheNextButton from '../components/TheNextButton'
+import { langPopular, langAll } from '../../data/languages'
+import TheNextButton from './TheNextButton'
 export default {
   components: {
     TheNextButton
@@ -71,9 +71,6 @@ h2 {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-  width: 80%;
-  height: 50vh;
-  position: relative;
 }
 .checkbox-form>div {
   margin-bottom: 25px;

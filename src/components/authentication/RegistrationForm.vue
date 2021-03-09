@@ -1,11 +1,17 @@
 <template>
-  <form @submit.prevent="callLogin">
+  <form @submit.prevent="goToOnboarding">
     <fieldset :disabled="loading" :aria-busy="loading">
       <label for="email" key="email">Email Address
-        <input id="email" name="email" v-model.trim="email" type="email" required placeholder="Enter your email address" />
+        <input id="email" name="email" type="email" v-model.trim="email" required placeholder="Enter your email address" />
+      </label>
+      <label for="username" key="username">Username
+        <input id="username" name="username" type="username" v-model.trim="username" required placeholder="Enter your username" />
       </label>
       <label for="password" key="password">Password
-        <input id="password" name="password" v-model.trim="password" :type="passwordVisible ? 'text' : 'password' " required placeholder="Enter your password" />
+        <input id="password" name="password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="password" required placeholder="Enter your password" />
+      </label>
+      <label for="confirm-password" key="confirm-password">Confirm Password
+        <input id="confirm-password" name="confirm-password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="confirmPassword" required placeholder="Confirm your password" />
       </label>
 
       <div key="password-visibility">
@@ -18,39 +24,33 @@
       </div>
 
       <div id="finalize" key="finalize">
-        <p>Don't have an account? Click <span @click="$emit('changeMode')">here</span></p>
-        <button type="submit" @click.prevent="callLogin">Login</button>
+        <p>Already have an account? Click <span @click="$emit('changeMode')">here</span></p>
+        <button type="submit">Register</button>
       </div>
     </fieldset>
   </form>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
   export default {
-    name: 'LoginForm',
+    name: 'RegistrationForm',
     emits: ['changeMode', 'togglePasswordVisibility'],
     props: ['loading', 'passwordVisible'],
     data() {
       return {
-        error: null,
         email: '',
+        username: '',
         password: '',
+        passwordConfirm: '',
       }
     },
     methods: {
-      ...mapActions({
-        login: 'login'
-      }),
-      async callLogin() {
-        if (this.email === '' || this.password === '') return this.error = "Please fill out the fields"
-        await this.login({ email: this.email, password: this.password })
-        .then(() => {
-          this.$router.replace('/')
-        })
-        .catch(err => console.error(err))
-      }
-    },
+      goToOnboarding() {
+        if (this.email === '' || this.password === '' || this.password !== this.passwordConfirm) return this.error = "Please fill out the fields"
+
+        this.$router.push({ name: 'Welcome', params: { email: this.email, username: this.username, password: this.password } })
+      },
+    }
   }
 </script>
 

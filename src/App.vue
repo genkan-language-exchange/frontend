@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <TheNavBar />
-    <router-view v-slot="slotProps">
-      <!-- <transition name="route" mode="out-in"> -->
-        <component :is="slotProps.Component"></component>
-      <!-- </transition> -->
-    </router-view>
+    <router-view />
   </div>
 </template>
 
@@ -17,25 +13,9 @@ export default {
   components: {
     TheNavBar
   },
-  data () {
-    return {
-      isMobile: false,
-    }
-  },
-  provide: {
-    currentUser: 'japaneseuser.0101'
+  created() {
+    this.$store.dispatch('tryRefreshAuth')
   }
-  // methods: {
-  //   checkWidth() {
-  //     this.isMobile = window.innerWidth < 1100
-  //   }
-  // },
-  // mounted() {
-  //   window.addEventListener('resize', () => this.checkWidth())
-  // },
-  // beforeUnmount() {
-  //   window.removeEventListener('resize', () => this.checkWidth())
-  // }
 }
 </script>
 

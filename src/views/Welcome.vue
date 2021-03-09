@@ -10,13 +10,16 @@
 </template>
 
 <script>
-  import TheLanguageDropdown from '../components/TheLanguageDropdown'
-  import TheCountryDropdown from '../components/TheCountryDropdown'
+  import TheLanguageDropdown from '../components/welcome/TheLanguageDropdown'
+  import TheCountryDropdown from '../components/welcome/TheCountryDropdown'
+
   export default {
     name: 'Welcome',
     data() {
       return {
-        onboardStep: 0
+        onboardStep: 0,
+        email: '',
+        password: '',
       }
     },
     components: {
@@ -27,22 +30,25 @@
       next() {
         this.onboardStep++
       }
-    }
+    },
+    mounted() {
+      this.email = this.$route.params.email || ''
+      this.password = this.$route.params.password || ''
+    },
   }
 </script>
 
 <style scoped>
 #welcome {
-  height: 70vh;
   font-size: 1.4rem;
-  margin: 100px auto;
-  overflow: hidden;
+  margin: 60px auto 0;
+  padding: 40px 0 150px;
+  overflow-x: hidden;
 }
 #welcome>div {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  height: 100%;
 }
 select {
   width: 20%;

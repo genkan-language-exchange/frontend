@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Chat from '../views/Chat.vue'
 
+import store from '../store'
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -51,6 +53,7 @@ const router = createRouter({
       component: () => import('../views/Login.vue'),
       meta: {
         guest: true,
+        requiresUnauth: true,
       }
     },
     {
@@ -58,7 +61,8 @@ const router = createRouter({
       name: 'Welcome',
       component: () => import('../views/Welcome.vue'),
       meta: {
-        guest: true
+        guest: true,
+        requiresUnauth: true,
       }
     },
     {
@@ -102,11 +106,16 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, _, next) => {
-  // if (!navigator.onLine && to.name === "Chat") next();
-  // if (!navigator.onLine) next({ name: "Chat" })
-  if (to.meta.requiresAuth) {
-    console.log('protected route');
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !store.getters.isAuth) {
+    // route requires a user to be logged in
+    // and the user is not logged in
+    next('/login')
+  }
+  if (to.meta.requiresUnauth && store.getters.isAuth) {
+    // route requires a user not logged in
+    // and the user is logged in
+    next('/')
   }
   next()
 })

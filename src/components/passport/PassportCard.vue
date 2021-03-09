@@ -11,7 +11,7 @@
       </template>
       <div>
         <div id="user-name-age">
-          <h2 :style="isMobile ? {} : { width: '300px' }">{{user.name}}.{{user.identifier}}</h2>
+          <h2 :style="isMobile ? {} : { width: '300px' }">{{user.name}} <span>#{{user.identifier}}</span></h2>
           <p>{{user.matchSettings.age}} years old</p>
         </div>
         <div id="user-lang">
@@ -21,10 +21,15 @@
       </div>
     </div>
 
+    <div v-if="isSelf" id="foot">
+      <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
+    </div>
+
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import checkAccountAge from '../../util/checkAccountAge.js'
 export default {
   props: {
@@ -36,11 +41,20 @@ export default {
     }
   },
   methods: {
+    ...mapGetters(['currentUser']),
+    ...mapActions(['logout']),
     checkWidth() {
       this.isMobile = window.innerWidth < 1100
+    },
+    logMeOut() {
+      this.logout()
+      this.$router.replace('/login')
     }
   },
   computed: {
+    isSelf() {
+      return this.currentUser() === this.$route.params.id
+    },
     newUser() {
       return checkAccountAge(this.user.matchSettings.accountCreated)
     },
@@ -89,6 +103,7 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   height: 100%;
   width: 100%;
   object-fit: cover;
+  image-rendering: pixelated;
 }
 .new-icon {
   position: absolute;
@@ -109,16 +124,41 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   text-overflow: ellipsis;
   font-size: 1.8rem;
 }
+#user-name-age h2 span {
+  opacity: 0.2;
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
 #user-name-age, #user-lang {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
+#foot {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+#foot>button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+#foot>button:hover {
+  color: #fff;
+  background-color: #8c7ae6;
+}
+#foot>button>span {
+  margin-right: 10px;
+}
 .no-select {
 -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-      -moz-user-select: none; /* Firefox */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently
                                 supported by Chrome and Opera */

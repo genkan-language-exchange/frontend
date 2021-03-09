@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     goToPassport(name, identifier) {
-      this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}`} })
+      this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })
     }
   },
   computed: {

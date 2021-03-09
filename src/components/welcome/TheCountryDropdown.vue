@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { countriesAll } from '../data/countries'
-import TheNextButton from '../components/TheNextButton'
+import { countriesAll } from '../../data/countries'
+import TheNextButton from './TheNextButton'
 
 export default {
   components: {
@@ -67,7 +67,6 @@ h2 {
 	align-items: center;
   width: 80%;
   height: 50vh;
-  position: relative;
 }
 .checkbox-form>div {
   margin-bottom: 25px;

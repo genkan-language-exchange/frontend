@@ -4,32 +4,32 @@
       <button
         type="button"
         value="all"
-        :class="activeIndex === 0 ? 'active' : ''"
-        @click="handleClick(0, 'all')"
+        :class="activeFilter === 'all' ? 'active' : ''"
+        @click="handleClick('all')"
       >
         All
       </button>
       <button
         type="button"
         value="new"
-        :class="activeIndex === 1 ? 'active' : ''"
-        @click="handleClick(1, 'new')"
+        :class="activeFilter === 'new' ? 'active' : ''"
+        @click="handleClick('new')"
       >
         New
       </button>
       <button
         type="button"
         value="online"
-        :class="activeIndex === 2 ? 'active' : ''"
-        @click="handleClick(2, 'online')"
+        :class="activeFilter === 'online' ? 'active' : ''"
+        @click="handleClick('online')"
       >
         Online
       </button>
       <button
         type="button"
         value="custom"
-        :class="activeIndex === 3 ? 'active' : ''"
-        @click="handleClick(3, 'custom')"
+        :class="activeFilter === 'custom' ? 'active' : ''"
+        @click="handleClick('custom')"
       >
         <i class="fas fa-sliders-h"></i>
       </button>
@@ -38,18 +38,22 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   name: 'SearchBar',
-  data() {
-    return {
-      activeIndex: 0,
-    }
-  },
   methods: {
-    handleClick(i, val) {
-      this.activeIndex = i
-      this.$emit('filter', val)
-    }
+    ...mapMutations({
+      setActiveFilter: 'setActiveFilter'
+    }),
+    handleClick(value) {
+      this.setActiveFilter({ value })
+    },
+  },
+  computed: {
+    ...mapGetters({
+      activeFilter: 'activeFilter',
+    }),
   }
 }
 </script>

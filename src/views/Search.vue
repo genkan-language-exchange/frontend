@@ -5,7 +5,7 @@
     </div>
   </template>
   <template v-else>
-    <SearchBar @filter="filterSettings" />
+    <SearchBar />
     <transition-group tag="div" name="user-list">
       <div v-for="user in filteredUsers" :key="user._id">
         <template v-if="user.active && user.accountStatus !=='banned'">
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import { getUsersMany } from '../api/userApi'
 import SearchBar from '@/components/search/SearchBar.vue'
 import ResultCard from '@/components/search/ResultCard.vue'
@@ -32,11 +34,9 @@ export default {
     SearchBar,
     ResultCard
   },
-  inject: ['currentUser'],
   data() {
     return {
       users: [],
-      filterType: 'all',
     }
   },
   methods: {
@@ -45,15 +45,14 @@ export default {
       const removeSelf = response.filter(user => `${user.name}.${user.identifier}` !== this.currentUser)
       this.users = removeSelf
     },
-    filterSettings(e) {
-      const filters = ['all', 'new', 'online', 'custom']
-      const filterIndex = filters.findIndex(i => i === e)
-      this.filterType = filters[filterIndex]
-    }
   },
   computed: {
+    ...mapGetters({
+      activeFilter: 'activeFilter',
+      currentUser: 'currentUser',
+    }),
     filteredUsers() {
-      switch(this.filterType) {
+      switch(this.activeFilter) {
         case 'all':
           return this.users
         case 'new':

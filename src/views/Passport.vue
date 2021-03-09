@@ -20,7 +20,7 @@
 
 <script>
 import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
-import PassportCard from '@/components/profile/PassportCard.vue'
+import PassportCard from '@/components/passport/PassportCard.vue'
 import { getUserByNameIdentifierCombo } from '../api/userApi'
 
 export default {

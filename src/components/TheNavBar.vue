@@ -1,18 +1,27 @@
 <template>
   <div id="nav">
-    <ul>
-      <li><router-link to="/"><i class="fas fa-comments"></i></router-link></li>
-      <li><router-link to="/stories"><i class="fas fa-book-open"></i></router-link></li>
-      <li><router-link to="/search"><i class="fas fa-globe"></i></router-link></li>
-      <li><router-link :to="{ name: 'Passport', params: { id: currentUser } } "><i class="fas fa-user-circle"></i></router-link></li>
-      <!-- <li><router-link :to="{ path: 'logout'/*, query: { user: 'anonymous' }*/}"><i class="fas fa-sign-out-alt"></i></router-link></li> -->
-    </ul>
+    <template v-if="isAuth">
+      <ul>
+        <li><router-link to="/"><i class="fas fa-comments"></i></router-link></li>
+        <li><router-link to="/stories"><i class="fas fa-book-open"></i></router-link></li>
+        <li><router-link to="/search"><i class="fas fa-globe"></i></router-link></li>
+        <li><router-link :to="{ name: 'Passport', params: { id: currentUser } } "><i class="fas fa-user-circle"></i></router-link></li>
+      </ul>
+    </template>
+    <template v-else>
+      <ul>
+        <li><router-link to="/login"><i class="fas fa-sign-in-alt"></i></router-link></li>
+      </ul>
+    </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  inject: ['currentUser']  
+  computed: {
+    ...mapGetters(['currentUser', 'isAuth']),
+  }
 }
 </script>
 
