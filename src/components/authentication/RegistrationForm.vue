@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="goToOnboarding">
+    <h2>{{ error && error }}</h2>
     <fieldset :disabled="loading" :aria-busy="loading">
       <label for="email" key="email">Email Address
         <input id="email" name="email" type="email" v-model.trim="email" required placeholder="Enter your email address" />
@@ -11,7 +12,7 @@
         <input id="password" name="password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="password" required placeholder="Enter your password" />
       </label>
       <label for="confirm-password" key="confirm-password">Confirm Password
-        <input id="confirm-password" name="confirm-password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="confirmPassword" required placeholder="Confirm your password" />
+        <input id="confirm-password" name="confirm-password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="passwordConfirm" required placeholder="Confirm your password" />
       </label>
 
       <div key="password-visibility">
@@ -42,11 +43,12 @@
         username: '',
         password: '',
         passwordConfirm: '',
+        error: '',
       }
     },
     methods: {
       goToOnboarding() {
-        if (this.email === '' || this.password === '' || this.password !== this.passwordConfirm) return this.error = "Please fill out the fields"
+        if (!this.email.length || !this.password.length || this.password !== this.passwordConfirm) return this.error = "Please fill out the fields"
 
         this.$router.push({ name: 'Welcome', params: { email: this.email, username: this.username, password: this.password } })
       },

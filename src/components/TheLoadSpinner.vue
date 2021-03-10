@@ -39,6 +39,7 @@ export default {
   background-color: #8c7ae6;
   position: absolute;
   animation-iteration-count: infinite;
+  border-radius: 3px;
 }
 
 .breeding-rhombus-spinner .rhombus:nth-child(2n+0) {
@@ -98,51 +99,51 @@ export default {
 
 
 @keyframes breeding-rhombus-spinner-animation-child-1 {
-  50% {
-    transform: translate(-325%, -325%);
-  }
+  50% { transform: translate(-325%, -325%); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-2 {
-  50% {
-    transform: translate(0, -325%);
-  }
+  50% { transform: translate(0, -325%); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-3 {
-  50% {
-    transform: translate(325%, -325%);
-  }
+  50% { transform: translate(325%, -325%); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-4 {
-  50% {
-    transform: translate(325%, 0);
-  }
+  50% { transform: translate(325%, 0); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-5 {
-  50% {
-    transform: translate(325%, 325%);
-  }
+  50% { transform: translate(325%, 325%); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-6 {
-  50% {
-    transform: translate(0, 325%);
-  }
+  50% { transform: translate(0, 325%); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-7 {
-  50% {
-    transform: translate(-325%, 325%);
-  }
+  50% { transform: translate(-325%, 325%); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-8 {
-  50% {
-    transform: translate(-325%, 0);
-  }
+  50% { transform: translate(-325%, 0); }
+  68% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @keyframes breeding-rhombus-spinner-animation-child-big {

@@ -1,6 +1,35 @@
 const prefix = 'https://genkan.herokuapp.com'
 const suffix = '/api/v1/users'
 
+async function registerUser(name, email, password, confirmPassword) {
+  const url = prefix + suffix + '/signup'
+  const headers = {'content-type': 'application/json'}
+  const payload = { name, email, password, confirmPassword }
+
+  const response = await fetch(url,
+    {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload)
+    }
+  )
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      if (!data.data.newUser) {
+        return false
+      }
+      return data.data.newUser
+    }
+  })
+  .catch((error) => {
+    console.error(error)
+    console.error(error.message)
+    return false
+  })
+  return response
+}
+
 async function loginWithEmailPassword(email, password) {
   const url = prefix + suffix + '/login'
   const headers = {'content-type': 'application/json'}
@@ -88,8 +117,9 @@ async function getUsersMany() {
 }
 
 export {
+  registerUser,
   loginWithEmailPassword,
   getUserById,
   getUserByNameIdentifierCombo,
-  getUsersMany
+  getUsersMany,
 }

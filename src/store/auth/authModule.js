@@ -35,7 +35,7 @@ export default {
       // TODO: otherwise ask if they want to reactivate
     },
     unsetUser(state) {
-      state.isAuth = false // have to explicitly state this so computer properties update
+      state.isAuth = false // have to explicitly state this so computed properties update
       state = defaultState
     },
   },
