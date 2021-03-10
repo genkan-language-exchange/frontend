@@ -50,7 +50,8 @@ export default {
   .placeholder {
     display: flex;
     margin: 10px;
-    animation: tenmetsu 1s ease-in-out infinite alternate;
+    width: 90%;
+    animation: breathing 1s ease-in-out infinite alternate;
   }
   .placeholder .avatar-ph {
     min-height: 65px;
@@ -63,21 +64,16 @@ export default {
     font-weight: 600;
     font-size: 2.4rem;
     font-family: 'Lato', sans-serif;
-    animation: colorpulse 2s ease-in-out infinite alternate;
   }
-  @keyframes tenmetsu {
-    from {
+  @keyframes breathing {
+    0% {
       opacity: 1;
-      transform: translateY(0);
+      transform: scale(100%);
     }
-    to {
+    100% {
       opacity: 0.55;
-      transform: translateY(15px);
+      transform: scale(103%);
     }
-  }
-  @keyframes colorpulse {
-    from { background-color: #8c7ae6; }
-    to { background-color: #7766ce; }
   }
   .placeholder .chat-ph {
     height: 12px;

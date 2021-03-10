@@ -2,7 +2,7 @@
   <div id="base-view">
     <!-- <ChatCard :chats="chats" /> -->
     <div id="mobile-view" v-if="isMobile">
-      <p>heck</p>
+      <PlaceholderContacts />
     </div>
     <div id="web-view" v-else>
       <div id="contacts-list">
@@ -84,6 +84,9 @@
 #base-view {
   height: 100vh;
   font-size: 1.6rem;
+}
+#mobile-view {
+  margin: 75px auto 0;
 } 
 #web-view {
   display: flex;
