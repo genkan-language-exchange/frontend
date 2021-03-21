@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import './assets/index.css'
 import TheNavBar from '@/components/TheNavBar.vue'
 
 export default {
@@ -24,7 +25,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-size: 62.5%;
-  background-color: #2f3640;
+  background-color: var(--bg-color-main);
 }
 
 #app {
@@ -32,7 +33,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #f5f6fa;
+  color: var(--off-white-main);
   /*
   font-family: 'Roboto', sans-serif;
   font-family: 'Sriracha', cursive;

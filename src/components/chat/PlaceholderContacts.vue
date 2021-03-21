@@ -7,7 +7,10 @@
     <div class="placeholder" :class="`placeholder-${index}`" v-for="(letter, index) in String.raw`LOADING...`.split('')" :key="index">
       <div class="avatar-ph no-select">{{letter}}</div>
       <div class="chat-ph">
-        <div></div>
+        <div>
+          <div></div>
+          <div></div>
+        </div>
         <div></div>
       </div>
     </div>
@@ -35,14 +38,16 @@ export default {
   }
   #searchbar-ph #label-ph {
     height: 100%;
-    width: 24%;
+    width: 90px;
+    min-width: 50px;
+    margin-right: 4px;
     background-color: #8c7ae6;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
   }
   #searchbar-ph #input-ph {
     height: 100%;
-    width: 74%;
+    width: 100%;
     background-color: #8c7ae6;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -80,13 +85,16 @@ export default {
     margin-left: auto;
     width: 77%;
   }
-  .placeholder .chat-ph div {
+  .placeholder .chat-ph>div {
     height: 100%;
     width: 100%;
     margin: 5px;
     padding: 3px;
     border-radius: 15px;
     background-color: #8c7ae6;
+  }
+  .chat-ph div:first-child {
+    width: 45%;
   }
   .placeholder-0 { animation-delay: calc(100ms * 1); }
   .placeholder-1 { animation-delay: calc(100ms * 2); }

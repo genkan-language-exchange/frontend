@@ -99,7 +99,7 @@
   box-sizing: border-box;
   width: 350px;
   min-width: 350px;
-  border-right: #8c7ae6 2px solid;
+  border-right: 2px solid var(--theme-color-main);
 }
 #chats-list {
   padding-top: 70px;

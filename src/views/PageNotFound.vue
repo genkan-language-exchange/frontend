@@ -29,12 +29,12 @@
     outline: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #353b48;
-    color: white;
+    background-color: var(--bg-color-secondary);
+    color: var(--off-white-main);
     font-weight: 600;
     font-size: 1.6rem;
   }
   button:hover {
-    background-color: #487eb0 ;
+    background-color: var(--theme-color-main);
   }
 </style>

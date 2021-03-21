@@ -36,7 +36,7 @@ export default {
   animation-duration: 2000ms;
   top: calc(65px / 2.3077);
   left: calc(65px / 2.3077);
-  background-color: #8c7ae6;
+  background-color: var(--theme-color-main);
   position: absolute;
   animation-iteration-count: infinite;
   border-radius: 3px;
@@ -92,7 +92,7 @@ export default {
   animation-duration: 2000ms;
   top: calc(65px / 3);
   left: calc(65px / 3);
-  background-color: #8c7ae6;
+  background-color: var(--theme-color-main);
   animation: breeding-rhombus-spinner-animation-child-big 2s infinite;
   animation-delay: 0.5s;
 }

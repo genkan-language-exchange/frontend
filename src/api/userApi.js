@@ -100,14 +100,8 @@ async function getUsersMany() {
     }
   )
   .then(res => res.json())
-  .then(data => {
-    if (data.status === 'success') {
-      if (!data.data.users.length) {
-        return false
-      }
-      const filteredResponse = data.data.users.filter(user => user.accountStatus === 'verified')
-      return filteredResponse
-    }
+  .then(({data, status}) => {
+    if (status === 'success') return data
   })
   .catch(({ message }) => {
     console.error(message)

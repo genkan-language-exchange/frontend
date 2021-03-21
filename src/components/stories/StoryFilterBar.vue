@@ -4,34 +4,26 @@
       <button
         type="button"
         value="all"
-        :class="activeFilter === 'all' ? 'active' : ''"
+        :class="storyFilter === 'all' ? 'active' : ''"
         @click="handleClick('all')"
       >
         All
       </button>
       <button
         type="button"
-        value="new"
-        :class="activeFilter === 'new' ? 'active' : ''"
-        @click="handleClick('new')"
+        value="community"
+        :class="storyFilter === 'community' ? 'active' : ''"
+        @click="handleClick('community')"
       >
-        New
+        Community
       </button>
       <button
         type="button"
-        value="online"
-        :class="activeFilter === 'online' ? 'active' : ''"
-        @click="handleClick('online')"
+        value="follow"
+        :class="storyFilter === 'follow' ? 'active' : ''"
+        @click="handleClick('follow')"
       >
-        Online
-      </button>
-      <button
-        type="button"
-        value="custom"
-        :class="activeFilter === 'custom' ? 'active' : ''"
-        @click="handleClick('custom')"
-      >
-        <i class="fas fa-sliders-h"></i>
+        Following
       </button>
     </fieldset>
   </form>
@@ -44,15 +36,15 @@ export default {
   name: 'SearchBar',
   methods: {
     ...mapMutations({
-      setActiveFilter: 'setActiveFilter'
+      setStoryFilter: 'setStoryFilter'
     }),
     handleClick(value) {
-      this.setActiveFilter({ value })
+      this.setStoryFilter({ value })
     },
   },
   computed: {
     ...mapGetters({
-      activeFilter: 'activeFilter',
+      storyFilter: 'storyFilter',
     }),
   }
 }
@@ -73,12 +65,12 @@ fieldset {
   border: none;
 }
 button {
-  width: 25%;
+  width: 30%;
   box-sizing: border-box;
   padding: 8px;
   margin: 0 5px;
   border: none;
-  color: var(--off-white-main);
+  color: var(--off-white);
   background-color: var(--bg-color-secondary);
   border-radius: 5px;
   outline: none;
@@ -86,15 +78,12 @@ button {
   font-size: 1.4rem;
   cursor: pointer;
 }
-button:hover, button:focus {
+button:focus, button:hover {
   background-color: var(--theme-color-main);
   color: var(--off-white-main);
 }
-button:last-child {
-  width: 40px;
-}
 .active {
-background-color: var(--theme-color-main);
+  background-color: var(--theme-color-main);
 }
 @media (min-width: 959px) {
   form {

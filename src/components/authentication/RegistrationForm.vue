@@ -62,7 +62,7 @@ form {
   margin: 150px auto;
   font-size: 1.6rem;
   position: relative;
-  background-color: #353b48;
+  background-color: var(--bg-color-secondary);
   border-radius: 15px;
 }
 fieldset {
@@ -113,8 +113,8 @@ button {
   cursor: pointer;
 }
 button:hover {
-  color: white;
-  background-color: #8c7ae6;
+  color: var(--off-white-main);
+  background-color: var(--theme-color-main);
 }
 .password-visibility {
   display: flex;
@@ -123,14 +123,14 @@ button:hover {
   margin-left: 10px;
   height: 30px;
   width: 30px;
-  background-color: #8c7ae6;
+  background-color: var(--theme-color-main);
   border-radius: 5px;
   transition: all 0.2s ease-out;
   cursor: pointer;
 }
 .password-visibility:hover {
-  color: #8c7ae6;
-  background-color: #fff;
+  color: var(--theme-color-main);
+  background-color: var(--off-white-main);
 }
 
 @media (min-width: 959px) {

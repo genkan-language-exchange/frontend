@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import authModule from './auth/authModule'
 import searchModule from './search/searchModule'
+import storyModule from './story/storyModule'
 
 export default createStore({
   state: {
@@ -16,5 +17,6 @@ export default createStore({
   modules: {
     authModule,
     searchModule,
+    storyModule,
   }
 })

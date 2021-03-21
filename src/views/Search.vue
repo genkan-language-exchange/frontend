@@ -8,9 +8,7 @@
     <SearchBar />
     <transition-group tag="div" name="user-list">
       <div v-for="user in filteredUsers" :key="user._id">
-        <template v-if="user.active && user.accountStatus !=='banned'">
-          <ResultCard :user="user" />
-        </template>
+        <ResultCard :user="user" />
       </div>
     </transition-group>
   </template>
@@ -41,8 +39,8 @@ export default {
   },
   methods: {
     async findUsers() {
-      const response = await getUsersMany()
-      const removeSelf = response.filter(user => `${user.name}.${user.identifier}` !== this.currentUser)
+      const { data } = await getUsersMany()
+      const removeSelf = data.filter(user => `${user.name}.${user.identifier}` !== this.currentUser)
       this.users = removeSelf
     },
   },

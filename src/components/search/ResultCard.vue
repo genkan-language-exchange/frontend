@@ -64,7 +64,7 @@ export default {
   transition: background-color 0.2s ease-out;
 }
 .card:active {
-  background-color: #353b48;
+  background-color: var(--bg-color-secondary);
 }
 .head {
   display: flex;
@@ -78,18 +78,18 @@ export default {
   top: 0;
   left: 0;
   border-radius: 50%;
-  border: 3px solid #2f3640;
+  border: 3px solid var(--bg-color-main);
 }
 .online {
   background-color: chartreuse;
 }
 .offline {
-  background-color: #353b48;
+  background-color: var(--bg-color-secondary);
 }
 .avatar {
   width: 75px;
   height: 75px;
-  background-color: #444;
+  background-color: var(--bg-color-secondary);
   border-radius: 50%;
 }
 h3 {
@@ -121,7 +121,7 @@ span {
     width: 50%;
   }
   .card:hover {
-    background-color: #353b48;
+    background-color: var(--bg-color-secondary);
     cursor: pointer;
   }
 }

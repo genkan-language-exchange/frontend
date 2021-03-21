@@ -93,8 +93,8 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   height: 100px;
   min-height: 100px;
   margin-right: 10px;
-  border: 1px solid #fff;
-  background-color: #fff;
+  border: 1px solid var(--off-white-main);
+  background-color: var(--off-white-main);
   overflow: hidden;
   border-radius: 0 50% 50% 50%;
   box-sizing: border-box;
@@ -109,7 +109,7 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   position: absolute;
   top: 0;
   left: 0;
-  color: #8c7ae6;
+  color: var(--theme-color-main);
   background-color: rgba(255,255,255,0.75);
   border-radius: 0 0 5px 0;
   font-size: 3rem;
@@ -148,8 +148,8 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   transition: all 0.3s ease-in;
 }
 #foot>button:hover {
-  color: #fff;
-  background-color: #8c7ae6;
+  color: var(--off-white-main);
+  background-color: var(--theme-color-main);
 }
 #foot>button>span {
   margin-right: 10px;

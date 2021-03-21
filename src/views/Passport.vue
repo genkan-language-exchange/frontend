@@ -8,6 +8,7 @@
     <template v-if="isError">
       <div id="loading">
         <p>Invalid User ID :(</p>
+        <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
       </div>
     </template>
     <template v-if="user._id">
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
 import PassportCard from '@/components/passport/PassportCard.vue'
 import { getUserByNameIdentifierCombo } from '../api/userApi'
@@ -37,6 +39,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['logout']),
     async findUser(id) {
       const name = id.split('.')[0]
       const identifier = id.split('.')[1]
@@ -45,6 +48,10 @@ export default {
 
       if (!response) this.isError = true
       this.user = response
+    },
+    logMeOut() {
+      this.logout()
+      this.$router.replace('/login')
     }
   },
   mounted() {
@@ -69,5 +76,23 @@ div {
 }
 #passport {
   margin: 95px auto;
+}
+#loading {
+  display: flex;
+  flex-direction: column;
+}
+#loading>button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+#loading>button:hover {
+  color: #fff;
+  background-color: #8c7ae6;
+}
+#loading>button>span {
+  margin-right: 10px;
 }
 </style>

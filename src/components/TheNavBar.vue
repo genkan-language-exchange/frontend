@@ -31,8 +31,8 @@ export default {
   top: 0;
   width: 100%;
   height: 50px;
-  border-bottom: #8c7ae6 2px solid;
-  background-color: #353b48;
+  border-bottom: 2px solid var(--theme-color-main);
+  background-color: var(--bg-color-secondary);
   padding-top: 10px;
   z-index: 100;
 }
@@ -40,7 +40,7 @@ h1 {
   font-family: 'Sriracha', cursive;
   font-size: 2.4rem;
   text-decoration: none;
-  color: #9c88ff
+  color: var(--theme-color-main);
 }
 ul {
   display: flex;
@@ -59,17 +59,17 @@ a {
   padding: 2rem;
   font-size: 2.6rem;
   font-weight: bold;
-  color: #fff;
+  color: var(--off-white-main);
   text-decoration-line: none;
   outline: none;
 }
 a:hover {
-  color: #487eb0;
+  color: var(--theme-color-main);
 }
 /* a:last-child {
   margin-top: auto !important;
 } */
 .router-link-active, .router-link-exact-active {
-  color: #9c88ff;
+  color: var(--theme-color-main);
 }
 </style>

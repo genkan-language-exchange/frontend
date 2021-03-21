@@ -1,0 +1,12 @@
+html {
+  --theme-color-main: #8c7ae6;
+  --theme-color-secondary: #9c88ff;
+  --theme-color: var(--theme-color-main);
+
+  --off-white-main: #f5f6fa;
+  --off-white: var(--off-white);
+
+  --bg-color-main: #2f3640;
+  --bg-color: var(--bg-color-main);
+  --bg-color-secondary: #353b48;
+}
