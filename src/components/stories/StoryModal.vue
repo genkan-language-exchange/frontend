@@ -76,8 +76,7 @@
     flex-direction: column;
   }
   .story-header {
-    height: 95px;
-    min-height: 75px;
+    min-height: 95px;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -111,7 +110,7 @@
   }
   
   .content {
-    height: 75%;
+    height: 100%;
     overflow-y: auto;
     text-align: left;
     box-sizing: border-box;
@@ -139,17 +138,17 @@
     background-color: var(--theme-color-main);
     margin-top: auto;
   }
-
+  
   .story-footer {
     height: 40px;
     min-height: 35px;
-    padding: 5px 5px 0;
-    margin: 0 0 10px 10px;
+    padding: 5px 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin-top: auto;
   }
   .story-footer>button {
     height: 30px;

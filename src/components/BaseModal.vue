@@ -61,7 +61,12 @@
   @media (min-width: 959px) {
     #modal {
       width: 50%;
-      height: 560px;
+      height: 700px;
+    }
+  }
+  @media (min-height: 1000px) {
+    #modal {
+      height: 800px;
     }
   }
 </style>
