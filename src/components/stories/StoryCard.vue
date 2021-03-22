@@ -22,7 +22,7 @@
         <span v-if="story.comments?.length">{{story.comments.length}}</span>
         <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
       </button>
-      <button><i class="far fa-flag"></i></button>
+      <button @click.prevent="$emit('openReportModal', story._id)"><i class="far fa-flag"></i></button>
     </div>
   </div>
 </template>

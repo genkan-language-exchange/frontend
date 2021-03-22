@@ -1,12 +1,10 @@
 <template>
-  <teleport to="#app">
-    <div id="base">
-      <div id="obscured" @click.prevent="closeModal"></div>
-      <div id="modal">
-        <slot></slot>
-      </div>
+  <div id="base">
+    <div id="obscured" @click.prevent="closeModal"></div>
+    <div id="modal">
+      <slot></slot>
     </div>
-  </teleport>
+  </div>
 </template>
 
 <script>

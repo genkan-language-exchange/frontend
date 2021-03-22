@@ -1,38 +1,44 @@
 <template>
-    <div id="story-card">
-      <div class="story-header" @click.prevent="() => goToPassport(story.userId.name, story.userId.identifier)">
-        <div class="story-avatar">
-          <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
+<BaseModal>
+  <div id="story-card">
+    <div class="story-header" @click.prevent="() => goToPassport(story.userId.name, story.userId.identifier)">
+      <div class="story-avatar">
+        <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
+      </div>
+      <div class="user-info">
+        <div>
+          <h2>{{ story.userId.name }}<span>#{{ story.userId.identifier }}</span></h2>
         </div>
-        <div class="user-info">
-          <div>
-            {{ story.userId.name }}<span>#{{ story.userId.identifier }}</span>
-          </div>
-          <!-- languages -->
-        </div>
-        <!-- date posted top right -->
+        <!-- languages -->
       </div>
-      <div class="story-content">
-        <p v-for="(line, idx) in content" :key="idx">{{/^\s*$/.test(line) ? '&nbsp;' : line}}</p>
-      </div>
-      <div class="story-footer">
-        <button class="likes">
-          <span v-if="story.likes?.length">{{story.likes.length}}</span>
-          <i class="fa-heart" :class="story.likes?.length ? 'fas' : 'far'"></i>
-        </button>
-        <button class="comments">
-          <span v-if="story.comments?.length">{{story.comments.length}}</span>
-          <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
-        </button>
-        <button id="report"><i class="far fa-flag"></i></button>
-      </div>
+      <!-- date posted top right -->
     </div>
+    <div class="story-content">
+      <p v-for="(line, idx) in content" :key="idx">{{/^\s*$/.test(line) ? '&nbsp;' : line}}</p>
+    </div>
+    <div class="story-footer">
+      <button class="likes">
+        <span v-if="story.likes?.length">{{story.likes.length}}</span>
+        <i class="fa-heart" :class="story.likes?.length ? 'fas' : 'far'"></i>
+      </button>
+      <button class="comments">
+        <span v-if="story.comments?.length">{{story.comments.length}}</span>
+        <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
+      </button>
+      <button id="report" @click.prevent="$emit('report')"><i class="far fa-flag"></i></button>
+    </div>
+  </div>
+</BaseModal>
 </template>
 
 <script>
+  import BaseModal from '../BaseModal'
   export default {
     name: 'StoryModal',
     props: ['story'],
+    components: {
+      BaseModal,
+    },
     methods: {
       goToPassport(name, identifier) {
         this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })
@@ -47,6 +53,9 @@
 </script>
 
 <style scoped>
+  h2, p {
+    font-size: 1.6rem;
+  }
   #story-card {
     height: 100%;
     display: flex;
