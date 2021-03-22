@@ -34,6 +34,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--off-white-main);
+  position: relative;
   /*
   font-family: 'Roboto', sans-serif;
   font-family: 'Sriracha', cursive;

@@ -71,7 +71,7 @@
   }
   .story-header {
     height: 25%;
-    padding: 5px;
+    padding: 5px 10px;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -93,6 +93,9 @@
     text-align: left;
     cursor: pointer;
   }
+  .story-content:hover {
+    background-color: var(--theme-color-main);
+  }
   .story-content p {
     padding: 0;
     margin: 0;
@@ -105,7 +108,7 @@
   .story-footer>button {
     height: 30px;
     width: 30px;
-    margin: 3px 15px 3px 3px;
+    margin: 3px 8px;
     border: none;
     outline: none;
     border-radius: 3px;
@@ -123,10 +126,10 @@
     background-color: var(--off-white-main);
   }
   .story-footer>button:last-child {
-    background-color: var(--bg-color-main);
-    color: var(--theme-color-main);
+    background-color: var(--bg-color-secondary);
+    color: var(--bg-color-main);
     float: right;
-    margin-right: 3px;
+    margin-right: 8px;
   }
   .story-footer>button:last-child:hover {
     color: red;

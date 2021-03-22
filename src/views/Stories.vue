@@ -7,26 +7,32 @@
   </template>
   
   <template v-else>
-    <p>oop</p>
+    <div id="loading">
+      <TheLoadSpinner />
+    </div>
   </template>
 
   <template v-if="showModal">
-    <teleport to="#app">
-      <StoryModal @closeModal="closeModal" :story="modalData" />
-    </teleport>
+    <BaseModal @closeModal="closeModal">
+      <StoryModal :story="modalData" />
+    </BaseModal>
   </template>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import BaseModal from '../components/BaseModal'
   import StoryCard from '../components/stories/StoryCard'
   import StoryFilterBar from '../components/stories/StoryFilterBar'
   import StoryModal from '../components/stories/StoryModal'
+  import TheLoadSpinner from '../components/TheLoadSpinner'
   export default {
     components: {
+      BaseModal,
       StoryCard,
       StoryFilterBar,
       StoryModal,
+      TheLoadSpinner
     },
     data() {
       return {
@@ -59,6 +65,10 @@
 </script>
 
 <style scoped>
+  #loading {
+    display: flex;
+    justify-content: center;
+  }
   div {
     margin: 0 auto;
     display: flex;

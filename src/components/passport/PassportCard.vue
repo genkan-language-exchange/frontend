@@ -21,6 +21,18 @@
       </div>
     </div>
 
+    <div id="about">
+      <div>
+        <h3>About:</h3><p>{{user.profile.about}}</p>
+      </div>
+      <div>
+        <h3>Language Goal:</h3><p>{{user.profile.languageGoal}}</p>
+      </div>
+      <div>
+        <h3>Interests:</h3><p>{{user.profile.interests.join(', ')}}</p>
+      </div>
+    </div>
+
     <div v-if="isSelf" id="foot">
       <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
     </div>
@@ -60,13 +72,13 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('resize', () => this.checkWidth())
+    window.addEventListener('resize', this.checkWidth)
     // prevent avatars from being saved by others
     document.addEventListener('copy', e => e.preventDefault())
     this.$refs.avatar.addEventListener('contextmenu', e => e.preventDefault())
   },
   beforeUnmount() {
-    window.removeEventListener('resize', () => this.checkWidth())
+    window.removeEventListener('resize', this.checkWidth)
     document.removeEventListener('copy', e => e.preventDefault())
   },
 }
@@ -85,6 +97,9 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   width: 100%;
   display: flex;
   justify-content: center;
+  padding-bottom: 20px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--theme-color-main);
 }
 #avatar-outer { position: relative; }
 #avatar {
@@ -96,7 +111,7 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   border: 1px solid var(--off-white-main);
   background-color: var(--off-white-main);
   overflow: hidden;
-  border-radius: 0 50% 50% 50%;
+  border-radius: 5px;
   box-sizing: border-box;
 }
 #avatar img {
@@ -107,12 +122,16 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
 }
 .new-icon {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -10px;
+  left: -15px;
+  height: 26px;
+  width: 30px;
+  background-color: white;
+  border-radius: 5px;
   color: var(--theme-color-main);
-  background-color: rgba(255,255,255,0.75);
-  border-radius: 0 0 5px 0;
   font-size: 3rem;
+  display: flex;
+  align-items: center;
 }
 #user-name-age {
   width: 200px;
@@ -134,6 +153,11 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+#about {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 #foot {
   margin-top: 20px;

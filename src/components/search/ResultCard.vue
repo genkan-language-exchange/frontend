@@ -6,7 +6,7 @@
   >
     <div class="head">
       <div class="status" :class="onlineRecently ? 'online' : 'offline'"></div>
-      <div class="avatar"></div>
+      <div class="avatar">{{user.name[0].toUpperCase()}}</div>
     </div>
 
     <div class="info">
@@ -91,6 +91,12 @@ export default {
   height: 75px;
   background-color: var(--bg-color-secondary);
   border-radius: 50%;
+  font-size: 3rem;
+  display: flex;
+  line-height: 1;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid var(--bg-color-main);
 }
 h3 {
   font-size: 1.6rem;
