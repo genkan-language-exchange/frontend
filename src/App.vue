@@ -83,4 +83,7 @@ html, body {
     background-color: #f5f6fa;
   }
 } */
+
+/* font-feature-settings: 'tnum'; */
+/* font-variant-numeric: 'tabular-nums'; */
 </style>
