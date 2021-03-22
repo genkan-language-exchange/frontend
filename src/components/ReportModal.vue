@@ -28,7 +28,7 @@
               <input type="radio" name="reason" value="apathy" v-model="reason"><label for="reason">I just don't like it</label>
             </div>
             <div id="buttons">
-              <input type="submit" value="Send Complaint">
+              <input type="submit" value="Send Complaint" :disabled="!reason">
               <input type="button" value="Cancel" @click="$emit('cancelReport')">
             </div>
           </fieldset>
@@ -127,6 +127,12 @@
     outline: none;
     border-radius: 5px;
     cursor: pointer;
+  }
+  #buttons input[type="submit"]:disabled,
+  #buttons input[type="submit"]:disabled:hover {
+    cursor: default;
+    color: gray;
+    background-color: var(--off-white-main);
   }
   #buttons input[type="submit"]:hover,
   #buttons input[type="submit"]:active {

@@ -13,16 +13,24 @@
       </div>
       <!-- date posted top right -->
     </div>
-    <div class="story-content">
-      <p v-for="(line, idx) in content" :key="idx">{{/^\s*$/.test(line) ? '&nbsp;' : line}}</p>
+
+    <div class="content">
+      <section id="story-content">
+        <p v-for="(line, idx) in content" :key="idx">{{/^\s*$/.test(line) ? '&nbsp;' : line}}</p>
+      </section>
+      <section id="user-comments">
+        <CommentsSection v-for="(comment, i) in orderedComments" :key="i" :comment="comment" />
+      </section>
     </div>
+
     <div class="story-footer">
-      <button class="likes">
-        <span v-if="story.likes?.length">{{story.likes.length}}</span>
+      <p v-if="story.likes?.length">{{story.likes.length}}</p>
+      <button class="likes">  
         <i class="fa-heart" :class="story.likes?.length ? 'fas' : 'far'"></i>
       </button>
+
+      <p v-if="story.comments?.length">{{story.comments.length}}</p>
       <button class="comments">
-        <span v-if="story.comments?.length">{{story.comments.length}}</span>
         <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
       </button>
       <button id="report" @click.prevent="$emit('report')"><i class="far fa-flag"></i></button>
@@ -33,11 +41,13 @@
 
 <script>
   import BaseModal from '../BaseModal'
+  import CommentsSection from './CommentsSection'
   export default {
     name: 'StoryModal',
     props: ['story'],
     components: {
       BaseModal,
+      CommentsSection,
     },
     methods: {
       goToPassport(name, identifier) {
@@ -47,6 +57,10 @@
     computed: {
       content() {
         return this.story.content.split('\n')
+      },
+      orderedComments() {
+        const ordered = this.story.comments
+        return ordered.sort((a, b) => a.createdAt - b.createdAt)
       }
     },
   }
@@ -96,29 +110,46 @@
     height: 100%;
   }
   
-  .story-content {
+  .content {
     height: 75%;
     overflow-y: auto;
-    padding: 15px;
     text-align: left;
     box-sizing: border-box;
     background-color: var(--off-white-main);
+    display: flex;
+    flex-direction: column;
   }
-  .story-content p {
+  .content p {
     padding: 0;
     margin: 0;
     line-height: 1.33;
     color: var(--bg-color-main);
   }
 
+  .content #story-content {
+    height: auto;
+    min-height: 125px;
+    overflow-y: auto;
+    padding: 5px;
+  }
+  .content #user-comments {
+    padding: 0 5px;
+    overflow-y: auto;
+    border-top: 5px solid var(--theme-color-main);
+    background-color: var(--theme-color-main);
+    margin-top: auto;
+  }
+
   .story-footer {
     height: 40px;
     min-height: 35px;
     padding: 5px 5px 0;
-    margin-bottom: 10px;
+    margin: 0 0 10px 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
   .story-footer>button {
     height: 30px;
@@ -147,27 +178,5 @@
   }
   .story-footer>button:last-child:hover {
     background-color: red;
-  }
-
-  .likes, .comments {
-    position: relative;
-  }
-  .likes span,
-  .comments span {
-    position: absolute;
-    font-family: 'Courier New', Courier, monospace;
-    top: -10px;
-    right: -10px;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    z-index: 10;
-    background-color: var(--theme-color-main);
-    border: 2px solid var(--theme-color-secondary);
-    box-sizing: border-box;
-    font-size: 1.3rem;
-    font-feature-settings: 'tnum';
-    font-variant-numeric: 'tabular-nums';
-    color: white !important;
   }
 </style>
