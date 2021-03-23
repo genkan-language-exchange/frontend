@@ -19,7 +19,10 @@
         </div>
 
         <div v-else id="loading">
-          <p v-if="popupMessage">{{message}}</p>
+          <div v-if="popupMessage">
+            <h3 v-if="!error" class="congrats">Looks good!</h3>
+            <h3 v-else>Email address already in use</h3>
+          </div>
           <TheLoadSpinner v-else />
         </div>
       </transition-group>
@@ -42,7 +45,7 @@
         name: '',
         password: '',
         passwordConfirm: '',
-        message: '',
+        error: false,
         popupMessage: false,
         skip: 0,
       }
@@ -69,20 +72,18 @@
       async fastSignUp() {
         const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm })
         if (response.status === "success") {
+          this.error = false
           this.popupMessage = true
-          this.message = "Looks good!"
           setTimeout(() => {
             this.popupMessage = false
-            this.message = ""
             this.$router.push('/stories')
           }, 3000)
         }
         if (response.status === "fail") {
+          this.error = true
           this.popupMessage = true
-          this.message = "Email address already in use"
           setTimeout(() => {
             this.popupMessage = false
-            this.message = ""
             this.skipSetup(0)
           }, 5000)
         }
@@ -119,6 +120,10 @@ select {
   justify-content: center;
   align-items: center;
   gap: 30px;
+}
+.congrats {
+  font-size: 1.8rem;
+  font-family: "Sriracha", sans-serif;
 }
 #skip-group {
   position: relative;

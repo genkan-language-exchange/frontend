@@ -93,7 +93,7 @@
           const likeUser = `${like.likeUser.name}#${like.likeUser.identifier}`
           const currentUser = this.currentUser.split('.').join('#')
           if (likeUser === currentUser || like.likeUser.name == undefined) {
-            likeUsersArray.push("You")
+            likeUsersArray.push(i === 0 ? "You" : "you")
             continue;
           }
           likeUsersArray.push(likeUser)
