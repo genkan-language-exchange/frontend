@@ -1,4 +1,4 @@
-import { getStories } from '../../api/storyApi'
+import { createStory, getStories } from '../../api/storyApi'
 
 export default {
   state: {
@@ -19,6 +19,11 @@ export default {
       ctx.commit('setStories', stories)
       return stories
     },
+    async createStory(ctx, payload) {
+      const response = await createStory(payload)
+      ctx.commit('setStories', response)
+      return response
+    }
     // TODO: add other filters
   },
   getters: {

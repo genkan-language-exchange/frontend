@@ -27,8 +27,7 @@ async function getStory(id) {
     })
   .then(res => res.json())
   .then(({ data, status }) => {
-    console.log(data);
-    if (status === 'success') return data.data.story
+    if (status === 'success') return data.data
     return false
   })
   .catch(({ message }) => {
@@ -39,7 +38,7 @@ async function getStory(id) {
   return response
 }
 
-async function createStory (content, user) {
+async function createStory ({ content, user }) {
   const url = prefix + suffix
   const payload = { content, user }
 
@@ -60,8 +59,37 @@ async function createStory (content, user) {
   return response
 }
 
+async function likeStory({ storyId, userId }) {
+  const url = prefix + suffix + `/like/${storyId}`
+  const payload = { userId }
+
+  const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload)
+    })
+  .then(res => res.json())
+  .then(data => data.data.likes)
+  .catch(({ message }) => {
+    console.error(message)
+    return false
+  })
+
+  return response
+}
+
+async function commentStory({ storyId, userId, content }) {}
+
+async function editComment({ storyId, userId, commentId, content }) {}
+
+async function removeComment({ storyId, userId, commentId }) {}
+
 export {
   createStory,
   getStory,
   getStories,
+  likeStory,
+  commentStory,
+  editComment,
+  removeComment,
 }

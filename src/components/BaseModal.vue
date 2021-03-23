@@ -46,10 +46,10 @@
   }
   #modal {
     position: fixed;
-    top: 10%;
+    top: 2.5%;
     left: 0;
     right: 0;
-    height: 70%;
+    height: 75%;
     box-sizing: border-box;
     z-index: 101;
     width: 90%;
@@ -57,9 +57,11 @@
     background-color: var(--theme-color-main);
     border-radius: 5px;
     overflow: hidden;
+    transform: all 0.2s ease-out;
   }
   @media (min-width: 959px) {
     #modal {
+      top: 10%;
       width: 50%;
       height: 700px;
     }

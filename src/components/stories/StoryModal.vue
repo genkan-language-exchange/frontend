@@ -1,55 +1,97 @@
 <template>
 <BaseModal>
-  <div id="story-card">
-    <div class="story-header" @click.prevent="() => goToPassport(story.userId.name, story.userId.identifier)">
-      <div class="story-avatar">
-        <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
-      </div>
-      <div class="user-info">
-        <div>
-          <h2>{{ story.userId.name }}<span>#{{ story.userId.identifier }}</span></h2>
+  <transition-group mode="out-in" name="story-modal">
+    <template v-if="freshStory._id">
+      <div id="story-card">
+        <div class="story-header" @click.prevent="() => goToPassport(freshStory.userId.name, freshStory.userId.identifier)">
+          <div class="story-avatar">
+            <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
+          </div>
+          <div class="user-info">
+            <div>
+              <h2>{{ freshStory.userId.name }}<span>#{{ freshStory.userId.identifier }}</span></h2>
+            </div>
+            <!-- languages -->
+          </div>
+          <!-- date posted top right -->
         </div>
-        <!-- languages -->
+
+        <div class="content">
+          <section id="story-content">
+            <p v-for="(line, idx) in content" :key="idx">{{/^\s*$/.test(line) ? '&nbsp;' : line}}</p>
+          </section>
+          <section id="user-comments">
+            <CommentsSection v-for="(comment, i) in orderedComments" :key="i" :comment="comment" />
+          </section>
+        </div>
+
+        <div class="story-footer">
+          <p v-if="freshStory.likes?.length">{{freshStory.likes.length}}</p>
+          <button class="likes">  
+            <i class="fa-heart" :class="freshStory.likes?.length ? 'fas' : 'far'"></i>
+          </button>
+
+          <p v-if="freshStory.comments?.length">{{freshStory.comments.length}}</p>
+          <button class="comments">
+            <i class="fa-comment-dots" :class="freshStory.comments?.length ? 'fas' : 'far'"></i>
+          </button>
+          <button id="report" @click.prevent="$emit('report')"><i class="far fa-flag"></i></button>
+        </div>
       </div>
-      <!-- date posted top right -->
-    </div>
+    </template>
 
-    <div class="content">
-      <section id="story-content">
-        <p v-for="(line, idx) in content" :key="idx">{{/^\s*$/.test(line) ? '&nbsp;' : line}}</p>
-      </section>
-      <section id="user-comments">
-        <CommentsSection v-for="(comment, i) in orderedComments" :key="i" :comment="comment" />
-      </section>
-    </div>
-
-    <div class="story-footer">
-      <p v-if="story.likes?.length">{{story.likes.length}}</p>
-      <button class="likes">  
-        <i class="fa-heart" :class="story.likes?.length ? 'fas' : 'far'"></i>
-      </button>
-
-      <p v-if="story.comments?.length">{{story.comments.length}}</p>
-      <button class="comments">
-        <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
-      </button>
-      <button id="report" @click.prevent="$emit('report')"><i class="far fa-flag"></i></button>
-    </div>
-  </div>
+    <template v-else>
+      <div id="story-card">
+        <div class="story-header">
+          <div class="story-avatar">
+            <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
+          </div>
+          <div class="user-info">
+            <div>
+              <h2>{{ story.userId.name }}<span>#{{ story.userId.identifier }}</span></h2>
+            </div>
+            <!-- languages -->
+          </div>
+        </div>
+        <div class="content">
+          <div :style="{ margin: '150px auto' }">
+            <TheLoadSpinner />
+          </div>
+        </div>
+        <div class="story-footer">
+          <button class="likes"><i class="far fa-heart"></i></button>
+          <button class="comments"><i class="far fa-comment-dots"></i></button>
+          <button id="report"><i class="far fa-flag"></i></button>
+        </div>
+      </div>
+    </template>
+  </transition-group>
 </BaseModal>
 </template>
 
 <script>
+  import { getStory } from '../../api/storyApi'
   import BaseModal from '../BaseModal'
   import CommentsSection from './CommentsSection'
+  import TheLoadSpinner from '../TheLoadSpinner'
   export default {
     name: 'StoryModal',
     props: ['story'],
+    data() {
+      return {
+        freshStory: {}
+      }
+    },
     components: {
       BaseModal,
       CommentsSection,
+      TheLoadSpinner,
     },
     methods: {
+      async refreshStory() {
+        const response = await getStory(this.story._id)
+        if (response) this.freshStory = response
+      },
       goToPassport(name, identifier) {
         this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })
       },
@@ -63,6 +105,9 @@
         return ordered.sort((a, b) => a.createdAt - b.createdAt)
       }
     },
+    mounted() {
+      this.refreshStory()
+    }
   }
 </script>
 
@@ -178,4 +223,27 @@
   .story-footer>button:last-child:hover {
     background-color: red;
   }
+
+.story-modal-enter-from {
+  opacity: 0;
+}
+.story-modal-enter-to {
+  opacity: 1;
+}
+.story-modal-enter-active {
+  transition: all 0.3s ease-out;  
+}
+
+
+.story-modal-leave-from {
+  opacity: 1;
+}
+.story-modal-leave-to {
+  opacity: 0;
+}
+.story-modal-leave-active {
+  transition: all 0.3s ease-out;
+  position: absolute;
+  width: 100%;
+}
 </style>

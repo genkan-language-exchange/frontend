@@ -24,8 +24,7 @@ export default {
       // if the user's account is active
       if (payload.active) {
         // apply payload to state
-        // TODO: remove user password in backend code
-        // state.userInfo = payload
+        state.userInfo._id = payload._id
         state.currentUser = `${payload.name}.${payload.identifier}`
         state.role = payload.role
         // set auth
@@ -78,6 +77,7 @@ export default {
         ctx.commit('setUser', response)
 
         localStorage.setItem('sid', response.sid)
+        localStorage.setItem('_id', response._id)
         localStorage.setItem('userId', `${response.name}.${response.identifier}`)
         localStorage.setItem('sessionExpires', expires)
       }
@@ -89,12 +89,13 @@ export default {
       
       if (expires > d) {
         const sid = localStorage.getItem('sid')
+        const _id = localStorage.getItem('_id')
         const userId = localStorage.getItem('userId')
 
         if (sid && userId) {
           const name = userId.split('.')[0]
           const identifier = userId.split('.')[1]
-          const payload = { sid, name, identifier, active: true }
+          const payload = { sid, name, identifier, active: true, _id, }
           ctx.commit('setUser', payload)
         }
       } else {
@@ -107,5 +108,6 @@ export default {
     currentUser: state => state.currentUser,
     isAuth: state => state.isAuth,
     sid: state => state.sid,
+    id: state => state.userInfo._id,
   },
 }

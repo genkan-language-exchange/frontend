@@ -15,16 +15,17 @@
     </div>
     <div class="story-footer">
       <transition name="like-modal" mode="out-in">
-        <div class="like-modal" v-if="likesOpen && whoLiked.length">
+        <div class="like-modal" v-if="likesOpen">
           <div class="arrow"></div>
-          <p>{{whoLiked}} liked this</p>
+          <p v-if="whoLiked.length">{{whoLiked}} liked this</p>
+          <p v-else>No one liked this yet 😴</p>
         </div>
       </transition>
-      <button class="likes" ref="likes">
-        <span v-if="story.likes?.length">{{story.likes.length}}</span>
-        <i class="fa-heart" :class="story.likes?.length ? 'fas' : 'far'"></i>
+      <button class="likes" ref="likes" @click.prevent="sendLike(story._id)">
+        <span v-if="likes?.length">{{likes.length}}</span>
+        <i class="fa-heart" :class="userLikes ? 'fas' : 'far'"></i>
       </button>
-      <button class="comments">
+      <button class="comments" @click.prevent="$emit('openModal', story._id)">
         <span v-if="story.comments?.length">{{story.comments.length}}</span>
         <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
       </button>
@@ -34,12 +35,16 @@
 </template>
 
 <script>
+  import { likeStory } from '../../api/storyApi'
+  import { mapGetters } from 'vuex'
   export default {
     name: "StoryCard",
     data() {
       return {
-        timer: '',
+        timer: 0,
         likesOpen: false,
+        likes: [],
+        userLikes: false,
       }
     },
     emits: ['openModal'],
@@ -57,18 +62,43 @@
         this.likesOpen = false
         clearTimeout(this.timer)
       },
+      async sendLike(storyId) {
+        const payload = {
+          storyId,
+          userId: this.userInfoId
+        }
+        const response = await likeStory(payload)
+        if (response) {
+          this.likes = response
+          this.userLikes = !this.userLikes
+        }
+      }
     },
     computed: {
+      ...mapGetters({
+        userInfoId: 'id',
+        currentUser: 'currentUser',
+      }),
       content() {
         return this.story.content.split('\n')
       },
       whoLiked() {
-        const likes = this.story.likes
+        const likes = this.likes
         const sortedLikes = likes.sort((a, b) => a.createdAt - b.createdAt)
-
         let likeUsersArray = []
-        sortedLikes.slice(0,3).forEach(like => likeUsersArray.push(`${like.likeUser.name}#${like.likeUser.identifier}`))
-        
+
+        for (let i = 0 ; i < sortedLikes.length ; i++) {
+          if (i > 3) break;
+          const like = sortedLikes[i]
+          const likeUser = `${like.likeUser.name}#${like.likeUser.identifier}`
+          const currentUser = this.currentUser.split('.').join('#')
+          if (likeUser === currentUser || like.likeUser.name == undefined) {
+            likeUsersArray.push("You")
+            continue;
+          }
+          likeUsersArray.push(likeUser)
+        }
+
         if (likeUsersArray.length > 3) likeUsersArray.push(' and more')
         return likeUsersArray.join(', ')
       },
@@ -76,8 +106,10 @@
     mounted() {
       this.$refs.likes.addEventListener('mouseenter', this.showLikesBegin)
       this.$refs.likes.addEventListener('mouseleave', this.showLikesEnd)
+      this.likes = this.story.likes
+      this.userLikes = this.story.likes.find(like => like.likeUser._id === this.userInfoId)
     },
-    unmounted() {
+    beforeUnmount() {
       this.$refs.likes.removeEventListener('mouseenter', this.showLikesBegin)
       this.$refs.likes.removeEventListener('mouseleave', this.showLikesEnd)
     }
@@ -179,20 +211,20 @@
 
   .like-modal {
     position: absolute;
-    top: -40px;
-    left: -15px;
-    padding: 5px;
+    top: -38px;
+    left: 0;
+    padding: 5px 8px;
     color: white;
     background-color: var(--theme-color-main);
     border-radius: 5px;
+    box-shadow: 5px 3px 15px 8px rgba(0,0,0,0.1);
   }
   .like-modal .arrow {
     position: absolute;
     bottom: -5px;
-    left: 35px;
+    left: 23px;
     height: 10px;
     width: 10px;
-    z-index: 1;
     background-color: var(--theme-color-main);
     transform: rotate(45deg);
   }
@@ -202,19 +234,23 @@
   .likes span,
   .comments span {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: -10px;
     right: -10px;
     height: 20px;
     width: 20px;
     border-radius: 50%;
     z-index: 10;
+    font-size: 1.1rem;
+    font-feature-settings: 'tnum';
+    font-variant-numeric: 'tabular-nums';
+    font-family: 'Comic Sans MS', cursive;
+    color: white !important;
     background-color: var(--theme-color-main);
     border: 2px solid var(--theme-color-secondary);
     box-sizing: border-box;
-    font-size: 1.3rem;
-    font-feature-settings: 'tnum';
-    font-variant-numeric: 'tabular-nums';
-    color: white !important;
   }
   
 .like-modal-enter-from {
