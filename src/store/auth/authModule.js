@@ -1,4 +1,4 @@
-import { loginWithEmailPassword } from '../../api/userApi'
+import { loginWithEmailPassword, registerUser } from '../../api/userApi'
 
 const defaultState = {
   currentUser: 'guest.4649',
@@ -62,7 +62,25 @@ export default {
       const mode = payload.mode
 
       if (mode === 'signup') {
-        // do signup stuff
+        const { name, email, password, passwordConfirm} = payload;
+        const response = await registerUser(name, email, password, passwordConfirm)
+        if (response.status === "success") {
+          const newUser = response.data.newUser
+          const d = new Date()
+          d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
+          const expires = `expires=${d.toUTCString()}`
+          document.cookie = `sid=${newUser.sid};${expires};path=/`
+          // send response to mutation
+          ctx.commit('setUser', newUser)
+  
+          localStorage.setItem('sid', newUser.sid)
+          localStorage.setItem('_id', newUser._id)
+          localStorage.setItem('userId', `${newUser.name}.${newUser.identifier}`)
+          localStorage.setItem('sessionExpires', expires)
+          return response
+        } else {
+          return response
+        }
       } else if (mode === 'login') {
         const { email, password } = payload;
         // send login information from payload to api

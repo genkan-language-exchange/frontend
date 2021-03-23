@@ -22,7 +22,7 @@
         </div>
       </transition>
       <button class="likes" ref="likes" @click.prevent="sendLike(story._id)">
-        <span v-if="likes?.length">{{likes.length}}</span>
+        <span v-if="likes.length">{{likes.length}}</span>
         <i class="fa-heart" :class="userLikes ? 'fas' : 'far'"></i>
       </button>
       <button class="comments" @click.prevent="$emit('openModal', story._id)">

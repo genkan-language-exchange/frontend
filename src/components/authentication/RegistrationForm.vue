@@ -50,7 +50,7 @@
       goToOnboarding() {
         if (!this.email.length || !this.password.length || this.password !== this.passwordConfirm) return this.error = "Please fill out the fields"
 
-        this.$router.push({ name: 'Welcome', params: { email: this.email, username: this.username, password: this.password } })
+        this.$router.push({ name: 'Welcome', params: { email: this.email, name: this.username, password: this.password, passwordConfirm: this.passwordConfirm } })
       },
     }
   }

@@ -1,18 +1,16 @@
 <template>
-  <transition-group mode="out-in" name="stories-page">
-    <template v-if="stories?.length">
-      <StoryFilterBar />
-      <div id="story-deck">
-        <StoryCard v-for="story in stories" :key="story._id" :userId="story.userId" :story="story" @openModal="openModal" @openReportModal="openReportModal" />
-      </div>
-    </template>
+  <template v-if="stories?.length">
+    <StoryFilterBar />
+    <div id="story-deck">
+      <StoryCard v-for="story in stories" :key="story._id" :userId="story.userId" :story="story" @openModal="openModal" @openReportModal="openReportModal" />
+    </div>
+  </template>
 
-    <template v-else>
-      <div id="loading">
-        <TheLoadSpinner />
-      </div>
-    </template>
-  </transition-group>
+  <template v-else>
+    <div id="loading">
+      <TheLoadSpinner />
+    </div>
+  </template>
   
   <transition name="storymodal" mode="out-in">
     <StoryModal @closeModal="closeModal" @report="switchModal" :story="modalData" v-if="showModal"/>

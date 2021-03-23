@@ -1,10 +1,21 @@
 const prefix = 'https://genkan.herokuapp.com'
 const suffix = '/api/v1/users'
 
-async function registerUser(name, email, password, confirmPassword) {
+async function registerUser(name, email, password, passwordConfirm, matchSettings) {
   const url = prefix + suffix + '/signup'
   const headers = {'content-type': 'application/json'}
-  const payload = { name, email, password, confirmPassword }
+
+  if (!matchSettings) matchSettings = {
+    "birthday": "1970-01-01",
+    "gender": "male",
+    "pronouns": "he/him",
+    "languageKnow": ["English"],
+    "languageLearn": ["English"],
+    "nationality": "US",
+    "residence": "US"
+  }
+
+  const payload = { name, email, password, passwordConfirm, matchSettings }
 
   const response = await fetch(url,
     {
@@ -14,18 +25,11 @@ async function registerUser(name, email, password, confirmPassword) {
     }
   )
   .then(res => res.json())
-  .then(data => {
-    if (data.status === 'success') {
-      if (!data.data.newUser) {
-        return false
-      }
-      return data.data.newUser
-    }
-  })
+  .then(data => data)
   .catch((error) => {
     console.error(error)
     console.error(error.message)
-    return false
+    return error
   })
   return response
 }

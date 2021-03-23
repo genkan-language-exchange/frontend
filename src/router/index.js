@@ -106,7 +106,7 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   if (to.meta.requiresAuth && !store.getters.isAuth) {
     // route requires a user to be logged in
     // and the user is not logged in
