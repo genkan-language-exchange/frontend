@@ -7,7 +7,7 @@
     </template>
     <template v-if="isError">
       <div id="loading">
-        <p>Invalid User ID :(</p>
+        <p>Invalid User ID 😣</p>
         <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
       </div>
     </template>
@@ -52,6 +52,11 @@ export default {
     logMeOut() {
       this.logout()
       this.$router.replace('/login')
+    }
+  },
+  watch: {
+    user(val) {
+      if (val) this.isError = false
     }
   },
   mounted() {

@@ -21,15 +21,15 @@
           <p v-else>No one liked this yet 😴</p>
         </div>
       </transition>
-      <button class="likes" ref="likes" @click.prevent="sendLike(story._id)">
+      <button class="likes" ref="likes" @click.prevent="sendLike(story._id)" aria-name="like post">
         <span v-if="likes.length">{{likes.length}}</span>
         <i class="fa-heart" :class="userLikes ? 'fas' : 'far'"></i>
       </button>
-      <button class="comments" @click.prevent="$emit('openModal', story._id)">
+      <button class="comments" @click.prevent="$emit('openModal', story._id)" aria-name="view comments">
         <span v-if="story.comments?.length">{{story.comments.length}}</span>
         <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
       </button>
-      <button @click.prevent="$emit('openReportModal', story._id)"><i class="far fa-flag"></i></button>
+      <button @click.prevent="$emit('openReportModal', story._id)" aria-name="report story"><i class="far fa-flag"></i></button>
     </div>
   </div>
 </template>
@@ -93,14 +93,14 @@
           const likeUser = `${like.likeUser.name}#${like.likeUser.identifier}`
           const currentUser = this.currentUser.split('.').join('#')
           if (likeUser === currentUser || like.likeUser.name == undefined) {
-            likeUsersArray.push(i === 0 ? "You" : "you")
+            likeUsersArray.push(i === 0 ? "You" : (i === 2 ? "and you" : "you"))
             continue;
           }
           likeUsersArray.push(likeUser)
         }
 
-        if (likeUsersArray.length > 3) likeUsersArray.push(' and more')
-        return likeUsersArray.join(', ')
+        if (likeUsersArray.length > 3) likeUsersArray.push(' and more') 
+        return likeUsersArray.length !== 2 ? likeUsersArray.join(', ') : likeUsersArray.join(' and ')
       },
     },
     mounted() {
@@ -167,7 +167,12 @@
     padding: 5px 15px;
     text-align: left;
     cursor: pointer;
-  }
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-color-main) var(--bg-color-secondary);
+}
+  .story-content::-webkit-scrollbar { width: thin; }
+  .story-content::-webkit-track { background: var(--theme-color-main); }
+  .story-content::-webkit-thumb { background: var(--bg-color-secondary); }
   .story-content:hover {
     background-color: var(--theme-color-main);
   }

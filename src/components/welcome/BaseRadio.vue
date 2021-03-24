@@ -2,26 +2,26 @@
   <div class="checkbox-form">
     <div>
       <div class="answers">
-        <h3><slot></slot></h3>
-        <p>{{checked.length ? checked.join(', ') : '&nbsp;'}}</p>
+        <h3><slot name="title"></slot></h3>
         <div id="scrollview">
+
           <label
-            v-for="lang of filteredLanguages"
-            :key="lang.code"
+            v-for="(item, index) of items"
+            :key="index"
             class="item"
           >
-            <div :for="lang.code" class="label">
-              <p>{{ lang.name }}</p>
-              <p>{{ lang.endonym }}</p>
+            <div :for="item" class="label">
+              <p>{{ item }}</p>
             </div>
             <input
-              :id="lang.code"
+              :id="index"
               v-model="checked"
               type="checkbox"
-              :value="lang.name"
+              :value="item"
             >
             <span class="checkmark" />
           </label>
+
         </div>
       </div>
     </div>
@@ -30,18 +30,14 @@
 </template>
 
 <script>
-import { langPopular, langAll } from '../../data/languages'
 import TheNextButton from './TheNextButton'
 export default {
   components: {
     TheNextButton
   },
-  props: ['languageKnow'],
+  props: ['items'],
   data() {
     return {
-      langAll,
-      langPopular,
-      filteredLanguages: [],
       checked: [],
     }
   },
@@ -52,23 +48,9 @@ export default {
   },
   watch: {
     checked(val) {
-      if (val.length > 3) return this.checked.shift()
-    }
+      if (val.length > 1) return this.checked = val.reverse().slice(0,1)
+    },
   },
-  mounted() {
-    let languages = this.langPopular.concat(this.langAll)
-    if (this.languageKnow) {
-      const known = this.languageKnow
-      for (let i = 0; i < languages.length ; i++) {
-        for (let j = 0 ; j < known.length ; j++) {
-          if (languages[i].name.toLowerCase() === known[j].toLowerCase()) {
-            languages.splice(i, 1)
-          }
-        }
-      }
-    }
-    this.filteredLanguages = languages
-  }
 }
 </script>
 
@@ -97,15 +79,24 @@ h2 {
   margin: 0 auto;
   padding: 15px 15px 15px 0;
   border: 2px solid #8c7ae6;
-  border-right: 1px solid #8c7ae6;;
-  border-radius: 5px;
+  border-bottom: 1px solid #8c7ae6;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   scrollbar-width: thin;
   scrollbar-color: #2f3640 #8c7ae6;
 }
 #scrollview::-webkit-scrollbar { width: thin; }
 #scrollview::-webkit-track { background: #2f3640; }
 #scrollview::-webkit-thumb { background: #8c7ae6; }
-
+#country-filter {
+  padding: 5px 8px;
+  border: none;
+  outline: none;
+  border: 2px solid #8c7ae6;
+  border-top: 1px solid #8c7ae6;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 .checkbox-form .answers {
 	display: flex;
 	flex-direction: column;
@@ -153,7 +144,7 @@ h2 {
 	height: 25px;
 	width: 25px;
 	background-color: #c2c2c2;
-  border-radius: 3px;
+  border-radius: 50%;
 }
 .checkbox-form .item:hover input ~ .checkmark {
 	background-color: #949494;

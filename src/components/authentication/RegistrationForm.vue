@@ -9,24 +9,36 @@
         <input id="username" name="username" type="username" v-model.trim="username" required placeholder="Enter your username" />
       </label>
       <label for="password" key="password">Password
-        <input id="password" name="password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="password" required placeholder="Enter your password" />
+        <input id="password" name="password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="password" required placeholder="Enter your password (min. 8 characters)" />
       </label>
       <label for="confirm-password" key="confirm-password">Confirm Password
         <input id="confirm-password" name="confirm-password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="passwordConfirm" required placeholder="Confirm your password" />
       </label>
 
       <div key="password-visibility">
-        <div class="password-visibility" v-if="passwordVisible">
-          <i @click="$emit('togglePasswordVisibility')" class="fas fa-eye"></i>
-        </div>
-        <div class="password-visibility" v-else>
-          <i @click="$emit('togglePasswordVisibility')" class="fas fa-eye-slash"></i>
-        </div>
+        <button
+          type="button"
+          @click.prevent="$emit('togglePasswordVisibility')"
+          class="password-visibility"
+          aria-name="toggle password visibility"
+          v-if="passwordVisible"
+        >
+          <i class="fas fa-eye"></i>
+        </button>
+        <button
+          type="button"
+          @click.prevent="$emit('togglePasswordVisibility')"
+          class="password-visibility"
+          aria-name="toggle password visibility"
+          v-else
+        >
+          <i class="fas fa-eye-slash"></i>
+        </button>
       </div>
 
       <div id="finalize" key="finalize">
         <p>Already have an account? Click <span @click="$emit('changeMode')">here</span></p>
-        <button type="submit">Register</button>
+        <button type="submit" :disabled="password.length < 8 || password !== passwordConfirm">Register</button>
       </div>
     </fieldset>
   </form>
@@ -35,7 +47,7 @@
 <script>
   export default {
     name: 'RegistrationForm',
-    emits: ['changeMode', 'togglePasswordVisibility'],
+    emits: ['changeMode', 'togglePasswordVisibility', 'setLoading'],
     props: ['loading', 'passwordVisible'],
     data() {
       return {
@@ -48,6 +60,7 @@
     },
     methods: {
       goToOnboarding() {
+        this.$emit('setLoading')
         if (!this.email.length || !this.password.length || this.password !== this.passwordConfirm) return this.error = "Please fill out the fields"
 
         this.$router.push({ name: 'Welcome', params: { email: this.email, name: this.username, password: this.password, passwordConfirm: this.passwordConfirm } })
@@ -111,10 +124,18 @@ button {
   border-radius: 5px;
   transition: all 0.2s ease-out;
   cursor: pointer;
-}
-button:hover {
   color: var(--off-white-main);
   background-color: var(--theme-color-main);
+}
+button:hover {
+  color: var(--theme-color-main);
+  background-color: var(--off-white-main);
+}
+button:disabled,
+button:disabled:hover {
+  cursor: default;
+  color: gray;
+  background-color: white;
 }
 .password-visibility {
   display: flex;
@@ -123,6 +144,7 @@ button:hover {
   margin-left: 10px;
   height: 30px;
   width: 30px;
+  color: var(--off-white-main);
   background-color: var(--theme-color-main);
   border-radius: 5px;
   transition: all 0.2s ease-out;

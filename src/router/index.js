@@ -23,6 +23,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/stories/create',
+      name: 'StoryCreation',
+      component: () => import('../views/StoryCreation.vue'),
+      meta: {
+        requiresAuth: true,
+      }
+    },
+    {
       path: '/search',
       name: 'Search',
       component: () => import('../views/Search.vue'),

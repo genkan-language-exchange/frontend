@@ -1,13 +1,7 @@
 <template>
   <form @submit.prevent="callLogin">
-    <h2>{{ error && error }}</h2>
     <fieldset :disabled="loading" :aria-busy="loading">
-      <label for="email" key="email">Email Address
-        <input id="email" name="email" v-model.trim="email" type="email" aria-errormessage="Missing email address" required placeholder="Enter your email address" />
-      </label>
-      <label for="password" key="password">Password
-        <input id="password" name="password" v-model.trim="password" :type="passwordVisible ? 'text' : 'password' " aria-errormessage="Missing password" required placeholder="Enter your password" />
-      </label>
+      <slot name="fields"></slot>
 
       <div key="password-visibility">
         <button
@@ -31,10 +25,7 @@
         </button>
       </div>
 
-      <div id="finalize" key="finalize">
-        <p>Don't have an account? Click <span @click="$emit('changeMode')">here</span></p>
-        <button type="submit" @click.prevent="callLogin" :disabled="password.length < 8">Login</button>
-      </div>
+      <slot name="foot"></slot>
     </fieldset>
   </form>
 </template>
@@ -43,13 +34,15 @@
   import { mapActions } from 'vuex'
   export default {
     name: 'LoginForm',
-    emits: ['changeMode', 'togglePasswordVisibility', 'setLoading'],
+    emits: ['changeMode', 'togglePasswordVisibility'],
     props: ['loading', 'passwordVisible'],
     data() {
       return {
-        error: null,
         email: '',
+        username: '',
         password: '',
+        passwordConfirm: '',
+        error: null,
       }
     },
     methods: {
@@ -57,19 +50,18 @@
         login: 'login'
       }),
       async callLogin() {
-        this.$emit('setLoading', true)
-        if (this.password.length < 8) return this.error = "Password too short"
         if (this.email === '' || this.password === '') return this.error = "Please fill out the fields"
         await this.login({ email: this.email, password: this.password })
         .then(() => {
           this.$router.replace('/')
         })
-        .catch(() => {
-          console.error('oops')
-          this.error = "Could not login"
-          this.$emit('setLoading', false)
-        })
-      }
+        .catch(err => console.error(err))
+      },
+      goToOnboarding() {
+        if (!this.email.length || !this.password.length || this.password !== this.passwordConfirm) return this.error = "Please fill out the fields"
+
+        this.$router.push({ name: 'Welcome', params: { email: this.email, name: this.username, password: this.password, passwordConfirm: this.passwordConfirm } })
+      },
     },
   }
 </script>
@@ -130,18 +122,10 @@ button {
   border-radius: 5px;
   transition: all 0.2s ease-out;
   cursor: pointer;
-  color: var(--off-white-main);
-  background-color: var(--theme-color-main);
 }
 button:hover {
-  color: var(--theme-color-main);
-  background-color: var(--off-white-main);
-}
-button:disabled,
-button:disabled:hover {
-  cursor: default;
-  color: gray;
-  background-color: white;
+  color: var(--off-white-main);
+  background-color: var(--theme-color-main);
 }
 
 .password-visibility {

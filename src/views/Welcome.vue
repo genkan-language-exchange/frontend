@@ -1,13 +1,28 @@
 <template>
   <div id="welcome">
+
     <div v-if="skip < 3">
       <transition name="cards" mode="out-in">
-        <TheLanguageDropdown v-if="onboardStep === 0" @next="next" />
-        <TheCountryDropdown v-else-if="onboardStep === 1" />
+        <TheLanguageDropdown v-if="onboardStep === 0" @next="next">What language(s) do you speak?</TheLanguageDropdown>
+        <TheLanguageDropdown v-else-if="onboardStep === 1" @next="next" :languageKnow="matchSettings.languageKnow">What language(s) are you interested in?</TheLanguageDropdown>
+        <TheCountryDropdown v-else-if="onboardStep === 2" @next="next">Where are you from?</TheCountryDropdown>
+        <TheCountryDropdown v-else-if="onboardStep === 3" @next="next">Where do you live?</TheCountryDropdown>
+        <TheGenderSelection v-else-if="onboardStep === 4" @next="next" :items="genders" />
+        <div v-else-if="onboardStep === 5">
+          <DatePicker @next="next" />
+          <h3>You're all set!</h3>
+          <ul>
+            <li><span>Language(s) spoken:</span> {{ matchSettings.languageKnow.join(', ') }}</li>
+            <li><span>Language(s) learning:</span> {{ matchSettings.languageLearn.join(', ') }}</li>
+            <li><span>From:</span> {{ matchSettings.nationality }}</li>
+            <li><span>Lives in:</span> {{ matchSettings.residence }}</li>
+            <li><span>Gender:</span> {{ matchSettings.gender }}</li>
+          </ul>
+        </div>
       </transition>
     </div>
 
-    <div id="skip-group">
+    <div id="skip-group" v-if="onboardStep < 5">
       <transition-group name="skip-setup" mode="out-in">
         <div id="skip" v-if="skip < 3">
           <button v-if="!skip" @click="skipSetup(1)">Skip Setup <i class="fas fa-forward"></i></button>
@@ -17,27 +32,48 @@
             <button @click="skipSetup(2)">Yes</button>
           </div>
         </div>
-
-        <div v-else id="loading">
-          <div v-if="popupMessage">
-            <h3 v-if="!error" class="congrats">Looks good!</h3>
-            <h3 v-else>Email address already in use</h3>
-          </div>
-          <TheLoadSpinner v-else />
-        </div>
       </transition-group>
     </div>
+
+    <div v-if="popupMessage">
+      <div v-if="!error" class="congrats">
+        <h3>Looks good!</h3>
+        <i class="fas fa-fire-alt"></i>
+        <TheLoadSpinner />
+      </div>
+      <div class="uncongrats" v-else>
+        <h3>Whoops! Email address already in use 🤯</h3>
+        <p>Click <a href="/login">here</a> if you want to try logging in.</p>
+        <form id="try-new-email" @submit.prevent="finalizeSignUp">
+          <label for="email">...or try a new email address</label>
+          <div id="email-input">
+            <input type="text" name="email" id="email" v-model="email" placeholder="Email address">
+            <button type="submit"><i class="far fa-edit"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
+  import DatePicker from '../components/welcome/DatePicker'
+  import TheGenderSelection from '../components/welcome/TheGenderSelection'
   import TheCountryDropdown from '../components/welcome/TheCountryDropdown'
   import TheLanguageDropdown from '../components/welcome/TheLanguageDropdown'
   import TheLoadSpinner from '../components/TheLoadSpinner'
 
   export default {
     name: 'Welcome',
+    components: {
+      DatePicker,
+      TheGenderSelection,
+      TheCountryDropdown,
+      TheLanguageDropdown,
+      TheLoadSpinner
+    },
     data() {
       return {
         onboardStep: 0,
@@ -45,47 +81,70 @@
         name: '',
         password: '',
         passwordConfirm: '',
+        matchSettings: null,
         error: false,
         popupMessage: false,
         skip: 0,
+        genders: ['Male', 'Female', 'Non-binary']
       }
-    },
-    components: {
-      TheCountryDropdown,
-      TheLanguageDropdown,
-      TheLoadSpinner
     },
     methods: {
       ...mapActions({
         signup: 'signup'
       }),
-      next() {
-        this.onboardStep++
+      matchSettingsBuilder(val) {
+        let newKeyVal = {};
+        switch (this.onboardStep) {
+          case 0:
+            newKeyVal = { "languageKnow": val }
+            break;
+          case 1:
+            newKeyVal = { "languageLearn": val }
+            break;
+          case 2:
+            newKeyVal = { "nationality": val }
+            break;
+          case 3:
+            newKeyVal = { "residence": val }
+            break;
+          case 4:
+            newKeyVal = { "gender": val[0].toString() }
+            break;
+          case 5:
+            console.log(val)
+            newKeyVal = { "birthday": val }
+            break;
+          default:
+            newKeyVal = undefined
+            break;
+        }
+        this.matchSettings = { ...this.matchSettings, ...newKeyVal }
+      },
+      next(val) {
+        this.matchSettingsBuilder(val)
+        if (this.onboardStep < 6) this.onboardStep++
+        if (this.onboardStep === 6) this.finalizeSignUp()
       },
       skipSetup(num) {
         this.skip = num
         if (num === 2) {
           this.skip = 3
-          this.fastSignUp()
+          this.finalizeSignUp()
         }
       },
-      async fastSignUp() {
-        const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm })
+      async finalizeSignUp() {
+        this.error = false
+        this.popupMessage = true
+        const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm, matchSettings: this.matchSettings })
         if (response.status === "success") {
-          this.error = false
-          this.popupMessage = true
           setTimeout(() => {
-            this.popupMessage = false
             this.$router.push('/stories')
           }, 3000)
         }
         if (response.status === "fail") {
+          console.log(response)
           this.error = true
           this.popupMessage = true
-          setTimeout(() => {
-            this.popupMessage = false
-            this.skipSetup(0)
-          }, 5000)
         }
       }
     },
@@ -121,10 +180,81 @@ select {
   align-items: center;
   gap: 30px;
 }
+ul li {
+  text-align: left;
+  text-decoration: none;
+}
+ul li span {
+  font-weight: 600;
+}
 .congrats {
-  font-size: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.congrats h3 {
+  font-size: 2.4rem;
+}
+.congrats i {
+  font-size: 4rem;
+  color: orange;
+  margin-bottom: 60px;
+}
+
+.uncongrats h3 {
+  font-size: 2.4rem;
   font-family: "Sriracha", sans-serif;
 }
+.uncongrats p, .uncongrats label {
+  font-size: 1.6rem;
+  margin: 0;
+}
+.uncongrats a:active,
+.uncongrats a:visited {
+  color: white;
+}
+.uncongrats a:hover {
+  color: var(--theme-color-main);
+}
+.uncongrats div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#email-input {
+  display: 'flex';
+  flex-direction: row;
+  align-items: flex-end;
+}
+#email-input input {
+  width: 100%;
+  margin: 0;
+  margin-top: 3px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 8px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+#email-input button {
+  margin: 0;
+  border: none;
+  outline: none;
+  padding: 8px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: var(--off-white-main);
+  background-color: var(--theme-color-main);
+  cursor: pointer;
+}
+#email-input button:hover,
+#email-input button:active {
+  color: var(--theme-color-main);
+  background-color: var(--off-white-main);
+}
+
 #skip-group {
   position: relative;
 }

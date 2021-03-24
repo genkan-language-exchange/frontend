@@ -1,20 +1,24 @@
 <template>
-  <transition name="forms" mode="out-in">
-    <LoginForm
-      v-if="isLogin"
-      @changeMode="setMode"
-      @togglePasswordVisibility="togglePasswordVisibility"
-      :loading="loading"
-      :passwordVisible="passwordVisible"
-    />
-    <RegistrationForm
-      v-else-if="!isLogin"
-      @changeMode="setMode"
-      @togglePasswordVisibility="togglePasswordVisibility"
-      :loading="loading"
-      :passwordVisible="passwordVisible"
-    />
-  </transition>
+  <div id="login-outer">
+    <transition name="forms" mode="out-in">
+      <LoginForm
+        v-if="isLogin"
+        @changeMode="setMode"
+        @togglePasswordVisibility="togglePasswordVisibility"
+        @setLoading="setLoading"
+        :loading="loading"
+        :passwordVisible="passwordVisible"
+      />
+      <RegistrationForm
+        v-else-if="!isLogin"
+        @changeMode="setMode"
+        @togglePasswordVisibility="togglePasswordVisibility"
+        @setLoading="setLoading"
+        :loading="loading"
+        :passwordVisible="passwordVisible"
+      />
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -39,6 +43,9 @@ import RegistrationForm from '@/components/authentication/RegistrationForm.vue'
       }),
       setMode() {
         this.isLogin = !this.isLogin
+      },
+      setLoading(val) {
+        this.loading = !!val
       },
       togglePasswordVisibility() {
         this.passwordVisible = !this.passwordVisible

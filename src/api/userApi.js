@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const prefix = 'https://genkan.herokuapp.com'
 const suffix = '/api/v1/users'
 
@@ -5,15 +7,20 @@ async function registerUser(name, email, password, passwordConfirm, matchSetting
   const url = prefix + suffix + '/signup'
   const headers = {'content-type': 'application/json'}
 
-  if (!matchSettings) matchSettings = {
-    "birthday": "1970-01-01",
-    "gender": "male",
-    "pronouns": "he/him",
-    "languageKnow": ["English"],
-    "languageLearn": ["English"],
-    "nationality": "US",
-    "residence": "US"
+  
+  if (!matchSettings) {
+    matchSettings = {
+      birthday: "2000-01-01",
+      gender: "non-binary",
+      languageKnow: ["???"],
+      languageLearn: ["???"],
+      nationality: "???",
+      residence: "???"
+    }
   }
+  matchSettings.birthday = new Date(matchSettings.birthday)
+  matchSettings.gender = matchSettings.gender.toLowerCase()
+  matchSettings.lastSeen = Date.now();
 
   const payload = { name, email, password, passwordConfirm, matchSettings }
 
@@ -46,19 +53,18 @@ async function loginWithEmailPassword(email, password) {
       body: JSON.stringify(payload)
     }
   )
-  .then(res => res.json())
+  .then(res => {
+    if (res.status === 200) return res.json()
+    return res.status
+  })
   .then(data => {
     if (data.status === 'success') {
-      if (!data.data.user) {
-        return false
-      }
-      return data.data.user
+      return data
     }
   })
   .catch((error) => {
     console.error(error)
-    console.error(error.message)
-    return false
+    return error
   })
   return response
 }

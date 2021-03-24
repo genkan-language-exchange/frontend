@@ -62,8 +62,8 @@ export default {
       const mode = payload.mode
 
       if (mode === 'signup') {
-        const { name, email, password, passwordConfirm} = payload;
-        const response = await registerUser(name, email, password, passwordConfirm)
+        const { name, email, password, passwordConfirm, matchSettings } = payload;
+        const response = await registerUser(name, email, password, passwordConfirm, matchSettings )
         if (response.status === "success") {
           const newUser = response.data.newUser
           const d = new Date()
@@ -86,18 +86,21 @@ export default {
         // send login information from payload to api
         const response = await loginWithEmailPassword(email, password)
 
-        // TODO: add session expiration date to response
-        const d = new Date()
-        d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
-        const expires = `expires=${d.toUTCString()}`
-        document.cookie = `sid=${response.sid};${expires};path=/`
-        // send response to mutation
-        ctx.commit('setUser', response)
+        if (response.status === "success") {
+          const user = response.data.user
+          // TODO: add session expiration date to response
+          const d = new Date()
+          d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
+          const expires = `expires=${d.toUTCString()}`
+          document.cookie = `sid=${user.sid};${expires};path=/`
+          // send response to mutation
+          ctx.commit('setUser', user)
 
-        localStorage.setItem('sid', response.sid)
-        localStorage.setItem('_id', response._id)
-        localStorage.setItem('userId', `${response.name}.${response.identifier}`)
-        localStorage.setItem('sessionExpires', expires)
+          localStorage.setItem('sid', user.sid)
+          localStorage.setItem('_id', user._id)
+          localStorage.setItem('userId', `${user.name}.${user.identifier}`)
+          localStorage.setItem('sessionExpires', expires)
+        }
       }
     },
     async tryRefreshAuth(ctx) {
