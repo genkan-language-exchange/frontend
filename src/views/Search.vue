@@ -39,8 +39,8 @@ export default {
   },
   methods: {
     async findUsers() {
-      const { data } = await getUsersMany()
-      const removeSelf = data.filter(user => `${user.name}.${user.identifier}` !== this.currentUser)
+      const response = await getUsersMany()
+      const removeSelf = response.data.filter(user => `${user.name}.${user.identifier}` !== this.currentUser)
       this.users = removeSelf
     },
   },

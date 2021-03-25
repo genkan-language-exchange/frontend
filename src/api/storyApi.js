@@ -1,79 +1,58 @@
-const prefix = 'https://genkan.herokuapp.com'
-const suffix = '/api/v1/stories'
-const headers = {'content-type': 'application/json'}
+import axios from 'axios'
+const prefix = 'https://genkan.herokuapp.com/api/v1/stories'
+// const prefix = 'http://localhost:5000/api/v1/stories'
+const token = localStorage.getItem('genkan-token')
 
 async function getStories() {
-  const url = prefix + suffix
-  const response = await fetch(url, {
-      method: 'GET',
-    })
-  .then(res => res.json())
-  .then(({ data, status }) => {
-    if (status === 'success') return data.data
-    return false
-  })
-  .catch(({ message }) => {
-    console.error(message)
-    return false
-  })
+  const url = prefix
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+  const response = await axios.get(url, config)
+  .then(res => res.data)
+  .catch(err => err)
 
   return response
 }
 
 async function getStory(id) {
-  const url = prefix + suffix + `/${id}`
-  const response = await fetch(url, {
-      method: 'GET',
-    })
-  .then(res => res.json())
-  .then(({ data, status }) => {
-    if (status === 'success') return data.data
-    return false
-  })
-  .catch(({ message }) => {
-    console.error(message)
-    return false
-  })
+  const url = prefix + `/${id}`
+  const response = await axios.get(url)
+  .then(res => res.data)
+  .catch(err => err)
 
   return response
 }
 
-async function createStory ({ content, user }) {
-  const url = prefix + suffix
-  const payload = { content, user }
+async function createStory ({ content, status }) {
+  const url = prefix
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+  let data = { content, status }
 
-  const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-    })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === 'success') return data.data.newStory
-  })
-  .catch(({ message }) => {
-    console.error(message)
-    return false
-  })
+  const response = await axios.post(url, data, config)
+  .then(res => res.data)
+  .catch(err => err)
 
   return response
 }
 
-async function likeStory({ storyId, userId }) {
-  const url = prefix + suffix + `/like/${storyId}`
-  const payload = { userId }
+async function likeStory(storyId) {
+  const url = prefix + `/like/${storyId}`
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
 
-  const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-    })
-  .then(res => res.json())
-  .then(data => data.data.likes)
-  .catch(({ message }) => {
-    console.error(message)
-    return false
-  })
+  const response = await axios.post(url, storyId, config)
+  .then(res => res.data)
+  .catch(err => err)
 
   return response
 }

@@ -22,7 +22,7 @@
             <span class="checkmark" />
           </label>
         </div>
-        <input id="country-filter" type="text" name="country filter" v-model="filterInput" placeholder="Search countries...">
+        <input id="country-filter" type="text" name="country filter" v-model="filterInput" autofocus placeholder="Search countries...">
       </div>
     </div>
     <TheNextButton :toggle="!!checked.length" @click="handleClick" />

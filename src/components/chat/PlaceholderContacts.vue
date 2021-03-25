@@ -4,7 +4,7 @@
       <div id="label-ph"></div>
       <div id="input-ph"></div>
     </div>
-    <div class="placeholder" :class="`placeholder-${index}`" v-for="(letter, index) in String.raw`LOADING...`.split('')" :key="index">
+    <div class="placeholder" :class="`placeholder-${index}`" v-for="(letter, index) in String.raw`工事中...`.split('')" :key="index">
       <div class="avatar-ph no-select">{{letter}}</div>
       <div class="chat-ph">
         <div>
@@ -56,6 +56,8 @@ export default {
     display: flex;
     margin: 10px;
     width: 90%;
+    font-family: 'DotGothic16', sans-serif;
+    font-weight: 700;
     animation: breathing 1s ease-in-out infinite alternate;
   }
   .placeholder .avatar-ph {

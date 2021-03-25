@@ -64,8 +64,8 @@
         .then(() => {
           this.$router.replace('/')
         })
-        .catch(() => {
-          console.error('oops')
+        .catch((err) => {
+          console.error(err)
           this.error = "Could not login"
           this.$emit('setLoading', false)
         })
@@ -78,10 +78,12 @@
 form {
   width: 90%;
   margin: 150px auto;
-  font-size: 1.6rem;
   position: relative;
   background-color: var(--bg-color-secondary);
   border-radius: 15px;
+}
+form, input, button {
+   font-size: 1.6rem;
 }
 fieldset {
   border: none;
@@ -106,6 +108,7 @@ input {
   outline: none;
   padding: 8px;
   border-radius: 5px;
+  font-size: 1.6rem;
 }
 fieldset p {
   font-size: 1.2rem;
@@ -166,6 +169,9 @@ button:disabled:hover {
   form {
     width: 500px;
     margin: 150px 75px 0 auto;
+  }
+  input, button {
+    font-size: 1.4rem;
   }
 }
 </style>

@@ -1,17 +1,21 @@
 <template>
+  
   <template v-if="stories?.length">
-    <StoryFilterBar />
-    <div id="story-deck">
-      <StoryCard v-for="story in stories" :key="story._id" :userId="story.userId" :story="story" @openModal="openModal" @openReportModal="openReportModal" />
+    <div id="story-view">
+      <StoryFilterBar />
+      <section id="story-deck">
+        <StoryCard v-for="story in stories" :key="story._id" :userId="story.userId" :story="story" @openModal="openModal" @openReportModal="openReportModal" />
+      </section>
+      <TheStoryCreationButtom />
     </div>
   </template>
 
-  <template v-else>
-    <div id="loading">
-      <TheLoadSpinner />
-    </div>
-  </template>
-  
+    <template v-else>
+      <div id="loading">
+        <TheLoadSpinner />
+      </div>
+    </template>
+
   <transition name="storymodal" mode="out-in">
     <StoryModal @closeModal="closeModal" @report="switchModal" :story="modalData" v-if="showModal"/>
   </transition>
@@ -26,6 +30,7 @@
   import StoryCard from '../components/stories/StoryCard'
   import StoryFilterBar from '../components/stories/StoryFilterBar'
   import StoryModal from '../components/stories/StoryModal'
+  import TheStoryCreationButtom from '../components/stories/TheStoryCreationButton'
   import TheLoadSpinner from '../components/TheLoadSpinner'
   export default {
     components: {
@@ -33,6 +38,7 @@
       StoryCard,
       StoryFilterBar,
       StoryModal,
+      TheStoryCreationButtom,
       TheLoadSpinner
     },
     data() {
@@ -83,24 +89,25 @@
 </script>
 
 <style scoped>
-  #loading {
-    display: flex;
-    justify-content: center;
-  }
-  div {
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-size: 1.6rem;
-  }
-  #story-deck {
-    display: 'flex';
-    flex-direction: column;
-    margin: 2rem 0;
-    gap: 2rem;
-  }
-  
+#loading {
+  display: flex;
+  justify-content: center;
+}
+#story-view {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  position: relative;
+}
+#story-deck {
+  display: 'flex';
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  width: 100%;
+  font-size: 1.6rem;
+}
 .storymodal-enter-from,
 .reportmodal-enter-from {
   opacity: 0;

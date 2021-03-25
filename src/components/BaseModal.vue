@@ -56,6 +56,7 @@
     margin: 0 auto;
     background-color: var(--theme-color-main);
     border-radius: 5px;
+    font-size: 1.6rem;
     overflow: hidden;
     transform: all 0.2s ease-out;
   }

@@ -46,8 +46,8 @@ export default {
 
       const response = await getUserByNameIdentifierCombo(name, identifier)
 
-      if (!response) this.isError = true
-      this.user = response
+      if (response.status !== "success") this.isError = true
+      this.user = response.data[0]
     },
     logMeOut() {
       this.logout()

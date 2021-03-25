@@ -1,12 +1,10 @@
-import moment from 'moment'
-
-const prefix = 'https://genkan.herokuapp.com'
-const suffix = '/api/v1/users'
+import axios from 'axios'
+const prefix = 'https://genkan.herokuapp.com/api/v1/users'
+// const prefix = 'http://localhost:5000/api/v1/users'
+const token = localStorage.getItem('genkan-token')
 
 async function registerUser(name, email, password, passwordConfirm, matchSettings) {
-  const url = prefix + suffix + '/signup'
-  const headers = {'content-type': 'application/json'}
-
+  const url = prefix + '/signup'
   
   if (!matchSettings) {
     matchSettings = {
@@ -22,46 +20,24 @@ async function registerUser(name, email, password, passwordConfirm, matchSetting
   matchSettings.gender = matchSettings.gender.toLowerCase()
   matchSettings.lastSeen = Date.now();
 
-  const payload = { name, email, password, passwordConfirm, matchSettings }
+  const data = { name, email, password, passwordConfirm, matchSettings }
 
-  const response = await fetch(url,
-    {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-    }
-  )
-  .then(res => res.json())
-  .then(data => data)
-  .catch((error) => {
-    console.error(error)
-    console.error(error.message)
-    return error
+  const response = await axios.post(url, data)
+  .then(res => res.data)
+  .catch(err => {
+    console.error(err)
+    console.error(err.message)
+    return err
   })
   return response
 }
 
 async function loginWithEmailPassword(email, password) {
-  const url = prefix + suffix + '/login'
-  const headers = {'content-type': 'application/json'}
-  const payload = { email, password }
+  const url = prefix + '/login'
+  const data = { email, password }
 
-  const response = await fetch(url,
-    {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-    }
-  )
-  .then(res => {
-    if (res.status === 200) return res.json()
-    return res.status
-  })
-  .then(data => {
-    if (data.status === 'success') {
-      return data
-    }
-  })
+  const response = await axios.post(url, data)
+  .then(res => res.data)
   .catch((error) => {
     console.error(error)
     return error
@@ -69,61 +45,38 @@ async function loginWithEmailPassword(email, password) {
   return response
 }
 
-async function getUserById(id) {
-  return id;
-}
-
 async function getUserByNameIdentifierCombo(name, identifier) {
-  const url = prefix + suffix
-  const headers = {'content-type': 'application/json'}
-  const payload = { name, identifier }
+  const url = prefix
+  const data = { name, identifier }
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
 
-  const response = await fetch(url,
-    {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-    }
-  )
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === 'success') {
-      if (!data.data.length) {
-        return false
-      }
-      return data.data[0]
-    }
-  })
-  .catch(({ message }) => {
-    console.error(message)
-    console.error('Something went wrong fetching the user\'s profile.\nPlease try again later.\nIf the problem persists please email support@genkan.app')
-    return false
-  })
+  const response = await axios.post(url, data, config)
+  .then(res => res.data)
+  .catch(err => err)
   return response
 }
 
 async function getUsersMany() {
-  const url = prefix + suffix
-  const response = await fetch(url,
-    {
-      method: 'GET',
+  const url = prefix
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
     }
-  )
-  .then(res => res.json())
-  .then(({data, status}) => {
-    if (status === 'success') return data
-  })
-  .catch(({ message }) => {
-    console.error(message)
-    return false
-  })
+  }
+
+  const response = await axios.get(url, config)
+  .then(res => res.data)
+  .catch(err => err)
   return response
 }
 
 export {
   registerUser,
   loginWithEmailPassword,
-  getUserById,
   getUserByNameIdentifierCombo,
   getUsersMany,
 }

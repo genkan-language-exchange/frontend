@@ -90,7 +90,7 @@
     methods: {
       async refreshStory() {
         const response = await getStory(this.story._id)
-        if (response) this.freshStory = response
+        if (response.status === "success") this.freshStory = response.data
       },
       goToPassport(name, identifier) {
         this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })

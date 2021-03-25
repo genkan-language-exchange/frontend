@@ -1,7 +1,7 @@
 <template>
-  <div>
+ 
     <StoryCreationCard />
-  </div>
+
 </template>
 
 <script>
@@ -15,7 +15,5 @@
 </script>
 
 <style scoped>
-  div {
-    height: 85vh;
-  }
+
 </style>

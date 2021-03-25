@@ -1,5 +1,6 @@
 // ISO 639-1, English readable exonym, endonym
 const langPopular = [
+  { code: "un", name: "Undecided", endonym: "未知" },
   { code: "en", name: "English", endonym: "English" },
   { code: "jp", name: "Japanese", endonym: "日本語" },
   { code: "zh", name: "Chinese Simplified", endonym: "中文 (简体)" },

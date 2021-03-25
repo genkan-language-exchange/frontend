@@ -3,7 +3,7 @@
 
     <div v-if="skip < 3">
       <transition name="cards" mode="out-in">
-        <TheLanguageDropdown v-if="onboardStep === 0" @next="next">What language(s) do you speak?</TheLanguageDropdown>
+        <TheLanguageDropdown v-if="onboardStep === 0" @next="next" :languageKnow="['Undecided']" >What language(s) do you speak?</TheLanguageDropdown>
         <TheLanguageDropdown v-else-if="onboardStep === 1" @next="next" :languageKnow="matchSettings.languageKnow">What language(s) are you interested in?</TheLanguageDropdown>
         <TheCountryDropdown v-else-if="onboardStep === 2" @next="next">Where are you from?</TheCountryDropdown>
         <TheCountryDropdown v-else-if="onboardStep === 3" @next="next">Where do you live?</TheCountryDropdown>
@@ -18,12 +18,13 @@
             <li><span>Lives in:</span> {{ matchSettings.residence }}</li>
             <li><span>Gender:</span> {{ matchSettings.gender }}</li>
           </ul>
+          <p id="continue">Click the passport to continue</p>
         </div>
       </transition>
     </div>
 
-    <div id="skip-group" v-if="onboardStep < 5">
-      <transition-group name="skip-setup" mode="out-in">
+    <transition name="skip-setup" mode="out-in">
+      <div id="skip-group" v-if="onboardStep < 5">
         <div id="skip" v-if="skip < 3">
           <button v-if="!skip" @click="skipSetup(1)">Skip Setup <i class="fas fa-forward"></i></button>
           <div v-else>
@@ -32,27 +33,34 @@
             <button @click="skipSetup(2)">Yes</button>
           </div>
         </div>
-      </transition-group>
-    </div>
+      </div>
+    </transition>
 
-    <div v-if="popupMessage">
-      <div v-if="!error" class="congrats">
-        <h3>Looks good!</h3>
-        <i class="fas fa-fire-alt"></i>
-        <TheLoadSpinner />
-      </div>
-      <div class="uncongrats" v-else>
-        <h3>Whoops! Email address already in use 🤯</h3>
-        <p>Click <a href="/login">here</a> if you want to try logging in.</p>
-        <form id="try-new-email" @submit.prevent="finalizeSignUp">
-          <label for="email">...or try a new email address</label>
-          <div id="email-input">
-            <input type="text" name="email" id="email" v-model="email" placeholder="Email address">
-            <button type="submit"><i class="far fa-edit"></i></button>
+    <transition>
+      <div v-if="popupMessage">
+        <transition-group name="response" mode="out-in">
+          <div v-if="!error" class="congrats">
+            <h3>Lookin' good!</h3>
+            <i class="fas fa-fire-alt"></i>
+            <TheLoadSpinner />
           </div>
-        </form>
+          <div class="uncongrats" v-else>
+            <div>
+              <h3>Whoops! 🤯</h3>
+              <h3>That email address is taken!</h3>
+            </div>
+            <p>Click <a href="/login">here</a> if you want to try logging in.</p>
+            <form id="try-new-email" @submit.prevent="finalizeSignUp">
+              <label for="email">...or try a different email address:</label>
+              <div id="email-input">
+                <input type="text" name="email" id="email" v-model="email" placeholder="Email address">
+                <button type="submit"><i class="far fa-edit"></i></button>
+              </div>
+            </form>
+          </div>
+        </transition-group>
       </div>
-    </div>
+    </transition>
 
   </div>
 </template>
@@ -133,6 +141,7 @@
         }
       },
       async finalizeSignUp() {
+        this.skip = 4
         this.error = false
         this.popupMessage = true
         const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm, matchSettings: this.matchSettings })
@@ -142,7 +151,7 @@
           }, 3000)
         }
         if (response.status === "fail") {
-          console.log(response)
+          this.skip = 3
           this.error = true
           this.popupMessage = true
         }
@@ -161,7 +170,7 @@
 <style scoped>
 #welcome {
   font-size: 1.4rem;
-  margin: 60px auto 0;
+  margin: 35px 15px 0;
   padding: 40px 0 150px;
   overflow-x: hidden;
 }
@@ -180,9 +189,13 @@ select {
   align-items: center;
   gap: 30px;
 }
+ul {
+  margin: 0;
+  padding: 0;
+}
 ul li {
   text-align: left;
-  text-decoration: none;
+  list-style: none;
 }
 ul li span {
   font-weight: 600;
@@ -200,8 +213,12 @@ ul li span {
   color: orange;
   margin-bottom: 60px;
 }
-
-.uncongrats h3 {
+#continue {
+  margin-top: 30px;
+  padding: 0;
+}
+.uncongrats div h3 {
+  margin: 5px;
   font-size: 2.4rem;
   font-family: "Sriracha", sans-serif;
 }
@@ -223,10 +240,17 @@ ul li span {
   align-items: center;
 }
 #email-input {
+  width: 90%;
+  margin: 20px auto;
   display: 'flex';
   flex-direction: row;
   align-items: flex-end;
 }
+ul li,
+#email-input input,
+#email-input button {
+  font-size: 1.6rem;
+} 
 #email-input input {
   width: 100%;
   margin: 0;
@@ -242,7 +266,7 @@ ul li span {
   margin: 0;
   border: none;
   outline: none;
-  padding: 8px;
+  padding: 8px 16px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: var(--off-white-main);
@@ -278,6 +302,15 @@ ul li span {
   color: var(--theme-color-main);
   background-color: white;
 }
+
+@media (min-width: 959px) {
+  ul li,
+  #email-input input,
+  #email-input button {
+    font-size: 1.4rem;
+  }
+}
+
 .cards-enter-from {
   opacity: 0;
   transform: translateX(700px) rotate(15deg);
@@ -324,6 +357,31 @@ ul li span {
 .skip-setup-leave-to {
   opacity: 0;
   transform: translateY(-100px) rotate(-15deg);
+}
+
+.response-enter-from {
+  opacity: 0;
+  transform: translateY(100px) rotate(15deg);
+}
+.response-enter-active {
+  transition: all 0.3s ease-out;
+  position: absolute;
+}
+.response-enter-to {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+.response-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.response-leave-active {
+  transition: all 0.3s ease-out;
+  position: absolute;
+}
+.response-leave-to {
+  opacity: 0;
+  transform: translateY(100px) rotate(-15deg);
 }
 
 </style>

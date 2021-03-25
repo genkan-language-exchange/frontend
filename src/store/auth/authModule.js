@@ -5,7 +5,6 @@ const defaultState = {
   didAutoLogout: false,
   isAuth: false,
   role: 'guest',
-  sid: null,
   userInfo: {},
 }
 
@@ -15,7 +14,6 @@ export default {
       currentUser: 'guest.4649',
       isAuth: false,
       role: 'guest',
-      sid: null,
       userInfo: {},
     }
   },
@@ -24,12 +22,10 @@ export default {
       // if the user's account is active
       if (payload.active) {
         // apply payload to state
-        state.userInfo._id = payload._id
         state.currentUser = `${payload.name}.${payload.identifier}`
         state.role = payload.role
         // set auth
         state.isAuth = true
-        state.sid = payload.sid
       }
       // TODO: otherwise ask if they want to reactivate
     },
@@ -52,15 +48,16 @@ export default {
       })      
     },
     async logout(ctx) {
-      document.cookie = `sid=;expires=Thu, 01 Jan 1970 00:00:01 GMT;Max-Age=-99999999;path=/`
-      localStorage.removeItem('sid')
       localStorage.removeItem('userId')
+      localStorage.removeItem('genkan-token')
       localStorage.removeItem('sessionExpires')
       ctx.commit('unsetUser')
     },
     async auth(ctx, payload) {
       const mode = payload.mode
-
+      // **********
+      // SIGN UP //
+      // **********
       if (mode === 'signup') {
         const { name, email, password, passwordConfirm, matchSettings } = payload;
         const response = await registerUser(name, email, password, passwordConfirm, matchSettings )
@@ -68,38 +65,38 @@ export default {
           const newUser = response.data.newUser
           const d = new Date()
           d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
-          const expires = `expires=${d.toUTCString()}`
-          document.cookie = `sid=${newUser.sid};${expires};path=/`
+          const expires = d.toUTCString()
+
+          localStorage.setItem('userId', `${newUser.name}.${newUser.identifier}`)
+          localStorage.setItem('genkan-token', response.token)
+          localStorage.setItem('sessionExpires', expires)
           // send response to mutation
           ctx.commit('setUser', newUser)
-  
-          localStorage.setItem('sid', newUser.sid)
-          localStorage.setItem('_id', newUser._id)
-          localStorage.setItem('userId', `${newUser.name}.${newUser.identifier}`)
-          localStorage.setItem('sessionExpires', expires)
           return response
         } else {
           return response
         }
+      // **********
+      // LOGIN //
+      // **********
       } else if (mode === 'login') {
         const { email, password } = payload;
         // send login information from payload to api
         const response = await loginWithEmailPassword(email, password)
+        console.log(response);
 
         if (response.status === "success") {
           const user = response.data.user
           // TODO: add session expiration date to response
           const d = new Date()
           d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
-          const expires = `expires=${d.toUTCString()}`
-          document.cookie = `sid=${user.sid};${expires};path=/`
+          const expires = d.toUTCString()
+
+          localStorage.setItem('userId', `${user.name}.${user.identifier}`)
+          localStorage.setItem('genkan-token', response.token)
+          localStorage.setItem('sessionExpires', expires)
           // send response to mutation
           ctx.commit('setUser', user)
-
-          localStorage.setItem('sid', user.sid)
-          localStorage.setItem('_id', user._id)
-          localStorage.setItem('userId', `${user.name}.${user.identifier}`)
-          localStorage.setItem('sessionExpires', expires)
         }
       }
     },
@@ -108,15 +105,14 @@ export default {
       let d = new Date()
       d = d.toUTCString()
       
-      if (expires > d) {
-        const sid = localStorage.getItem('sid')
+      if (expires < d) {
         const _id = localStorage.getItem('_id')
         const userId = localStorage.getItem('userId')
 
-        if (sid && userId) {
+        if (userId) {
           const name = userId.split('.')[0]
           const identifier = userId.split('.')[1]
-          const payload = { sid, name, identifier, active: true, _id, }
+          const payload = { name, identifier, active: true, _id, }
           ctx.commit('setUser', payload)
         }
       } else {
@@ -128,7 +124,5 @@ export default {
   getters: {
     currentUser: state => state.currentUser,
     isAuth: state => state.isAuth,
-    sid: state => state.sid,
-    id: state => state.userInfo._id,
   },
 }

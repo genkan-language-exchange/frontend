@@ -1,4 +1,5 @@
 <template>
+  <div id="loading">
   <div class="breeding-rhombus-spinner">
     <div class="rhombus child-1"></div>
     <div class="rhombus child-2"></div>
@@ -10,6 +11,7 @@
     <div class="rhombus child-8"></div>
     <div class="rhombus big"></div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -19,6 +21,13 @@ export default {
 </script>
 
 <style scoped>
+#loading {
+  margin-top: 150px;
+  display: flex;
+  justify-content: center;
+  height: 200px;
+  max-height: 200px;
+}
 .breeding-rhombus-spinner {
   height: 65px;
   width: 65px;

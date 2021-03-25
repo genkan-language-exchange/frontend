@@ -47,7 +47,7 @@
 
 <style scoped>
   #date-picker {
-    margin: 65px 0;
+    margin: 65px 0 30px;
     display: flex;
     flex-direction: column;
     align-items: center;

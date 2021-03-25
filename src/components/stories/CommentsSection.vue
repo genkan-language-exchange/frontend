@@ -55,6 +55,10 @@
     display: flex;
     padding: 5px;
     margin: 5px 0;
+    cursor: pointer;
+  }
+  .comment-card:hover {
+    background-color: white;
   }
   .comment-body {
     width: 100%;

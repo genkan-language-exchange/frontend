@@ -41,9 +41,7 @@ html, body {
   font-family: 'Kosugi Maru', sans-serif;
   */
 }
-#loading {
-  margin-top: 150px;
-}
+
 .no-select {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

@@ -15,9 +15,9 @@ export default {
   },
   actions: {
     async getStories(ctx) {
-      const stories = await getStories()
-      ctx.commit('setStories', stories)
-      return stories
+      const response = await getStories()
+      if (response.status === "success") ctx.commit('setStories', response.data)
+      return response
     },
     async createStory(ctx, payload) {
       const response = await createStory(payload)

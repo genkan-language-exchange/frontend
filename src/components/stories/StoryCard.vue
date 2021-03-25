@@ -63,20 +63,19 @@
         clearTimeout(this.timer)
       },
       async sendLike(storyId) {
-        const payload = {
-          storyId,
-          userId: this.userInfoId
-        }
-        const response = await likeStory(payload)
-        if (response) {
-          this.likes = response
+        const response = await likeStory(storyId)
+        if (response.status === "success") {
+          this.likes = response.data
           this.userLikes = !this.userLikes
         }
-      }
+      },
+      doesUserLike() {
+        const currentUser = this.currentUser.split('.').join('#')
+        this.userLikes = !!this.story.likes.find(like => `${like.likeUser.name}#${like.likeUser.identifier}` === currentUser)
+      },
     },
     computed: {
       ...mapGetters({
-        userInfoId: 'id',
         currentUser: 'currentUser',
       }),
       content() {
@@ -107,7 +106,7 @@
       this.$refs.likes.addEventListener('mouseenter', this.showLikesBegin)
       this.$refs.likes.addEventListener('mouseleave', this.showLikesEnd)
       this.likes = this.story.likes
-      this.userLikes = this.story.likes.find(like => like.likeUser._id === this.userInfoId)
+      this.doesUserLike()
     },
     beforeUnmount() {
       this.$refs.likes.removeEventListener('mouseenter', this.showLikesBegin)
@@ -124,11 +123,12 @@
   .story-card {
     height: 250px;
     width: 95%;
+    margin: 0 auto 20px;
     background-color: var(--bg-color-secondary);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    /* overflow: hidden; */
+    overflow: hidden;
     align-items: stretch;
   }
   .story-avatar {
@@ -151,8 +151,10 @@
     align-items: center;
     cursor: pointer;
   }
+  .story-content:hover,
   .story-header:hover {
     background-color: var(--theme-color-main);
+    box-shadow: 0px 0px 10px 10px rgba(0,0,0,0.15);
   }
   .story-header .user-info {
     height: 100%;
@@ -173,9 +175,6 @@
   .story-content::-webkit-scrollbar { width: thin; }
   .story-content::-webkit-track { background: var(--theme-color-main); }
   .story-content::-webkit-thumb { background: var(--bg-color-secondary); }
-  .story-content:hover {
-    background-color: var(--theme-color-main);
-  }
   .story-content p {
     line-height: 1.33;
   }
