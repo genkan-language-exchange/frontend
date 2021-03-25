@@ -61,8 +61,10 @@ export default {
       if (mode === 'signup') {
         const { name, email, password, passwordConfirm, matchSettings } = payload;
         const response = await registerUser(name, email, password, passwordConfirm, matchSettings )
+        
+        console.log(response);
         if (response.status === "success") {
-          const newUser = response.data.newUser
+          const newUser = response.data.user
           const d = new Date()
           d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
           const expires = d.toUTCString()

@@ -250,7 +250,6 @@
     font-size: 1.1rem;
     font-feature-settings: 'tnum';
     font-variant-numeric: 'tabular-nums';
-    font-family: 'Comic Sans MS', cursive;
     color: white !important;
     background-color: var(--theme-color-main);
     border: 2px solid var(--theme-color-secondary);

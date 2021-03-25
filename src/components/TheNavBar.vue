@@ -27,7 +27,7 @@ export default {
   border-bottom: 2px solid var(--theme-color-main);
   background-color: var(--bg-color-secondary);
   padding-top: 10px;
-  z-index: 100;
+  z-index: 50;
 }
 h1 {
   font-family: 'Sriracha', cursive;
@@ -44,10 +44,6 @@ ul {
 li {
   list-style: none;
 }
-/* li:last-child {
-  position: absolute;
-  bottom: 0;
-} */
 a {
   padding: 2rem;
   font-size: 2.6rem;
@@ -59,9 +55,6 @@ a {
 a:hover {
   color: var(--theme-color-main);
 }
-/* a:last-child {
-  margin-top: auto !important;
-} */
 .router-link-active, .router-link-exact-active {
   color: var(--theme-color-main);
 }

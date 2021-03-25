@@ -7,15 +7,15 @@
 <style scoped>
 #creation {
   position: fixed;
-  bottom: 100px;
-  right: 30px;
-  z-index: 10;
+  top: 5px;
+  left: 5px;
+  z-index: 99;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: var(--theme-color-main);
   cursor: pointer;
@@ -29,6 +29,11 @@
   #creation {
     border-radius: 5px;
     right: 17%;
+    visibility: visible;
+    top: 85%;
+    left: 85%;
+    width: 60px;
+    height: 60px;
   }
 }
 </style>

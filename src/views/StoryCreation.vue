@@ -1,15 +1,17 @@
 <template>
- 
-    <StoryCreationCard />
+  <StoryDrafts />
+  <StoryCreationCard />
 
 </template>
 
 <script>
-  import StoryCreationCard from '../components/stories/StoryCreationCard'
+  import StoryDrafts from '@/components/createStories/StoryDrafts'
+  import StoryCreationCard from '@/components/createStories/StoryCreationCard'
   export default {
     name: "StoryCreation",
     components: {
-      StoryCreationCard
+      StoryCreationCard,
+      StoryDrafts
     }
   }
 </script>

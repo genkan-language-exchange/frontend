@@ -1,6 +1,6 @@
 import axios from 'axios'
-const prefix = 'https://genkan.herokuapp.com/api/v1/users'
-// const prefix = 'http://localhost:5000/api/v1/users'
+// const prefix = 'https://genkan.herokuapp.com/api/v1/users'
+const prefix = 'http://localhost:5000/api/v1/users'
 const token = localStorage.getItem('genkan-token')
 
 async function registerUser(name, email, password, passwordConfirm, matchSettings) {
@@ -74,9 +74,19 @@ async function getUsersMany() {
   return response
 }
 
+async function validateAccount(validationToken) {
+  const url = prefix + `/validation/${validationToken}`
+
+  const response = await axios.patch(url)
+  .then(res => res)
+  .catch(err => err)
+  return response
+}
+
 export {
   registerUser,
   loginWithEmailPassword,
   getUserByNameIdentifierCombo,
   getUsersMany,
+  validateAccount
 }

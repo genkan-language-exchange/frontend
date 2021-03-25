@@ -1,10 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Chat from '../views/Chat.vue'
-
 import store from '../store'
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -72,6 +72,14 @@ const router = createRouter({
         guest: true,
         requiresUnauth: true,
       }
+    },
+    {
+      path: '/verify/:token',
+      name: 'Verify',
+      component: () => import('../views/VerifyAccount.vue'),
+      meta: {
+        guest: true,
+      },
     },
     {
       path: '/account_not_found',
