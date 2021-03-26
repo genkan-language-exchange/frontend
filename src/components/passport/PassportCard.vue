@@ -34,10 +34,12 @@
         <h3>My Privacy Filters:</h3>
         <p>These settings change who can find you and who you can find</p>
       </div>
+
       <div class="filter">
         <h4>Age Range</h4>
         <p>{{user.filterSettings.ages.join(' - ')}}</p>
       </div>
+
       <div class="filter">
         <h4>I want to meet</h4>
         <p id="genders" v-if="user.filterSettings.genders.length > 2">everyone</p>
@@ -48,25 +50,28 @@
         </p>
         <p>everywhere</p>
       </div>
+
       <div class="filter">
         <h4>My ideal friend speaks</h4>
-        <p v-if="user.filterSettings.languagesKnow.length">{{user.filterSettings.languagesKnow.join(', ')}}</p>
+        <p v-if="user.filterSettings.languagesKnow?.length">{{user.filterSettings.languagesKnow.join(', ')}}</p>
         <p v-else>any language</p>
         <h4>and studies</h4>
-        <p v-if="user.filterSettings.languagesSpeak.length">{{user.filterSettings.languagesSpeak.join(', ')}}</p>
+        <p v-if="user.filterSettings.languagesSpeak?.length">{{user.filterSettings.languagesSpeak.join(', ')}}</p>
         <p v-else>any language</p>
-
       </div>
+
       <div class="filter">
         <h4>Show my age</h4>
         <p v-if="user.filterSettings.showOwnAge">Yes</p>
         <p v-else>No</p>
       </div>
+
       <div class="filter">
         <h4>Show my online status</h4>
         <p v-if="user.filterSettings.showOnlineStatus">Yes</p>
         <p v-else>No</p>
       </div>
+      
       <div class="filter">
         <h4>Show my profile picture before matching</h4>
         <p v-if="user.filterSettings.blurBeforeMatch">Yes</p>

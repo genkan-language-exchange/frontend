@@ -39,7 +39,9 @@ async function editComment({ storyId, commentId, content, id }) {
   if (id) data._id = id
 }
 
-async function removeComment({ storyId, commentId }) {}
+async function removeComment({ storyId, commentId }) {
+  
+}
 
 export {
   commentStory,
