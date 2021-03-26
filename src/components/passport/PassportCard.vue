@@ -1,25 +1,23 @@
 <template>
   <div id="base" v-if="user._id">
     <template v-if="!user.avatar">
-      <div id="avatar-outer">
-        <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
-          <img ref="avatar" src='@/assets/avatar1.png' alt="User" draggable="false">
-        </div>
+      <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
+        <img ref="avatar" src='@/assets/avatar1.png' alt="User" draggable="false">
       </div>
     </template>
-    <div id="head">
+    <section id="head">
       <div id="user-name-age">
         <p v-if="newUser" class="material-icons new-icon">fiber_new</p>
         <h2>{{user.name}} <span>#{{user.identifier}}</span></h2>
         <p>{{user.matchSettings.age}} years old</p>
       </div>
       <div id="user-lang">
-        <p>Speaks: {{user.matchSettings.languageKnow.join(', ')}}</p>
-        <p>Learns: {{user.matchSettings.languageLearn.join(', ')}}</p>
+        <p><span>Speaks: </span>{{user.matchSettings.languageKnow.join(', ')}}</p>
+        <p><span>Learns: </span>{{user.matchSettings.languageLearn.join(', ')}}</p>
       </div>
-    </div>
+    </section>
 
-    <div id="about">
+    <section id="about">
       <div>
         <h3>About:</h3><p>{{user.profile.about}}</p>
       </div>
@@ -29,12 +27,62 @@
       <div>
         <h3>Interests:</h3><p>{{user.profile.interests.join(', ')}}</p>
       </div>
-    </div>
+    </section>
 
-    <div v-if="isSelf" id="foot">
-      <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
-    </div>
+    <section id="filters" v-if="isSelf">
+      <div>
+        <h3>My Privacy Filters:</h3>
+        <p>These settings change who can find you and who you can find</p>
+      </div>
+      <div class="filter">
+        <h4>Age Range</h4>
+        <p>{{user.filterSettings.ages.join(' - ')}}</p>
+      </div>
+      <div class="filter">
+        <h4>I want to meet</h4>
+        <p id="genders" v-if="user.filterSettings.genders.length > 2">everyone</p>
+        <p id="genders" v-else>{{user.filterSettings.genders.join(', ')}}</p>
+        <span>from</span>
+        <p v-if="user.filterSettings.length > 0">
+          {{user.filterSettings.resides.join(', ')}}
+        </p>
+        <p>everywhere</p>
+      </div>
+      <div class="filter">
+        <h4>My ideal friend speaks</h4>
+        <p v-if="user.filterSettings.languagesKnow.length">{{user.filterSettings.languagesKnow.join(', ')}}</p>
+        <p v-else>any language</p>
+        <h4>and studies</h4>
+        <p v-if="user.filterSettings.languagesSpeak.length">{{user.filterSettings.languagesSpeak.join(', ')}}</p>
+        <p v-else>any language</p>
 
+      </div>
+      <div class="filter">
+        <h4>Show my age</h4>
+        <p v-if="user.filterSettings.showOwnAge">Yes</p>
+        <p v-else>No</p>
+      </div>
+      <div class="filter">
+        <h4>Show my online status</h4>
+        <p v-if="user.filterSettings.showOnlineStatus">Yes</p>
+        <p v-else>No</p>
+      </div>
+      <div class="filter">
+        <h4>Show my profile picture before matching</h4>
+        <p v-if="user.filterSettings.blurBeforeMatch">Yes</p>
+        <p v-else>No</p>
+      </div>
+    </section>
+    
+    <section v-if="isSelf" id="blocked">
+      <h3>Manage Blocked Users</h3>
+    </section>
+    
+    <footer>
+      <section v-if="isSelf" id="foot">
+        <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
+      </section>
+    </footer>
   </div>
 </template>
 
@@ -83,7 +131,12 @@ export default {
 </script>
 
 <style scoped>
-h1, h2, h3, p, a, ul, li { margin: 0; }
+h1, h2, h3, h4, p, a, ul, li { margin: 0; }
+h2, h3, h4, #user-lang span { color: var(--theme-color-main); }
+h2 span {
+  color: gray;
+  font-size: 1.4rem;
+}
 #base {
   width: 100%;
   margin: 80px 0;
@@ -91,7 +144,6 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   flex-direction: column;
   text-align: left;
 }
-#avatar-outer { position: relative; }
 #avatar {
   display: flex;
   justify-content: center;
@@ -109,7 +161,7 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   width: 100%;
   object-fit: cover;
 }
-#head, #about {
+#head, #about, #filters, #blocked {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -136,40 +188,54 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   text-overflow: ellipsis; */
   font-size: 1.8rem;
 }
-#user-name-age h2 span {
-  opacity: 0.2;
-  font-size: 1.4rem;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum';
-}
 #user-name-age, #user-lang {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
-#about {
-  display: flex;
-  flex-direction: column;
+#about, #filters {
   gap: 30px;
 }
-#foot {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+#blocked h3 {
+  color: var(--off-white-main);
 }
-#foot>button {
+.filter p {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.filter p:hover {
+  color: var(--theme-color-main);
+}
+#genders {
+  text-transform: capitalize;
+}
+#foot {
+  float: right;
+}
+#foot button {
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
+  color: var(--theme-color-main);
+  background-color: var(--off-white-main);
   cursor: pointer;
   transition: all 0.3s ease-in;
 }
-#foot>button:hover {
+#foot button:hover {
   color: var(--off-white-main);
   background-color: var(--theme-color-main);
 }
-#foot>button>span {
+#foot button span {
   margin-right: 10px;
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--bg-color-secondary);
+  border-top: 2px solid var(--theme-color-main);
 }
 .no-select {
 -webkit-touch-callout: none; /* iOS Safari */
@@ -179,5 +245,13 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently
                                 supported by Chrome and Opera */
+}
+@media (min-width: 959px) {
+  #avatar {
+    width: 300px;
+  }
+  section {
+    max-width: 40%;
+  }
 }
 </style>
