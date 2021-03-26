@@ -12,9 +12,7 @@
       </div>
     </template>
     <template v-if="user._id">
-      <div id="passport">
-        <PassportCard :user="user" />
-      </div>
+      <PassportCard :user="user" />
     </template>
   </div>
 </template>

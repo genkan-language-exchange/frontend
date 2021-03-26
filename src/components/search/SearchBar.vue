@@ -42,12 +42,14 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'SearchBar',
+  emits: ['triggerSearch'],
   methods: {
     ...mapMutations({
       setActiveFilter: 'setActiveFilter'
     }),
     handleClick(value) {
       this.setActiveFilter({ value })
+      this.$emit("triggerSearch")
     },
   },
   computed: {

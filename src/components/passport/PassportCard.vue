@@ -1,23 +1,21 @@
 <template>
   <div id="base" v-if="user._id">
+    <template v-if="!user.avatar">
+      <div id="avatar-outer">
+        <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
+          <img ref="avatar" src='@/assets/avatar1.png' alt="User" draggable="false">
+        </div>
+      </div>
+    </template>
     <div id="head">
-      <template v-if="!user.avatar">
-        <div id="avatar-outer">
-          <span v-if="newUser" class="material-icons new-icon">fiber_new</span>
-          <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
-            <img ref="avatar" src='@/assets/avatar1.png' alt="User" draggable="false">
-          </div>
-        </div>
-      </template>
-      <div>
-        <div id="user-name-age">
-          <h2 :style="isMobile ? {} : { width: '300px' }">{{user.name}} <span>#{{user.identifier}}</span></h2>
-          <p>{{user.matchSettings.age}} years old</p>
-        </div>
-        <div id="user-lang">
-          <p>Speaks: {{user.matchSettings.languageKnow.join(', ')}}</p>
-          <p>Learns: {{user.matchSettings.languageLearn.join(', ')}}</p>
-        </div>
+      <div id="user-name-age">
+        <p v-if="newUser" class="material-icons new-icon">fiber_new</p>
+        <h2>{{user.name}} <span>#{{user.identifier}}</span></h2>
+        <p>{{user.matchSettings.age}} years old</p>
+      </div>
+      <div id="user-lang">
+        <p>Speaks: {{user.matchSettings.languageKnow.join(', ')}}</p>
+        <p>Learns: {{user.matchSettings.languageLearn.join(', ')}}</p>
       </div>
     </div>
 
@@ -87,28 +85,20 @@ export default {
 <style scoped>
 h1, h2, h3, p, a, ul, li { margin: 0; }
 #base {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  margin: 80px 0;
   display: flex;
   flex-direction: column;
   text-align: left;
 }
-#head {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-bottom: 20px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid var(--theme-color-main);
-}
 #avatar-outer { position: relative; }
 #avatar {
-  width: 100px;
-  min-width: 100px;
-  height: 100px;
-  min-height: 100px;
-  margin-right: 10px;
-  border: 1px solid var(--off-white-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto 25px;
+  border: 2px solid var(--theme-color-main);
   background-color: var(--off-white-main);
   overflow: hidden;
   border-radius: 5px;
@@ -118,29 +108,32 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
   height: 100%;
   width: 100%;
   object-fit: cover;
-  image-rendering: pixelated;
+}
+#head, #about {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  border-bottom: 2px solid var(--theme-color-main);
 }
 .new-icon {
-  position: absolute;
-  top: -10px;
-  left: -15px;
-  height: 26px;
-  width: 30px;
-  background-color: white;
-  border-radius: 5px;
   color: var(--theme-color-main);
-  font-size: 3rem;
+  font-size: 5rem;
   display: flex;
   align-items: center;
+  padding: 0;
+  margin: -40px 0 0;
+  text-align: center;
 }
 #user-name-age {
-  width: 200px;
   margin-bottom: 15px;
 }
 #user-name-age h2 {
-  overflow-x: hidden;
+  /* overflow-x: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
   font-size: 1.8rem;
 }
 #user-name-age h2 span {
@@ -157,7 +150,7 @@ h1, h2, h3, p, a, ul, li { margin: 0; }
 #about {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
 }
 #foot {
   margin-top: 20px;

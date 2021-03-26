@@ -60,9 +60,29 @@ async function getUserByNameIdentifierCombo(name, identifier) {
   return response
 }
 
+async function getUsers(filter) {
+  let response
+
+  switch(filter) {
+    case "all":
+      response = await getUsersMany()
+      break;
+    case "online":
+      response = await getUsersOnline()
+      break;
+    case "new":
+      response = await getUsersNew()
+      break;
+    default:
+      response = await getUsersMany()
+      break;
+  }
+
+  return response
+}
+
 async function getUsersMany() {
   const url = prefix
-
 
   const response = await axios.get(url, config)
   .then(res => res.data)
@@ -70,7 +90,16 @@ async function getUsersMany() {
   return response
 }
 async function getUsersOnline() {
-  const url = prefix
+  const url = prefix + "/online?matchSettings.age[gt]=18"
+
+  const response = await axios.get(url, config)
+  .then(res => res.data)
+  .catch(err => err)
+  return response
+}
+
+async function getUsersNew() {
+  const url = prefix + "/new?matchSettings.age[gt]=18"
 
   const response = await axios.get(url, config)
   .then(res => res.data)
@@ -91,6 +120,6 @@ export {
   registerUser,
   loginWithEmailPassword,
   getUserByNameIdentifierCombo,
-  getUsersMany,
+  getUsers,
   validateAccount
 }

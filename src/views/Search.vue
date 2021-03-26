@@ -5,9 +5,9 @@
     </div>
   </template>
   <template v-else>
-    <SearchBar />
+    <SearchBar @triggerSearch="findUsers" />
     <transition-group tag="div" name="user-list">
-      <div v-for="user in filteredUsers" :key="user._id">
+      <div v-for="user in users" :key="user._id">
         <ResultCard :user="user" />
       </div>
     </transition-group>
@@ -17,13 +17,10 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import { getUsersMany } from '../api/userApi'
+import { getUsers } from '../api/userApi'
 import SearchBar from '@/components/search/SearchBar.vue'
 import ResultCard from '@/components/search/ResultCard.vue'
 import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
-
-import checkAccountAge from '../util/checkAccountAge.js'
-import checkLastOnline from '../util/checkLastOnline.js'
 
 export default {
   name: 'Search',
@@ -39,7 +36,7 @@ export default {
   },
   methods: {
     async findUsers() {
-      const response = await getUsersMany()
+      const response = await getUsers(this.activeFilter)
       const removeSelf = response.data.filter(user => `${user.name}.${user.identifier}` !== this.currentUser)
       this.users = removeSelf
     },
@@ -49,20 +46,6 @@ export default {
       activeFilter: 'activeFilter',
       currentUser: 'currentUser',
     }),
-    filteredUsers() {
-      switch(this.activeFilter) {
-        case 'all':
-          return this.users
-        case 'new':
-          return this.users.filter(user => checkAccountAge(user.matchSettings.accountCreated))
-        case 'online':
-          return this.users.filter(user => checkLastOnline(user.matchSettings.lastSeen))
-        case 'custom':
-          return this.users
-        default:
-          return this.users
-      }
-    }
   },
   mounted() {
     this.findUsers();
