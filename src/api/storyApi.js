@@ -1,6 +1,6 @@
 import axios from 'axios'
-// const prefix = 'https://genkan.herokuapp.com/api/v1/stories'
-const prefix = 'http://localhost:5000/api/v1/stories'
+const prefix = 'https://genkan.herokuapp.com/api/v1/stories'
+// const prefix = 'http://localhost:5000/api/v1/stories'
 
 class UserAuth {
   constructor() {
