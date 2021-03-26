@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="creation-container">
   <transition-group name="creation" mode="out-in">
     <div id="creation-card" v-if="!sending">
       <div id="character-limit-box">
@@ -8,7 +8,7 @@
       <form @submit.prevent="() => handleSubmit('visible')">
         <textarea name="story" id="story" cols="30" rows="10" v-model="content"></textarea>
         <!-- <input name="tags" type="text" placeholder="Tags"> -->
-        <fieldset id="button-group" :disabled="!content.trim().length">
+        <fieldset id="button-group" :disabled="!content.trim().length || content.trim().length > 1000">
           <button type="button" @click="() => handleSubmit('draft')"><i class="far fa-save"></i></button>
           <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </fieldset>
@@ -33,8 +33,11 @@
     components: {
       TheLoadSpinner
     },
+    emits: ['savedForLater'],
+    props: ['draft'],
     data() {
       return {
+        id: null,
         content: "",
         loading: false,
         sending: false,
@@ -45,7 +48,6 @@
       handleSubmit(val) {
         this.sending = true
         this.sendStory(val)
-
         this.timer = setTimeout(() => {
           this.loading = true
         }, 2000)
@@ -55,8 +57,13 @@
           content: this.content.trim(),
           status: mode
         }
+        if (this.id) payload.id = this.id
         const response = await createStory(payload)
-        console.log(response)
+        if (mode === 'draft') {
+          this.content = ""
+          this.sending = false
+          this.$emit('savedForLater', response.data)
+        }
         clearTimeout(this.timer)
       }
     },
@@ -66,6 +73,10 @@
       }),
     },
     watch: {
+      draft(val) {
+        this.id = val._id
+        this.content = val.content
+      },
       content() {
         if (this.content.trim().length > 1000) this.content = this.content.slice(0,1000)
       }
@@ -82,14 +93,13 @@
   #long-load p {
     font-size: 1.4rem;
   }
-  #container {
+  #creation-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 95%;
-    height: 65vh;
-    margin: 60px auto;
-    padding: 40px 0;
+    margin: 0 auto;
+    box-sizing: border-box;
     overflow-x: hidden;
   }
   #creation-card {
@@ -229,6 +239,10 @@
   }
 
 @media (min-width: 959px) {
+  #creation-container {
+    width: 70%;
+    margin: 0;
+  }
   #creation-card {
     height: 500px;
     width: 50%;

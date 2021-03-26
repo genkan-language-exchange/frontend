@@ -23,6 +23,7 @@
           <section id="user-comments">
             <CommentsSection v-for="(comment, i) in orderedComments" :key="i" :comment="comment" />
           </section>
+          <CommentComposition v-if="composing" @finished="addNewComment" />
         </div>
 
         <div class="story-footer">
@@ -32,7 +33,7 @@
           </button>
 
           <p v-if="freshStory.comments?.length">{{freshStory.comments.length}}</p>
-          <button class="comments">
+          <button class="comments" @click.prevent="setComposing">
             <i class="fa-comment-dots" :class="freshStory.comments?.length ? 'fas' : 'far'"></i>
           </button>
           <button id="report" @click.prevent="$emit('report')"><i class="far fa-flag"></i></button>
@@ -41,29 +42,7 @@
     </template>
 
     <template v-else>
-      <div id="story-card">
-        <div class="story-header">
-          <div class="story-avatar">
-            <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
-          </div>
-          <div class="user-info">
-            <div>
-              <h2>{{ story.userId.name }}<span>#{{ story.userId.identifier }}</span></h2>
-            </div>
-            <!-- languages -->
-          </div>
-        </div>
-        <div class="content">
-          <div :style="{ margin: '150px auto' }">
-            <TheLoadSpinner />
-          </div>
-        </div>
-        <div class="story-footer">
-          <button class="likes"><i class="far fa-heart"></i></button>
-          <button class="comments"><i class="far fa-comment-dots"></i></button>
-          <button id="report"><i class="far fa-flag"></i></button>
-        </div>
-      </div>
+      <StoryContentPlaceholder :story="story" @finished="addNewComment" />
     </template>
   </transition-group>
 </BaseModal>
@@ -71,21 +50,26 @@
 
 <script>
   import { getStory } from '../../api/storyApi'
+  import { commentStory } from '../../api/commentsApi'
   import BaseModal from '../BaseModal'
+  import CommentComposition from './CommentComposition'
   import CommentsSection from './CommentsSection'
-  import TheLoadSpinner from '../TheLoadSpinner'
+  import StoryContentPlaceholder from './StoryContentPlaceholder'
   export default {
     name: 'StoryModal',
-    props: ['story'],
+    emits: ['report'],
+    props: ['story', 'isCommenting'],
     data() {
       return {
-        freshStory: {}
+        freshStory: {},
+        composing: false,
       }
     },
     components: {
       BaseModal,
+      CommentComposition,
       CommentsSection,
-      TheLoadSpinner,
+      StoryContentPlaceholder
     },
     methods: {
       async refreshStory() {
@@ -95,6 +79,21 @@
       goToPassport(name, identifier) {
         this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })
       },
+      setComposing() {
+        this.composing = !this.composing
+      },
+      async addNewComment(val) {
+        this.freshStory = {}
+        this.composing = false
+        const payload = {
+          content: val,
+          storyId: this.story._id
+        }
+        const response = await commentStory(payload)
+        .then(res => res.data)
+        .catch(err => err)
+        this.refreshStory()
+      }
     },
     computed: {
       content() {
@@ -106,6 +105,7 @@
       }
     },
     mounted() {
+      this.composing = this.isCommenting
       this.refreshStory()
     }
   }
@@ -233,7 +233,6 @@
 .story-modal-enter-active {
   transition: all 0.3s ease-out;  
 }
-
 
 .story-modal-leave-from {
   opacity: 1;

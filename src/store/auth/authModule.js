@@ -61,8 +61,7 @@ export default {
       if (mode === 'signup') {
         const { name, email, password, passwordConfirm, matchSettings } = payload;
         const response = await registerUser(name, email, password, passwordConfirm, matchSettings )
-        
-        console.log(response);
+
         if (response.status === "success") {
           const newUser = response.data.user
           const d = new Date()
@@ -85,8 +84,8 @@ export default {
         const { email, password } = payload;
         // send login information from payload to api
         const response = await loginWithEmailPassword(email, password)
-        console.log(response);
 
+        console.log(response);
         if (response.status === "success") {
           const user = response.data.user
           // TODO: add session expiration date to response
@@ -107,7 +106,7 @@ export default {
       let d = new Date()
       d = d.toUTCString()
       
-      if (expires < d) {
+      if (expires > d) {
         const _id = localStorage.getItem('_id')
         const userId = localStorage.getItem('userId')
 

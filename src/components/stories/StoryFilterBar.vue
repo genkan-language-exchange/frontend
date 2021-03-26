@@ -13,17 +13,20 @@
         type="button"
         value="community"
         :class="storyFilter === 'community' ? 'active' : ''"
+        disabled
         @click="handleClick('community')"
       >
-        Community
+        
+        <abbr title="Not yet implemented">Community</abbr>
       </button>
       <button
         type="button"
         value="follow"
+        disabled
         :class="storyFilter === 'follow' ? 'active' : ''"
         @click="handleClick('follow')"
       >
-        Following
+        <abbr title="Not yet implemented">Following</abbr>
       </button>
     </fieldset>
   </form>
@@ -35,17 +38,13 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'SearchBar',
   methods: {
-    ...mapMutations({
-      setStoryFilter: 'setStoryFilter'
-    }),
+    ...mapMutations(['setStoryFilter']),
     handleClick(value) {
       this.setStoryFilter({ value })
     },
   },
   computed: {
-    ...mapGetters({
-      storyFilter: 'storyFilter',
-    }),
+    ...mapGetters(['storyFilter']),
   }
 }
 </script>
@@ -81,6 +80,12 @@ button {
 button:focus, button:hover {
   background-color: var(--theme-color-main);
   color: var(--off-white-main);
+}
+button:disabled,
+button:disabled:hover {
+  cursor: default;
+  color: #7f8fa6;
+  background: #718093;
 }
 .active {
   background-color: var(--theme-color-main);

@@ -17,21 +17,23 @@
     </template>
 
   <transition name="storymodal" mode="out-in">
-    <StoryModal @closeModal="closeModal" @report="switchModal" :story="modalData" v-if="showModal"/>
+    <StoryModal @closeModal="closeModal" @report="switchModal" :story="modalData" :isCommenting="isCommenting" v-if="showModal" />
   </transition>
   <transition name="reportmodal" mode="out-in">
-    <ReportModal @closeModal="closeReportModal" @cancelReport="cancelReport" :reporting="modalData" v-if="showReportModal"/>
+    <ReportModal @closeModal="closeReportModal" @cancelReport="cancelReport" :reporting="modalData" v-if="showReportModal" />
   </transition>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { getStories } from '../api/storyApi'
+
   import ReportModal from '../components/ReportModal'
   import StoryCard from '../components/stories/StoryCard'
   import StoryFilterBar from '../components/stories/StoryFilterBar'
   import StoryModal from '../components/stories/StoryModal'
   import TheStoryCreationButtom from '../components/stories/TheStoryCreationButton'
   import TheLoadSpinner from '../components/TheLoadSpinner'
+
   export default {
     components: {
       ReportModal,
@@ -47,20 +49,25 @@
         showModal: false,
         showReportModal: false,
         modalData: null,
+        isCommenting: false,
+        stories: [],
       }
     },
-    computed: {
-      ...mapGetters({
-        stories: 'stories',
-      }),
-    },
     methods: {
-      getStories() {
-        this.$store.dispatch('getStories')
+      async getStories() {
+        const response = await getStories()
+        .then(res => res.data)
+        .catch(err => err)
+        this.stories = response
       },
-      openModal(storyId) {
+      openModal(storyId, isCommenting) {
         this.modalData = this.stories.find(x => x._id === storyId)
         this.showModal = true
+
+        if (isCommenting) this.isCommenting = true
+        this.$nextTick(() => {
+          this.isCommenting = false
+        })
       },
       closeModal() {
         this.modalData = null
@@ -80,7 +87,7 @@
       switchModal() {
         this.showModal = false
         this.showReportModal = true
-      }
+      },
     },
     mounted() {
       this.getStories()

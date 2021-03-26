@@ -25,7 +25,7 @@
         <span v-if="likes.length">{{likes.length}}</span>
         <i class="fa-heart" :class="userLikes ? 'fas' : 'far'"></i>
       </button>
-      <button class="comments" @click.prevent="$emit('openModal', story._id)" aria-name="view comments">
+      <button class="comments" @click.prevent="$emit('openModal', story._id, true)" aria-name="view comments">
         <span v-if="story.comments?.length">{{story.comments.length}}</span>
         <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
       </button>

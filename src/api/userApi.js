@@ -2,6 +2,11 @@ import axios from 'axios'
 // const prefix = 'https://genkan.herokuapp.com/api/v1/users'
 const prefix = 'http://localhost:5000/api/v1/users'
 const token = localStorage.getItem('genkan-token')
+const config = {
+  headers: {
+    authorization: `Bearer ${token}`
+  }
+}
 
 async function registerUser(name, email, password, passwordConfirm, matchSettings) {
   const url = prefix + '/signup'
@@ -48,11 +53,6 @@ async function loginWithEmailPassword(email, password) {
 async function getUserByNameIdentifierCombo(name, identifier) {
   const url = prefix
   const data = { name, identifier }
-  const config = {
-    headers: {
-      authorization: `Bearer ${token}`
-    }
-  }
 
   const response = await axios.post(url, data, config)
   .then(res => res.data)
@@ -62,11 +62,15 @@ async function getUserByNameIdentifierCombo(name, identifier) {
 
 async function getUsersMany() {
   const url = prefix
-  const config = {
-    headers: {
-      authorization: `Bearer ${token}`
-    }
-  }
+
+
+  const response = await axios.get(url, config)
+  .then(res => res.data)
+  .catch(err => err)
+  return response
+}
+async function getUsersOnline() {
+  const url = prefix
 
   const response = await axios.get(url, config)
   .then(res => res.data)
