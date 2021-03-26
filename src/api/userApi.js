@@ -1,6 +1,6 @@
 import axios from 'axios'
-// const prefix = 'https://genkan.herokuapp.com/api/v1/users'
-const prefix = 'http://localhost:5000/api/v1/users'
+const prefix = 'https://genkan.herokuapp.com/api/v1/users'
+// const prefix = 'http://localhost:5000/api/v1/users'
 const token = localStorage.getItem('genkan-token')
 const config = {
   headers: {
