@@ -1,30 +1,14 @@
 import axios from 'axios'
+import UserAuth from './UserAuth'
+
 const prefix = 'https://genkan.herokuapp.com/api/v1/stories'
 // const prefix = 'http://localhost:5000/api/v1/stories'
 
-class UserAuth {
-  constructor() {
-    this._token = localStorage.getItem('genkan-token');
-    this._config = {
-      headers: {
-        authorization: `Bearer ${this.token}`
-      }
-    }
-  }
-
-  get token() {
-    return this._token
-  }
-
-  get config() {
-    return this._config
-  }
-}
-
 const userAuth = new UserAuth()
 
-async function getStories() {
-  const url = prefix
+
+async function getStories(page) {
+  const url = prefix + `?page=${page || 1}`
 
   const response = await axios.get(url, userAuth.config)
   .then(res => res.data)

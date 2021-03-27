@@ -1,12 +1,11 @@
 import axios from 'axios'
+import UserAuth from './UserAuth'
+
 const prefix = 'https://genkan.herokuapp.com/api/v1/users'
 // const prefix = 'http://localhost:5000/api/v1/users'
-const token = localStorage.getItem('genkan-token')
-const config = {
-  headers: {
-    authorization: `Bearer ${token}`
-  }
-}
+
+const userAuth = new UserAuth()
+
 
 async function registerUser(name, email, password, passwordConfirm, matchSettings) {
   const url = prefix + '/signup'
@@ -54,61 +53,61 @@ async function getUserByNameIdentifierCombo(name, identifier) {
   const url = prefix
   const data = { name, identifier }
 
-  const response = await axios.post(url, data, config)
+  const response = await axios.post(url, data, userAuth.config)
   .then(res => res.data)
   .catch(err => err)
   return response
 }
 
-async function getUsers(filter) {
+async function getUsers(filter, page) {
   let response
 
   switch(filter) {
     case "all":
-      response = await getUsersMany()
+      response = await getUsersMany(page)
       break;
     case "online":
-      response = await getUsersOnline()
+      response = await getUsersOnline(page)
       break;
     case "new":
-      response = await getUsersNew()
+      response = await getUsersNew(page)
       break;
     default:
-      response = await getUsersMany()
+      response = await getUsersMany(page)
       break;
   }
 
   return response
 }
 
-async function getUsersMany() {
-  const url = prefix
+async function getUsersMany(page) {
+  const url = `${prefix}?page=${page || 1}`
 
-  const response = await axios.get(url, config)
+  const response = await axios.get(url, userAuth.config)
   .then(res => res.data)
   .catch(err => err)
   return response
 }
-async function getUsersOnline() {
-  const url = prefix + "/online?matchSettings.age[gt]=18"
+async function getUsersOnline(page) {
+  const url = `${prefix}/online?matchSettings.age[gt]=18&page=${page || 1}`
 
-  const response = await axios.get(url, config)
+  const response = await axios.get(url, userAuth.config)
   .then(res => res.data)
   .catch(err => err)
   return response
 }
 
-async function getUsersNew() {
-  const url = prefix + "/new?matchSettings.age[gt]=18"
+async function getUsersNew(page) {
+  const url = `${prefix}/new?matchSettings.age[gt]=18&page=${page || 1}`
 
-  const response = await axios.get(url, config)
+  const response = await axios.get(url, userAuth.config)
   .then(res => res.data)
   .catch(err => err)
   return response
 }
 
 async function validateAccount(validationToken) {
-  const url = prefix + `/validation/${validationToken}`
+  const url = `${prefix}/validation/${validationToken}`
 
   const response = await axios.patch(url)
   .then(res => res)

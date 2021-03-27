@@ -21,15 +21,23 @@
           <p v-else>No one liked this yet 😴</p>
         </div>
       </transition>
-      <button class="likes" ref="likes" @click.prevent="sendLike(story._id)" aria-name="like post">
-        <span v-if="likes.length">{{likes.length}}</span>
-        <i class="fa-heart" :class="userLikes ? 'fas' : 'far'"></i>
-      </button>
-      <button class="comments" @click.prevent="$emit('openModal', story._id, true)" aria-name="view comments">
-        <span v-if="story.comments?.length">{{story.comments.length}}</span>
-        <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
-      </button>
-      <button @click.prevent="$emit('openReportModal', story._id)" aria-name="report story"><i class="far fa-flag"></i></button>
+
+      <div class="comment-like">
+        <button class="likes" ref="likes" @click.prevent="sendLike(story._id)" aria-name="like post">
+          <span v-if="likes.length">{{likes.length}}</span>
+          <i class="fa-heart" :class="userLikes ? 'fas' : 'far'"></i>
+        </button>
+
+        <button class="comments" @click.prevent="$emit('openModal', story._id, true)" aria-name="view comments">
+          <span v-if="story.comments?.length">{{story.comments.length}}</span>
+          <i class="fa-comment-dots" :class="story.comments?.length ? 'fas' : 'far'"></i>
+        </button>
+      </div>
+
+      <div class="story-management">
+        <button class="delete" v-if="isSelf" @click.prevent="$emit('deleteStory', story._id)"><i class="fas fa-trash-alt"></i></button>
+        <button class="report" @click.prevent="$emit('openReportModal', story._id)" aria-name="report story"><i class="far fa-flag"></i></button>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +55,7 @@
         userLikes: false,
       }
     },
-    emits: ['openModal'],
+    emits: ['openModal', 'openReportModal', 'deleteStory'],
     props: ['userId', 'story'],
     methods: {
       goToPassport(name, identifier) {
@@ -101,6 +109,9 @@
         if (likeUsersArray.length > 3) likeUsersArray.push(' and more') 
         return likeUsersArray.length !== 2 ? likeUsersArray.join(', ') : likeUsersArray.join(' and ')
       },
+      isSelf() {
+        return `${this.story.userId.name}#${this.story.userId.identifier}` === this.currentUser.split('.').join('#')
+      }
     },
     mounted() {
       this.$refs.likes.addEventListener('mouseenter', this.showLikesBegin)
@@ -183,7 +194,8 @@
     padding: 5px;
     position: relative;
   }
-  .story-footer>button {
+  .comment-like button,
+  .story-management button {
     height: 30px;
     width: 30px;
     margin: 3px 8px;
@@ -199,18 +211,23 @@
     cursor: pointer;
     transition: all ease-out 0.2s;
   }
-  .story-footer>button:hover {
+  .comment-like button:hover {
     color: var(--theme-color-main);
     background-color: var(--off-white-main);
   }
-  .story-footer>button:last-child {
-    background-color: var(--bg-color-secondary);
-    color: var(--bg-color-main);
+  .story-management {
     float: right;
     margin-right: 8px;
   }
-  .story-footer>button:last-child:hover {
-    color: red;
+  .story-management .report,
+  .story-management .delete {
+    color: var(--theme-color-main);
+    background-color: var(--bg-color-secondary);
+  }
+  .story-management .delete:hover,
+  .story-management .report:hover {
+    color: #c23616;
+    background-color: var(--bg-color-secondary);
   }
 
   .like-modal {

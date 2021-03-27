@@ -7,7 +7,7 @@
         v-model="content"
         ref="comment"
       />
-      <button type="submit">
+      <button type="submit" :disabled="!notEmpty">
         <i class="fas fa-paper-plane"></i>
       </button>
     </form>
@@ -33,8 +33,14 @@
         }
       },
       handleSubmit() {
-        this.$emit('finished', this.content)
+        if (!this.notEmpty) return
+        this.$emit('finished', this.content.trim())
         this.content = ""
+      }
+    },
+    computed: {
+      notEmpty() {
+        return this.content.trim().length
       }
     },
     mounted() {
@@ -100,6 +106,12 @@
   }
   button:hover {
     background-color: #00a8ff;
+  }
+  button:disabled,
+  button:disabled:hover {
+    cursor: default;
+    color: gray;
+    background-color: darkgray;
   }
 
 </style>

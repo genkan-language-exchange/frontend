@@ -82,6 +82,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/roadmap',
+      name: 'Roadmap',
+      component: () => import('../views/Roadmap.vue'),
+      meta: {
+        guest: true,
+      },
+    },
+    {
       path: '/account_not_found',
       name: 'ResourceNotFound',
       component: () => import('../views/ResourceNotFound.vue'),

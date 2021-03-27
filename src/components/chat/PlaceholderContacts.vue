@@ -4,7 +4,7 @@
       <div id="label-ph"></div>
       <div id="input-ph"></div>
     </div>
-    <div class="placeholder" :class="`placeholder-${index}`" v-for="(letter, index) in String.raw`工事中...`.split('')" :key="index">
+    <div class="placeholder" :class="`placeholder-${index}`" v-for="(letter, index) in String.raw`Coming Soon...`.split('')" :key="index">
       <div class="avatar-ph no-select">{{letter}}</div>
       <div class="chat-ph">
         <div>
@@ -108,4 +108,9 @@ export default {
   .placeholder-7 { animation-delay: calc(100ms * 8); }
   .placeholder-8 { animation-delay: calc(100ms * 9); }
   .placeholder-9 { animation-delay: calc(100ms * 10); }
+  .placeholder-10 { animation-delay: calc(100ms * 11); }
+  .placeholder-11 { animation-delay: calc(100ms * 12); }
+  .placeholder-12 { animation-delay: calc(100ms * 13); }
+  .placeholder-13 { animation-delay: calc(100ms * 14); }
+  .placeholder-14 { animation-delay: calc(100ms * 15); }
 </style>

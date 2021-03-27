@@ -16,6 +16,7 @@
         <p><span>Learns: </span>{{user.matchSettings.languageLearn.join(', ')}}</p>
       </div>
     </section>
+    <!-- TODO: add stories list view tab -->
 
     <section id="about">
       <div>
@@ -29,72 +30,26 @@
       </div>
     </section>
 
-    <section id="filters" v-if="isSelf">
-      <div>
-        <h3>My Privacy Filters:</h3>
-        <p>These settings change who can find you and who you can find</p>
-      </div>
+    <TheFilters v-if="isSelf" :filterSettings="user.filterSettings" />
 
-      <div class="filter">
-        <h4>Age Range</h4>
-        <p>{{user.filterSettings.ages.join(' - ')}}</p>
-      </div>
-
-      <div class="filter">
-        <h4>I want to meet</h4>
-        <p id="genders" v-if="user.filterSettings.genders.length > 2">everyone</p>
-        <p id="genders" v-else>{{user.filterSettings.genders.join(', ')}}</p>
-        <span>from</span>
-        <p v-if="user.filterSettings.length > 0">
-          {{user.filterSettings.resides.join(', ')}}
-        </p>
-        <p>everywhere</p>
-      </div>
-
-      <div class="filter">
-        <h4>My ideal friend speaks</h4>
-        <p v-if="user.filterSettings.languagesKnow?.length">{{user.filterSettings.languagesKnow.join(', ')}}</p>
-        <p v-else>any language</p>
-        <h4>and studies</h4>
-        <p v-if="user.filterSettings.languagesSpeak?.length">{{user.filterSettings.languagesSpeak.join(', ')}}</p>
-        <p v-else>any language</p>
-      </div>
-
-      <div class="filter">
-        <h4>Show my age</h4>
-        <p v-if="user.filterSettings.showOwnAge">Yes</p>
-        <p v-else>No</p>
-      </div>
-
-      <div class="filter">
-        <h4>Show my online status</h4>
-        <p v-if="user.filterSettings.showOnlineStatus">Yes</p>
-        <p v-else>No</p>
-      </div>
-      
-      <div class="filter">
-        <h4>Show my profile picture before matching</h4>
-        <p v-if="user.filterSettings.blurBeforeMatch">Yes</p>
-        <p v-else>No</p>
-      </div>
-    </section>
-    
     <section v-if="isSelf" id="blocked">
       <h3>Manage Blocked Users</h3>
     </section>
     
-    <footer>
-      <section v-if="isSelf" id="foot">
-        <button type="button" @click.prevent="logMeOut"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
-      </section>
-    </footer>
+    <TheFooter :isSelf="isSelf" @logMeOut="logMeOut" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import checkAccountAge from '../../util/checkAccountAge.js'
+import TheFilters from './TheFilters'
+import TheFooter from './TheFooter'
 export default {
+  components: {
+    TheFilters,
+    TheFooter
+  },
   props: {
     user: Object
   },
@@ -166,7 +121,7 @@ h2 span {
   width: 100%;
   object-fit: cover;
 }
-#head, #about, #filters, #blocked {
+#head, #about, #blocked {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -198,49 +153,14 @@ h2 span {
   flex-direction: column;
   justify-content: flex-start;
 }
-#about, #filters {
+#about {
   gap: 30px;
 }
 #blocked h3 {
   color: var(--off-white-main);
 }
-.filter p {
-  text-decoration: underline;
-  cursor: pointer;
-}
-.filter p:hover {
-  color: var(--theme-color-main);
-}
 #genders {
   text-transform: capitalize;
-}
-#foot {
-  float: right;
-}
-#foot button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  color: var(--theme-color-main);
-  background-color: var(--off-white-main);
-  cursor: pointer;
-  transition: all 0.3s ease-in;
-}
-#foot button:hover {
-  color: var(--off-white-main);
-  background-color: var(--theme-color-main);
-}
-#foot button span {
-  margin-right: 10px;
-}
-footer {
-  position: fixed;
-  bottom: 0;
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: var(--bg-color-secondary);
-  border-top: 2px solid var(--theme-color-main);
 }
 .no-select {
 -webkit-touch-callout: none; /* iOS Safari */
