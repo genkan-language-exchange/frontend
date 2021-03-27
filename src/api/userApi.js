@@ -1,8 +1,8 @@
 import axios from 'axios'
 import UserAuth from './UserAuth'
 
-const prefix = 'https://genkan.herokuapp.com/api/v1/users'
-// const prefix = 'http://localhost:5000/api/v1/users'
+// const prefix = 'https://genkan.herokuapp.com/api/v1/users'
+const prefix = 'http://localhost:5000/api/v1/users'
 
 const userAuth = new UserAuth()
 
@@ -81,7 +81,7 @@ async function getUsers(filter, page) {
 }
 
 async function getUsersMany(page) {
-  const url = `${prefix}?page=${page || 1}`
+  const url = `${prefix}?matchSettings.age[gt]=18&page=${page || 1}`
 
   const response = await axios.get(url, userAuth.config)
   .then(res => res.data)

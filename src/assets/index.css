@@ -3,6 +3,8 @@ html {
   --theme-color-secondary: #9c88ff;
   --theme-color: var(--theme-color-main);
 
+  --vip-gold: #fbc531;
+
   --off-white-main: #f5f6fa;
   --off-white: var(--off-white);
 

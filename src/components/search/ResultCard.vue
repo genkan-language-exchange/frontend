@@ -1,12 +1,23 @@
 <template>
   <div
     class="card"
-    :style="newUser ? 'box-shadow: 0 0 8px 5px rgba(140, 122, 230, 0.4);' : 'box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.15);'"
     @click.prevent="() => goToPassport(user.name, user.identifier)"
   >
     <div class="head">
-      <div class="status" :class="onlineRecently ? 'online' : 'offline'"></div>
-      <div class="avatar">{{user.name[0].toUpperCase()}}</div>
+      <div class="status"
+        :style="user.role === 'vip' ? 'border-color: var(--vip-gold);' : (
+          newUser ? 'border-color: var(--theme-color-main);' : ''
+        )"
+        :class="onlineRecently ? 'online' : 'offline'"
+      ></div>
+      <div
+        class="avatar"
+        :style="user.role === 'vip' ? 'border-color: var(--vip-gold);' : (
+          newUser ? 'border-color: var(--theme-color-main);' : ''
+        )"
+      >
+        {{user.name[0].toUpperCase()}}
+      </div>
     </div>
 
     <div class="info">
@@ -61,9 +72,10 @@ export default {
   margin: 35px auto;
   display: flex;
   flex-direction: row;
-  transition: background-color 0.2s ease-out;
+  box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
-.card:active {
+.card:hover {
   background-color: var(--bg-color-secondary);
 }
 .head {
@@ -75,8 +87,8 @@ export default {
   position: absolute;
   width: 15px;
   height: 15px;
-  top: 0;
-  left: 0;
+  top: 3px;
+  left: 3px;
   border-radius: 50%;
   border: 3px solid var(--bg-color-main);
 }
@@ -104,7 +116,7 @@ h3 {
 }
 span {
   font-size: 1.8rem;
-  color: #8c7ae6;
+  color: var(--theme-color-main);
   vertical-align: middle;
 }
 .info {
@@ -125,10 +137,6 @@ span {
 @media (min-width: 959px) {
   .card {
     width: 50%;
-  }
-  .card:hover {
-    background-color: var(--bg-color-secondary);
-    cursor: pointer;
   }
 }
 </style>

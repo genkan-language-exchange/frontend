@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <TheNextButton :toggle="!!checked.length" @click="handleClick" />
+    <TheNextButton :toggle="!!checked.length" @click="handleClick" v-if="!profileEditor" />
   </div>
 </template>
 
@@ -36,7 +36,7 @@ export default {
   components: {
     TheNextButton
   },
-  props: ['languageKnow'],
+  props: ['languageKnow', 'profileEditor'],
   data() {
     return {
       langAll,

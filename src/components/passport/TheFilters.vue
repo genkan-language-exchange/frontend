@@ -7,52 +7,105 @@
 
     <div class="filter">
       <h4>Age Range</h4>
-      <p>{{filterSettings.ages.join(' - ')}}</p>
+      <p @click="() => handleSetFilters('age')">{{filterSettings.ages.join(' - ')}}</p>
+      <TheAgeFilter v-if="editingAge" />
     </div>
 
     <div class="filter">
       <h4>I want to meet</h4>
-      <p id="genders" v-if="filterSettings.genders.length > 2">everyone</p>
-      <p id="genders" v-else>{{filterSettings.genders.join(', ')}}</p>
+      <p id="genders" @click="() => handleSetFilters('gender')" v-if="filterSettings.genders.length > 2">everyone</p>
+      <p id="genders" @click="() => handleSetFilters('gender')" v-else>{{filterSettings.genders.join(', ')}}</p>
+      <TheGenderFilter v-if="editingGender" />
       <span>from</span>
-      <p v-if="filterSettings.length > 0">
+      <p @click="() => handleSetFilters('resides')" v-if="filterSettings.length > 0">
         {{filterSettings.resides.join(', ')}}
       </p>
-      <p>everywhere</p>
+      <p @click="() => handleSetFilters('resides')" >everywhere</p>
+      <TheCountryDropdown :profileEditor="true" v-if="editingResides" />
     </div>
 
     <div class="filter">
       <h4>My ideal friend speaks</h4>
-      <p v-if="filterSettings.languagesKnow?.length">{{filterSettings.languagesKnow.join(', ')}}</p>
-      <p v-else>any language</p>
+      <p @click="() => handleSetFilters('langsKnow')" v-if="filterSettings.languagesKnow?.length">{{filterSettings.languagesKnow.join(', ')}}</p>
+      <p @click="() => handleSetFilters('langsKnow')" v-else>any language</p>
+      <TheLanguageDropdown :languageKnow="true" :profileEditor="true" v-if="editingKnows" />
       <h4>and studies</h4>
-      <p v-if="filterSettings.languagesSpeak?.length">{{filterSettings.languagesSpeak.join(', ')}}</p>
-      <p v-else>any language</p>
+      <p @click="() => handleSetFilters('langsSpeak')" v-if="filterSettings.languagesSpeak?.length">{{filterSettings.languagesSpeak.join(', ')}}</p>
+      <p @click="() => handleSetFilters('langsSpeak')" v-else>any language</p>
+      <TheLanguageDropdown :languageKnow="true" :profileEditor="true" v-if="editingSpeak" />
     </div>
 
     <div class="filter">
       <h4>Show my age</h4>
-      <p v-if="filterSettings.showOwnAge">Yes</p>
-      <p v-else>No</p>
+      <p @click="() => handleSetFilters('showAge')" v-if="filterSettings.showOwnAge">Yes</p>
+      <p @click="() => handleSetFilters('showAge')" v-else>No</p>
     </div>
 
     <div class="filter">
       <h4>Show my online status</h4>
-      <p v-if="filterSettings.showOnlineStatus">Yes</p>
-      <p v-else>No</p>
+      <p @click="() => handleSetFilters('showOnline')" v-if="filterSettings.showOnlineStatus">Yes</p>
+      <p @click="() => handleSetFilters('showOnline')" v-else>No</p>
     </div>
     
     <div class="filter">
       <h4>Show my profile picture before matching</h4>
-      <p v-if="filterSettings.blurBeforeMatch">Yes</p>
-      <p v-else>No</p>
+      <p @click="() => handleSetFilters('showPicture')" v-if="filterSettings.blurBeforeMatch">Yes</p>
+      <p @click="() => handleSetFilters('showPicture')" v-else>No</p>
     </div>
   </section>
 </template>
 
 <script>
+  import TheAgeFilter from './filters/TheAgeFilter'
+  import TheGenderFilter from './filters/TheGenderFilter'
+  import TheCountryDropdown from '../welcome/TheCountryDropdown'
+  import TheLanguageDropdown from '../welcome/TheLanguageDropdown'
   export default {
-    props: ['filterSettings']
+    components: {
+      TheAgeFilter,
+      TheGenderFilter,
+      TheCountryDropdown,
+      TheLanguageDropdown
+    },
+    props: ['filterSettings', 'role'],
+    emits: ['changedFilter'],
+    data() {
+      return {
+        editingAge: false,
+        editingGender: false,
+        editingResides: false,
+        editingKnows: false,
+        editingSpeak: false,
+      }
+    },
+    methods: {
+      handleSetFilters(val) {
+        switch(val) {
+          case 'age':
+            this.editingAge = !this.editingAge
+            break
+          case 'gender':
+            // if (this.role !== "vip") return
+            this.editingGender = !this.editingGender
+            break
+          case 'resides':
+            this.editingResides = !this.editingResides
+            break
+          case 'langsKnow':
+            this.editingKnows = !this.editingKnows
+            break
+          case 'langsSpeak':
+            this.editingSpeak = !this.editingSpeak
+            break
+          case 'showAge':
+          case 'showOnline':
+          case 'showPicture':
+            this.$emit('changedFilter', val)
+            break
+          default: break
+        }
+      },
+    },
   }
 </script>
 

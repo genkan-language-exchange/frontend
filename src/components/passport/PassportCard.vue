@@ -17,24 +17,42 @@
       </div>
     </section>
     <!-- TODO: add stories list view tab -->
-
-    <section id="about">
-      <div>
-        <h3>About:</h3><p>{{user.profile.about}}</p>
+    
+    <section id="toggle-view">
+      <div @click="() => viewingProfile = true">
+        <p>Profile</p>
       </div>
-      <div>
-        <h3>Language Goal:</h3><p>{{user.profile.languageGoal}}</p>
-      </div>
-      <div>
-        <h3>Interests:</h3><p>{{user.profile.interests.join(', ')}}</p>
+      <div @click="() => viewingProfile = false">
+        <p>Moments</p>
       </div>
     </section>
+    <transition-group name="profile" mode="out-in">
+      <template v-if="viewingProfile">
+        <div>
+          <section id="about">
+            <div>
+              <h3>About:</h3><p>{{user.profile.about}}</p>
+            </div>
+            <div>
+              <h3>Language Goal:</h3><p>{{user.profile.languageGoal}}</p>
+            </div>
+            <div>
+              <h3>Interests:</h3><p>{{user.profile.interests.join(', ')}}</p>
+            </div>
+          </section>
 
-    <TheFilters v-if="isSelf" :filterSettings="user.filterSettings" />
+          <TheFilters v-if="isSelf" :filterSettings="user.filterSettings" :role="user.role" />
+        </div>
+      </template>
+      <template v-else>
+        <UserMoments :user="user" />
+      </template>
+    </transition-group>
 
-    <section v-if="isSelf" id="blocked">
+
+    <!-- <section v-if="isSelf" id="blocked">
       <h3>Manage Blocked Users</h3>
-    </section>
+    </section> -->
     
     <TheFooter :isSelf="isSelf" @logMeOut="logMeOut" />
   </div>
@@ -45,25 +63,24 @@ import { mapActions, mapGetters } from 'vuex'
 import checkAccountAge from '../../util/checkAccountAge.js'
 import TheFilters from './TheFilters'
 import TheFooter from './TheFooter'
+import UserMoments from './moments/UserMoments'
 export default {
   components: {
+    UserMoments,
     TheFilters,
-    TheFooter
+    TheFooter,
   },
   props: {
     user: Object
   },
   data() {
     return {
-      isMobile: Boolean
+      viewingProfile: true,
     }
   },
   methods: {
     ...mapGetters(['currentUser']),
     ...mapActions(['logout']),
-    checkWidth() {
-      this.isMobile = window.innerWidth < 1100
-    },
     logMeOut() {
       this.logout()
       this.$router.replace('/login')
@@ -78,15 +95,15 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('resize', this.checkWidth)
+    // window.addEventListener('resize', this.checkWidth)
     // prevent avatars from being saved by others
-    document.addEventListener('copy', e => e.preventDefault())
+    // document.addEventListener('copy', e => e.preventDefault())
     this.$refs.avatar.addEventListener('contextmenu', e => e.preventDefault())
   },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.checkWidth)
-    document.removeEventListener('copy', e => e.preventDefault())
-  },
+  // beforeUnmount() {
+  //   window.removeEventListener('resize', this.checkWidth)
+  //   document.removeEventListener('copy', e => e.preventDefault())
+  // },
 }
 </script>
 
@@ -121,7 +138,7 @@ h2 span {
   width: 100%;
   object-fit: cover;
 }
-#head, #about, #blocked {
+#head, #about, #blocked, #toggle-view {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -129,6 +146,9 @@ h2 span {
   margin: 0 auto;
   box-sizing: border-box;
   border-bottom: 2px solid var(--theme-color-main);
+}
+#head {
+  border: none;
 }
 .new-icon {
   color: var(--theme-color-main);
@@ -162,6 +182,33 @@ h2 span {
 #genders {
   text-transform: capitalize;
 }
+#toggle-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  overflow: hidden;
+}
+#toggle-view>div {
+  width: 50%;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  color: var(--off-white-main);
+  background-color: var(--theme-color-main);
+  border: none;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+}
+#toggle-view>div:hover {
+  background-color: var(--theme-color-secondary);
+}
 .no-select {
 -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -178,5 +225,24 @@ h2 span {
   section {
     max-width: 40%;
   }
+}
+.profile-enter-from {
+  opacity: 0;
+}
+.profile-enter-to {
+  opacity: 1;
+}
+.profile-enter-active {
+  transition: all 0.25s ease-out;
+}
+
+.profile-leave-from {
+  opacity: 1;
+}
+.profile-leave-to {
+  opacity: 0;
+}
+.profile-leave-active {
+  transition: all 0.25s ease-out;
 }
 </style>

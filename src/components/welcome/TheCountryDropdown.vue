@@ -25,7 +25,7 @@
         <input id="country-filter" type="text" name="country filter" v-model="filterInput" autofocus placeholder="Search countries...">
       </div>
     </div>
-    <TheNextButton :toggle="!!checked.length" @click="handleClick" />
+    <TheNextButton v-if="!profileEditor" :toggle="!!checked.length" @click="handleClick" />
   </div>
 </template>
 
@@ -37,6 +37,7 @@ export default {
   components: {
     TheNextButton
   },
+  props: ['profileEditor'],
   data() {
     return {
       countriesAll,
@@ -195,6 +196,9 @@ h2 {
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
+}
+#country-filter {
+  font-size: 1.6rem;
 }
 .next-button {
   bottom: -150px;
