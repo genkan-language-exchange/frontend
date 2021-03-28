@@ -1,8 +1,8 @@
 import axios from 'axios'
 import UserAuth from './UserAuth'
 
-// const prefix = 'https://genkan.herokuapp.com/api/v1/stories/comment'
-const prefix = 'http://localhost:5000/api/v1/stories/comment'
+const prefix = 'https://genkan.herokuapp.com/api/v1/stories/comment'
+// const prefix = 'http://localhost:5000/api/v1/stories/comment'
 
 const userAuth = new UserAuth()
 
