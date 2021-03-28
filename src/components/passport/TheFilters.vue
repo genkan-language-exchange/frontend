@@ -36,7 +36,13 @@
     </div>
 
     <div class="filter">
-      <h4>Show my age</h4>
+      <h4>Show my identifier to others <span><aside>An identifier is the 4 digits after your username</aside></span></h4>
+      <p @click="() => handleSetFilters('showIdentifier')" v-if="filterSettings.showOwnIdentifier">Yes</p>
+      <p @click="() => handleSetFilters('showIdentifier')" v-else>No</p>
+    </div>
+
+    <div class="filter">
+      <h4>Show my age to others</h4>
       <p @click="() => handleSetFilters('showAge')" v-if="filterSettings.showOwnAge">Yes</p>
       <p @click="() => handleSetFilters('showAge')" v-else>No</p>
     </div>
@@ -105,6 +111,9 @@
           default: break
         }
       },
+      handleChange(val) {
+        console.log(val)
+      }
     },
   }
 </script>
@@ -112,6 +121,13 @@
 <style scoped>
 h3, h4 { color: var(--theme-color-main); }
 h3, h4, p { margin: 0; }
+span aside {
+  display: inline;
+  font-weight: 400;
+  color: gray;
+  margin-left: 10px;
+  font-size: 1.4rem;
+}
 #filters {
   width: 100%;
   display: flex;

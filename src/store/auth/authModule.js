@@ -74,9 +74,8 @@ export default {
           // send response to mutation
           ctx.commit('setUser', newUser)
           return response
-        } else {
-          return response
         }
+        return response
       // **********
       // LOGIN //
       // **********
@@ -85,7 +84,6 @@ export default {
         // send login information from payload to api
         const response = await loginWithEmailPassword(email, password)
 
-        console.log(response);
         if (response.status === "success") {
           const user = response.data.user
           // TODO: add session expiration date to response
@@ -99,14 +97,17 @@ export default {
           // send response to mutation
           ctx.commit('setUser', user)
         }
+        return response
       }
     },
     async tryRefreshAuth(ctx) {
       const expires = localStorage.getItem('sessionExpires')
-      let d = new Date()
-      d = d.toUTCString()
+      let today = new Date()
+      today = today.toUTCString()
       
-      if (expires > d) {
+      // expires - if future date, continue
+      // expires - else logout
+      if (expires < today) {
         const _id = localStorage.getItem('_id')
         const userId = localStorage.getItem('userId')
 

@@ -1,6 +1,8 @@
 <template>
   <form @submit.prevent="callLogin">
-    <h2>{{ error && error }}</h2>
+    <div class="error-message">
+      <h2>{{ error && error }}</h2>
+    </div>
     <fieldset :disabled="loading" :aria-busy="loading">
       <label for="email" key="email">Email Address
         <input id="email" name="email" v-model.trim="email" type="email" aria-errormessage="Missing email address" required placeholder="Enter your email address" />
@@ -60,21 +62,25 @@
         this.$emit('setLoading', true)
         if (this.password.length < 8) return this.error = "Password too short"
         if (this.email === '' || this.password === '') return this.error = "Please fill out the fields"
-        await this.login({ email: this.email, password: this.password })
+
+        const response = await this.login({ email: this.email, password: this.password })
         .then(() => {
           this.$router.replace('/')
         })
-        .catch((err) => {
-          console.error(err)
+        .catch(err => err)
+        if (!response) {
           this.error = "Could not login"
           this.$emit('setLoading', false)
-        })
+        }
       }
     },
   }
 </script>
 
 <style scoped>
+.error-message {
+  padding: 20px;
+}
 form {
   width: 90%;
   margin: 150px auto;

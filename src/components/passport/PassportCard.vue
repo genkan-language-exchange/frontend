@@ -19,10 +19,10 @@
     <!-- TODO: add stories list view tab -->
     
     <section id="toggle-view">
-      <div @click="() => viewingProfile = true">
+      <div @click="() => viewingProfile = true" class="tab-profile" :class="viewingProfile && 'active'">
         <p>Profile</p>
       </div>
-      <div @click="() => viewingProfile = false">
+      <div @click="() => viewingProfile = false"  class="tab-moments" :class="!viewingProfile && 'active'">
         <p>Moments</p>
       </div>
     </section>
@@ -126,6 +126,7 @@ h2 span {
   justify-content: center;
   align-items: center;
   width: 80%;
+  max-width: 400px;
   margin: 0 auto 25px;
   border: 2px solid var(--theme-color-main);
   background-color: var(--off-white-main);
@@ -200,7 +201,7 @@ h2 span {
   box-sizing: border-box;
   text-align: center;
   color: var(--off-white-main);
-  background-color: var(--theme-color-main);
+  background-color: var(--bg-color-main);
   border: none;
   outline: none;
   width: 100%;
@@ -208,6 +209,9 @@ h2 span {
 }
 #toggle-view>div:hover {
   background-color: var(--theme-color-secondary);
+}
+#toggle-view .active {
+  background-color: var(--theme-color-main);
 }
 .no-select {
 -webkit-touch-callout: none; /* iOS Safari */
@@ -223,7 +227,7 @@ h2 span {
     width: 300px;
   }
   section {
-    max-width: 40%;
+    max-width: 60%;
   }
 }
 .profile-enter-from {

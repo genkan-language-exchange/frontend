@@ -22,6 +22,7 @@
 
 <style scoped>
 footer {
+  z-index: 100;
   position: fixed;
   bottom: 0;
   padding: 20px;

@@ -1,24 +1,22 @@
 import axios from 'axios'
 import UserAuth from './UserAuth'
 
-const prefix = 'https://genkan.herokuapp.com/api/v1/users'
-// const prefix = 'http://localhost:5000/api/v1/users'
+// const prefix = 'https://genkan.herokuapp.com/api/v1/users'
+const prefix = 'http://localhost:5000/api/v1/users'
 
 const userAuth = new UserAuth()
 
 
-async function registerUser(name, email, password, passwordConfirm, matchSettings) {
+async function registerUser(name, email, password, passwordConfirm, incomingMatchSettings) {
   const url = prefix + '/signup'
-  
-  if (!matchSettings) {
-    matchSettings = {
-      birthday: "2000-01-01",
-      gender: "non-binary",
-      languageKnow: ["???"],
-      languageLearn: ["???"],
-      nationality: "???",
-      residence: "???"
-    }
+  const matchSettings = {
+    birthday: "2000-01-01",
+    gender: "non-binary",
+    languageKnow: ["???"],
+    languageLearn: ["???"],
+    nationality: "???",
+    residence: "???",
+    ...incomingMatchSettings,
   }
   matchSettings.birthday = new Date(matchSettings.birthday)
   matchSettings.gender = matchSettings.gender.toLowerCase()
@@ -28,11 +26,7 @@ async function registerUser(name, email, password, passwordConfirm, matchSetting
 
   const response = await axios.post(url, data)
   .then(res => res.data)
-  .catch(err => {
-    console.error(err)
-    console.error(err.message)
-    return err
-  })
+  .catch(err => err)
   return response
 }
 

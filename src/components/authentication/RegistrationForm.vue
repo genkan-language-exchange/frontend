@@ -1,6 +1,8 @@
 <template>
   <form @submit.prevent="goToOnboarding">
-    <h2>{{ error && error }}</h2>
+    <div class="error-message">
+      <h2>{{ error && error }}</h2>
+    </div>
     <fieldset :disabled="loading" :aria-busy="loading">
       <label for="email" key="email">Email Address
         <input id="email" name="email" type="email" v-model.trim="email" required placeholder="Enter your email address" />
@@ -70,6 +72,9 @@
 </script>
 
 <style scoped>
+.error-message {
+  padding: 20px;
+}
 form {
   width: 90%;
   margin: 150px auto;

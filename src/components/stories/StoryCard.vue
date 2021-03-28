@@ -95,18 +95,24 @@
         let likeUsersArray = []
 
         for (let i = 0 ; i < sortedLikes.length ; i++) {
-          if (i > 3) break;
+          if (i > 2) break
           const like = sortedLikes[i]
           const likeUser = `${like.likeUser.name}#${like.likeUser.identifier}`
           const currentUser = this.currentUser.split('.').join('#')
           if (likeUser === currentUser || like.likeUser.name == undefined) {
-            likeUsersArray.push(i === 0 ? "You" : (i === 2 ? "and you" : "you"))
-            continue;
+            likeUsersArray.push(
+              i === 0 ? "You" : (
+                i === 2
+                  ? (sortedLikes.length > 2 ? "you" : "and you")
+                  : "you"
+                )
+              )
+            continue
           }
           likeUsersArray.push(likeUser)
         }
 
-        if (likeUsersArray.length > 3) likeUsersArray.push(' and more') 
+        if (likeUsersArray.length > 2) likeUsersArray.push(' and others') 
         return likeUsersArray.length !== 2 ? likeUsersArray.join(', ') : likeUsersArray.join(' and ')
       },
       isSelf() {

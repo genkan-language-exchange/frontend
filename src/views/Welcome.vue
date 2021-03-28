@@ -97,9 +97,7 @@
       }
     },
     methods: {
-      ...mapActions({
-        signup: 'signup'
-      }),
+      ...mapActions(['signup']),
       matchSettingsBuilder(val) {
         let newKeyVal = {};
         switch (this.onboardStep) {
@@ -144,13 +142,16 @@
         this.skip = 4
         this.error = false
         this.popupMessage = true
+
         const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm, matchSettings: this.matchSettings })
+        .then(res => res)
+        .catch(err => err)
+
         if (response.status === "success") {
           setTimeout(() => {
             this.$router.push('/stories')
-          }, 3000)
-        }
-        if (response.status === "fail") {
+          }, 2000)
+        } else {
           this.skip = 3
           this.error = true
           this.popupMessage = true
