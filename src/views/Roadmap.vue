@@ -5,6 +5,7 @@
     </header>
     <div id="timeline">
       <div class="timeline-item">Implement Privacy Settings</div>
+      <div class="timeline-item">Add Slow Mode Chatting - Why Rush!</div>
       <div class="timeline-item">Add Real Time Chatting</div>
       <div class="timeline-item">Add Friend Requests</div>
       <div class="timeline-item">Add Custom Profile Pictures</div>
@@ -13,6 +14,7 @@
       <div class="timeline-item">Notifications</div>
       <div class="timeline-item">Add Subscription Model to Support Development</div>
       <div class="timeline-item">Mobile App</div>
+      <div class="timeline-item">2FA</div>
       <div class="timeline-item">Hire More Than 1 Dev?</div>
       <div class="timeline-item">Better Story Sorting Algorithm (popular, featured, etc)</div>
       <div class="timeline-item">Add Voice Profile/Notes</div>
