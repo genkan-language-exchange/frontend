@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import '@/assets/index.css'
-import '@/assets/transitions.css'
-import TheNavbar from './components/TheNavbar.vue'
-import TheSidebar from './components/TheSidebar.vue'
+import './assets/index.css'
+import './assets/transitions.css'
+import TheNavbar from '@/components/TheNavbar'
+import TheSidebar from '@/components/TheSidebar'
 
 export default {
   name: 'Main',
