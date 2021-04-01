@@ -1,6 +1,5 @@
 <template>
   <div id="base-view">
-    <!-- <ChatCard :chats="chats" /> -->
     <div id="mobile-view" v-if="isMobile">
       <PlaceholderContacts />
     </div>
@@ -20,12 +19,10 @@
 <script>
   import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
   import PlaceholderContacts from '@/components/chat/PlaceholderContacts.vue'
-  // import ChatCard from '@/components/chat/ChatCard.vue'
 
   export default {
   name: 'Chat',
   components: {
-    // ChatCard
     PlaceholderContacts,
     TheLoadSpinner,
   },
