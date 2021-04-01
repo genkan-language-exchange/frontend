@@ -26,7 +26,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { createStory } from '../../api/storyApi'
+  import { createStory } from '@/api/storyApi'
   import TheLoadSpinner from '../TheLoadSpinner'
   export default {
     name: "StoryCreationCard",

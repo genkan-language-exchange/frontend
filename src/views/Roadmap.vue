@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import TheFooter from '../components/passport/TheFooter'
+  import TheFooter from '@/components/passport/TheFooter'
   export default {
     components: {
       TheFooter

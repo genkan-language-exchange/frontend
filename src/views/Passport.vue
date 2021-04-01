@@ -21,7 +21,7 @@
 import { mapActions } from 'vuex'
 import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
 import PassportCard from '@/components/passport/PassportCard.vue'
-import { getUserByNameIdentifierCombo } from '../api/userApi'
+import { getUserByNameIdentifierCombo } from '@/api/userApi'
 
 export default {
   name: 'Passport',

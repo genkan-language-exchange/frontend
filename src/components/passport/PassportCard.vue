@@ -56,7 +56,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import checkAccountAge from '../../util/checkAccountAge.js'
+import checkAccountAge from '@/util/checkAccountAge.js'
 
 import TheAboutSection from './TheAboutSection'
 import TheUserMoments from './moments/TheUserMoments'

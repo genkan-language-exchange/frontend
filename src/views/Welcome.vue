@@ -67,11 +67,11 @@
 
 <script>
   import { mapActions } from 'vuex'
-  import DatePicker from '../components/welcome/DatePicker'
-  import TheGenderSelection from '../components/welcome/TheGenderSelection'
-  import TheCountryDropdown from '../components/welcome/TheCountryDropdown'
-  import TheLanguageDropdown from '../components/welcome/TheLanguageDropdown'
-  import TheLoadSpinner from '../components/TheLoadSpinner'
+  import DatePicker from '@/components/welcome/DatePicker'
+  import TheGenderSelection from '@/components/welcome/TheGenderSelection'
+  import TheCountryDropdown from '@/components/welcome/TheCountryDropdown'
+  import TheLanguageDropdown from '@/components/welcome/TheLanguageDropdown'
+  import TheLoadSpinner from '@/components/TheLoadSpinner'
 
   export default {
     name: 'Welcome',

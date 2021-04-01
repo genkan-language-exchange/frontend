@@ -26,14 +26,14 @@
 </template>
 
 <script>
-  import { getStories, removeStory } from '../api/storyApi'
+  import { getStories, removeStory } from '@/api/storyApi'
 
-  import ReportModal from '../components/ReportModal'
-  import StoryCard from '../components/stories/StoryCard'
-  import StoryFilterBar from '../components/stories/StoryFilterBar'
-  import StoryModal from '../components/stories/StoryModal'
-  import TheStoryCreationButtom from '../components/stories/TheStoryCreationButton'
-  import TheLoadSpinner from '../components/TheLoadSpinner'
+  import ReportModal from '@/components/ReportModal'
+  import StoryCard from '@/components/stories/StoryCard'
+  import StoryFilterBar from '@/components/stories/StoryFilterBar'
+  import StoryModal from '@/components/stories/StoryModal'
+  import TheStoryCreationButtom from '@/components/stories/TheStoryCreationButton'
+  import TheLoadSpinner from '@/components/TheLoadSpinner'
 
   export default {
     components: {

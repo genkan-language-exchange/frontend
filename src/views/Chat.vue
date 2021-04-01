@@ -19,7 +19,7 @@
 
 <script>
   import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
-  import PlaceholderContacts from '../components/chat/PlaceholderContacts.vue'
+  import PlaceholderContacts from '@/components/chat/PlaceholderContacts.vue'
   // import ChatCard from '@/components/chat/ChatCard.vue'
 
   export default {

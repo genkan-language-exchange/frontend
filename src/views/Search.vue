@@ -17,7 +17,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import { getUsers } from '../api/userApi'
+import { getUsers } from '@/api/userApi'
 import SearchBar from '@/components/search/SearchBar.vue'
 import ResultCard from '@/components/search/ResultCard.vue'
 import TheResultCardPlaceholder from '@/components/search/TheResultCardPlaceholder.vue'

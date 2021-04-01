@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import { validateAccount } from '../api/userApi'
+  import { validateAccount } from '@/api/userApi'
   export default {
     data() {
       return {

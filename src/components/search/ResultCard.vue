@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import checkAccountAge from '../../util/checkAccountAge.js'
-import checkLastOnline from '../../util/checkLastOnline.js'
+import checkAccountAge from '@/util/checkAccountAge.js'
+import checkLastOnline from '@/util/checkLastOnline.js'
 export default {
   props: {
     user: {

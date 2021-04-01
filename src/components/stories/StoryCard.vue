@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { likeStory } from '../../api/storyApi'
+  import { likeStory } from '@/api/storyApi'
   import { mapGetters } from 'vuex'
   export default {
     name: "StoryCard",
