@@ -12,3 +12,57 @@ html {
   --bg-color: var(--bg-color-main);
   --bg-color-secondary: #353b48;
 }
+
+.fa-icon-button {
+  height: 30px;
+  width: 30px;
+  margin: 3px 8px;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  background-color: var(--theme-color-main);
+  font-size: 18px;
+  padding: 0;
+  text-align: center;
+  color: var(--off-white-main);
+  float: left;
+  cursor: pointer;
+  transition: all ease-out 0.2s;
+}
+
+
+@media (prefers-color-scheme: light) {
+  html {
+    --bg-color-main: #f5f6fa;
+    --bg-color: var(--bg-color-main);
+    --bg-color-secondary: #e6e6e6;
+    --off-white-main: #2f3640;
+    --off-white: var(--off-white-main);
+  }
+}
+
+h1 {
+  font-size: 2.8rem;
+}
+h2 {
+  font-size: 2.4rem;
+}
+h3 {
+  font-size: 2rem;
+}
+p, button, a, li, h4, h5, h6 {
+  font-size: 1.6rem;
+}
+p {
+  line-height: 1.33;
+}
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

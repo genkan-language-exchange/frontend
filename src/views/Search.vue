@@ -4,7 +4,7 @@
   </template>
   <template v-else>
     <SearchBar @triggerSearch="handleSearchFilter" />
-    <transition-group tag="div" name="user-list" mode="out-in">
+    <transition-group tag="div" name="rotate" mode="out-in">
       <template v-if="users.length">
         <ResultCard v-for="user in users" :key="user._id" :user="user" />
       </template>
@@ -63,7 +63,7 @@ export default {
       currentUser: 'currentUser',
     }),
   },
-  mounted() {
+  created() {
     this.loading = true
     this.findUsers();
   },
@@ -87,33 +87,5 @@ export default {
 }
 h2 {
   font-size: 1.8rem;
-}
-
-.user-list-enter-from {
-  opacity: 0;
-  transform: rotate(-10deg) translateX(-150px);
-}
-.user-list-enter-to {
-  opacity: 1;
-  transform: rotate(0deg) translateX(0px);
-}
-.user-list-enter-active {
-  transition: all 0.25s ease-out;
-}
-
-.user-list-leave-from {
-  transform: rotate(0deg) translateX(0px);
-  opacity: 1;
-}
-.user-list-leave-to {
-  opacity: 0;
-  transform: rotate(10deg) translateX(150px); 
-}
-.user-list-leave-active {
-  transition: all 0.25s ease-out;
-}
-
-.user-list-move {
-  transition: transform 0.5s ease;
 }
 </style>

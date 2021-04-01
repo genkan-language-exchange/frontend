@@ -1,11 +1,7 @@
 import axios from 'axios'
-import UserAuth from './UserAuth'
 
 const prefix = 'https://genkan.herokuapp.com/api/v1/users'
 // const prefix = 'http://localhost:5000/api/v1/users'
-
-const userAuth = new UserAuth()
-
 
 async function registerUser(name, email, password, passwordConfirm, incomingMatchSettings) {
   const url = prefix + '/signup'
@@ -47,7 +43,14 @@ async function getUserByNameIdentifierCombo(name, identifier) {
   const url = prefix
   const data = { name, identifier }
 
-  const response = await axios.post(url, data, userAuth.config)
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  const response = await axios.post(url, data, config)
   .then(res => res.data)
   .catch(err => err)
   return response
@@ -77,7 +80,14 @@ async function getUsers(filter, page) {
 async function getUsersMany(page) {
   const url = `${prefix}?matchSettings.age[gt]=18&page=${page || 1}`
 
-  const response = await axios.get(url, userAuth.config)
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  const response = await axios.get(url, config)
   .then(res => res.data)
   .catch(err => err)
   return response
@@ -85,7 +95,14 @@ async function getUsersMany(page) {
 async function getUsersOnline(page) {
   const url = `${prefix}/online?matchSettings.age[gt]=18&page=${page || 1}`
 
-  const response = await axios.get(url, userAuth.config)
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  const response = await axios.get(url, config)
   .then(res => res.data)
   .catch(err => err)
   return response
@@ -94,7 +111,14 @@ async function getUsersOnline(page) {
 async function getUsersNew(page) {
   const url = `${prefix}/new?matchSettings.age[gt]=18&page=${page || 1}`
 
-  const response = await axios.get(url, userAuth.config)
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  const response = await axios.get(url, config)
   .then(res => res.data)
   .catch(err => err)
   return response

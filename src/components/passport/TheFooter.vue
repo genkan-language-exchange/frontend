@@ -55,6 +55,8 @@ footer {
   color: var(--off-white-main);
 }
 #foot button {
+  opacity: 0;
+  visibility: 0;
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
@@ -68,6 +70,12 @@ footer {
 }
 #foot button span {
   margin-right: 10px;
+}
+@media (min-width: 959px) {
+  #foot button {
+    opacity: 1;
+    visibility: visible;
+  } 
 }
 
 </style>

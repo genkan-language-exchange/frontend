@@ -4,12 +4,15 @@
       <h2>Here's where we're headed</h2>
     </header>
     <div id="timeline">
+      <div class="timeline-item">Story Tags</div>
       <div class="timeline-item">Implement Privacy Settings</div>
       <div class="timeline-item">Add Slow Mode Chatting - Why Rush!</div>
+      <div class="timeline-item">Communities - Join a group of people with shared interests</div>
       <div class="timeline-item">Add Real Time Chatting</div>
       <div class="timeline-item">Add Friend Requests</div>
       <div class="timeline-item">Add Custom Profile Pictures</div>
       <div class="timeline-item">Add Corrections Feature</div>
+      <div class="timeline-item">Add Multiple Like/React Types</div>
       <div class="timeline-item">Add Custom Stickers</div>
       <div class="timeline-item">Notifications</div>
       <div class="timeline-item">Add Subscription Model to Support Development</div>

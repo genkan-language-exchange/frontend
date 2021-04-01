@@ -49,7 +49,7 @@
     top: 2.5%;
     left: 0;
     right: 0;
-    height: 75%;
+    height: 85%;
     box-sizing: border-box;
     z-index: 101;
     width: 90%;
@@ -63,13 +63,8 @@
   @media (min-width: 959px) {
     #modal {
       top: 10%;
-      width: 50%;
+      width: 400px;
       height: 700px;
-    }
-  }
-  @media (min-height: 1000px) {
-    #modal {
-      height: 800px;
     }
   }
 </style>
