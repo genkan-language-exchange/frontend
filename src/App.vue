@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import './assets/index.css'
-import './assets/transitions.css'
+import '@/assets/index.css'
+import '@/assets/transitions.css'
 import TheNavbar from '@/components/TheNavbar'
 import TheSidebar from '@/components/TheSidebar'
 
