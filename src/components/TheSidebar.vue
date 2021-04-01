@@ -1,5 +1,5 @@
 <template>
-  <div id="nav" v-if="isAuth">
+  <div id="side-nav" v-if="isAuth">
     <button class="fa-icon-button menu-toggle-button-in" @click="sidenavOpen = true"><i class="fas fa-bars"></i></button>
     <transition name="slide-in-left" mode="out-in">
       <div v-if="sidenavOpen" class="side-menu">

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <TheSidebar v-if="isMobile"/>
-    <TheNavbar v-else />
+    <template>
+      <TheSidebar v-if="isMobile"/>
+      <TheNavbar v-else />
+    </template>
     <router-view />
   </div>
 </template>
