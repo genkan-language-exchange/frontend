@@ -1,7 +1,7 @@
 import { loginWithEmailPassword, registerUser } from '../../api/userApi'
 
 const defaultState = {
-  currentUser: 'guest.4649',
+  currentUser: '',
   didAutoLogout: false,
   isAuth: false,
   role: 'guest',
@@ -11,7 +11,7 @@ const defaultState = {
 export default {
   state () {
     return {
-      currentUser: 'guest.4649',
+      currentUser: '',
       isAuth: false,
       role: 'guest',
       token: '',
@@ -90,8 +90,7 @@ export default {
           const user = response.data.user
           // TODO: add session expiration date to response
           const d = new Date()
-          d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
-          const expires = d.toUTCString()
+          const expires = d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
 
           localStorage.setItem('userId', `${user.name}.${user.identifier}`)
           localStorage.setItem('genkan-token', response.token)
@@ -106,12 +105,11 @@ export default {
     },
     async tryRefreshAuth(ctx) {
       const expires = localStorage.getItem('sessionExpires')
-      let today = new Date()
-      today = today.toUTCString()
+      let today = new Date().getTime()
       
       // expires - if future date, continue
       // expires - else logout
-      if (expires < today) {
+      if (today < expires) {
         const _id = localStorage.getItem('_id')
         const userId = localStorage.getItem('userId')
         const token = localStorage.getItem('genkan-token')

@@ -26,14 +26,14 @@
 </template>
 
 <script>
-  import { getStories, removeStory } from '../api/storyApi'
+  import { getStories, removeStory } from '@/api/storyApi'
 
-  import ReportModal from '../components/ReportModal'
-  import StoryCard from '../components/stories/StoryCard'
-  import StoryFilterBar from '../components/stories/StoryFilterBar'
-  import StoryModal from '../components/stories/StoryModal'
-  import TheStoryCreationButton from '../components/stories/TheStoryCreationButton'
-  import TheLoadSpinner from '../components/TheLoadSpinner'
+  import ReportModal from '@/components/ReportModal'
+  import StoryCard from '@/components/stories/StoryCard'
+  import StoryFilterBar from '@/components/stories/StoryFilterBar'
+  import StoryModal from '@/components/stories/StoryModal'
+  import TheStoryCreationButton from '@/components/stories/TheStoryCreationButton'
+  import TheLoadSpinner from '@/components/TheLoadSpinner'
 
   export default {
     components: {
@@ -123,30 +123,4 @@
   font-size: 1.6rem;
 }
 
-.fade-in-enter-from {
-  opacity: 0;
-}
-.fade-in-enter-to {
-  opacity: 1;
-}
-.fade-in-enter-active {
-  transition: all 0.3s ease-out;
-  z-index: 110;
-}
-
-.fade-in-leave-from {
-  opacity: 1;
-}
-.fade-in-leave-to {
-  opacity: 0;
-}
-.fade-in-leave-active {
-  transition: all 0.3s ease-out;
-  position: absolute;
-  width: 100%;
-  z-index: 110;
-}
-.fade-in-move {
-  transition: transform 0.5s ease;
-}
 </style>

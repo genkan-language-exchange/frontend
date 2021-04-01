@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { likeStory } from '../../api/storyApi'
+  import { likeStory } from '@/api/storyApi'
   import { mapGetters } from 'vuex'
   export default {
     name: "StoryCard",
@@ -181,7 +181,7 @@
     align-items: center;
   }
   .story-content {
-    max-height: 200px;
+    max-height: 60%;
     overflow-y: auto;
     padding: 15px;
     text-align: left;
@@ -197,7 +197,7 @@
   }
   .story-footer {
     height: 15%;
-    padding: 10px 5px;
+    padding: 15px 5px;
     position: relative;
   }
   .comment-like button,
@@ -302,7 +302,6 @@
 @media (min-width: 959px) {
   .story-card {
     width: 50%;
-    max-height: 300px;
   }
 }
 </style>

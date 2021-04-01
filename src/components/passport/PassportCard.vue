@@ -46,26 +46,22 @@
         <p>Moments</p>
       </div>
     </section>
-    <transition-group name="profile" mode="out-in">
+    <transition-group name="fade-in" mode="out-in">
       <template v-if="viewingProfile">
-        <div>
-          <section id="about">
-            <div>
-              <h3>About:</h3><p>{{user.profile.about}}</p>
-            </div>
-            <div>
-              <h3>Language Goal:</h3><p>{{user.profile.languageGoal}}</p>
-            </div>
-            <div>
-              <h3>Interests:</h3><p>{{user.profile.interests.join(', ')}}</p>
-            </div>
-          </section>
+        <TheAboutSection
+          :about="user.profile.about"
+          :languageGoal="user.profile.languageGoal"
+          :interests="user.profile.interests"
+        />
 
-          <TheFilters v-if="isSelf" :filterSettings="user.filterSettings" :role="user.role" />
-        </div>
+        <TheFilters
+          v-if="isSelf"
+          :filterSettings="user.filterSettings"
+          :role="user.role"
+        />
       </template>
       <template v-else>
-        <UserMoments :user="user" />
+        <TheUserMoments :user="user" />
       </template>
     </transition-group>
 
@@ -82,14 +78,16 @@
 import axios from 'axios'
 
 import { mapActions, mapGetters } from 'vuex'
-import checkAccountAge from '../../util/checkAccountAge.js'
+import checkAccountAge from '@/util/checkAccountAge.js'
+
+import TheAboutSection from './TheAboutSection'
+import TheUserMoments from './moments/TheUserMoments'
 import TheFilters from './TheFilters'
 import TheFooter from './TheFooter'
-import UserMoments from './moments/UserMoments'
-
 export default {
   components: {
-    UserMoments,
+    TheAboutSection,
+    TheUserMoments,
     TheFilters,
     TheFooter,
   },
@@ -244,8 +242,6 @@ h2 span {
   align-items: center;
   width: 100%;
   padding: 0;
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
   overflow: hidden;
 }
 #toggle-view>div {
@@ -286,24 +282,9 @@ form p {
   section {
     max-width: 60%;
   }
-}
-.profile-enter-from {
-  opacity: 0;
-}
-.profile-enter-to {
-  opacity: 1;
-}
-.profile-enter-active {
-  transition: all 0.25s ease-out;
-}
-
-.profile-leave-from {
-  opacity: 1;
-}
-.profile-leave-to {
-  opacity: 0;
-}
-.profile-leave-active {
-  transition: all 0.25s ease-out;
+  #toggle-view {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+  }
 }
 </style>

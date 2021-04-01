@@ -22,7 +22,7 @@
 
 <script>
   import moment from 'moment'
-  import { getDrafts, removeStory } from '../../api/storyApi'
+  import { getDrafts, removeStory } from '@/api/storyApi'
   export default {
     data() {
       return {

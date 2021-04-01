@@ -8,7 +8,7 @@
 #creation {
   position: fixed;
   top: 5px;
-  left: 5px;
+  right: 5px;
   z-index: 99;
   display: flex;
   justify-content: center;

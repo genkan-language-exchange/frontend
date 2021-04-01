@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { computed } from 'vue'
   export default {
     name: 'ResourceNotFound',
     methods: {
@@ -14,9 +13,6 @@ import { computed } from 'vue'
         this.$router.push('/')
       }
     },
-    computed() {
-      console.log(this.$route.params)
-    }
   }
 </script>
 
