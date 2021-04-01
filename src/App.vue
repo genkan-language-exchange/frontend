@@ -14,8 +14,6 @@ export default {
   name: 'Main',
   components: {
     Navigation,
-    // TheNavbar,
-    // TheSidebar,
   },
   created() {
     this.$store.dispatch('tryRefreshAuth')
