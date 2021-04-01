@@ -7,7 +7,7 @@
           <StoryCard v-for="story in stories" :key="story._id" :userId="story.userId" :story="story" @openModal="openModal" @openReportModal="openReportModal" @deleteStory="deleteStory" />
         </transition-group>
       </section>
-      <TheStoryCreationButtom />
+      <TheStoryCreationButton />
     </div>
   </template>
 
@@ -32,7 +32,7 @@
   import StoryCard from '../components/stories/StoryCard'
   import StoryFilterBar from '../components/stories/StoryFilterBar'
   import StoryModal from '../components/stories/StoryModal'
-  import TheStoryCreationButtom from '../components/stories/TheStoryCreationButton'
+  import TheStoryCreationButton from '../components/stories/TheStoryCreationButton'
   import TheLoadSpinner from '../components/TheLoadSpinner'
 
   export default {
@@ -41,7 +41,7 @@
       StoryCard,
       StoryFilterBar,
       StoryModal,
-      TheStoryCreationButtom,
+      TheStoryCreationButton,
       TheLoadSpinner
     },
     data() {

@@ -5,7 +5,7 @@ const defaultState = {
   didAutoLogout: false,
   isAuth: false,
   role: 'guest',
-  userInfo: {},
+  token: '',
 }
 
 export default {
@@ -14,7 +14,7 @@ export default {
       currentUser: 'guest.4649',
       isAuth: false,
       role: 'guest',
-      userInfo: {},
+      token: '',
     }
   },
   mutations: {
@@ -26,6 +26,7 @@ export default {
         state.role = payload.role
         // set auth
         state.isAuth = true
+        state.token = payload.token
       }
       // TODO: otherwise ask if they want to reactivate
     },
@@ -71,6 +72,7 @@ export default {
           localStorage.setItem('userId', `${newUser.name}.${newUser.identifier}`)
           localStorage.setItem('genkan-token', response.token)
           localStorage.setItem('sessionExpires', expires)
+          newUser.token = response.token
           // send response to mutation
           ctx.commit('setUser', newUser)
           return response
@@ -94,6 +96,8 @@ export default {
           localStorage.setItem('userId', `${user.name}.${user.identifier}`)
           localStorage.setItem('genkan-token', response.token)
           localStorage.setItem('sessionExpires', expires)
+
+          user.token = response.token
           // send response to mutation
           ctx.commit('setUser', user)
         }
@@ -110,11 +114,13 @@ export default {
       if (expires < today) {
         const _id = localStorage.getItem('_id')
         const userId = localStorage.getItem('userId')
+        const token = localStorage.getItem('genkan-token')
 
-        if (userId) {
+        if (token && userId) {
           const name = userId.split('.')[0]
           const identifier = userId.split('.')[1]
           const payload = { name, identifier, active: true, _id, }
+          payload.token = token
           ctx.commit('setUser', payload)
         }
       } else {
@@ -126,5 +132,6 @@ export default {
   getters: {
     currentUser: state => state.currentUser,
     isAuth: state => state.isAuth,
+    token: state => state.token,
   },
 }

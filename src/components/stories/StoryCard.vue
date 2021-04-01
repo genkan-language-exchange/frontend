@@ -138,8 +138,8 @@
     margin: 0;
   }
   .story-card {
-    height: 250px;
     width: 95%;
+    max-height: 300px;
     margin: 0 auto 20px;
     background-color: var(--bg-color-secondary);
     border-radius: 10px;
@@ -181,9 +181,9 @@
     align-items: center;
   }
   .story-content {
-    height: 60%;
+    max-height: 200px;
     overflow-y: auto;
-    padding: 5px 15px;
+    padding: 15px;
     text-align: left;
     cursor: pointer;
     scrollbar-width: thin;
@@ -197,7 +197,7 @@
   }
   .story-footer {
     height: 15%;
-    padding: 5px;
+    padding: 10px 5px;
     position: relative;
   }
   .comment-like button,
@@ -302,7 +302,7 @@
 @media (min-width: 959px) {
   .story-card {
     width: 50%;
-    height: 300px;
+    max-height: 300px;
   }
 }
 </style>

@@ -2,7 +2,27 @@
   <div id="base" v-if="user._id">
     <template v-if="!user.avatar">
       <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
-        <img ref="avatar" src='@/assets/avatar1.png' alt="User" draggable="false">
+        <img
+          v-if="true"
+          ref="avatar"
+          src='@/assets/avatar1.png'
+          alt="User"
+          draggable="false"
+        >
+        <form v-else>
+          <input
+            type="file"
+            style="display: none"
+            name="userAvatar"
+            @change="onFileSelected"
+            ref="fileInput"
+          >
+          <button type="button" @click.prevent="$refs.fileInput.click()">Pick File</button>
+          <template v-if="file">
+            <p>{{file.name}}</p>
+            <button type="button" @click.prevent="onFileSubmit">Upload</button>
+          </template>
+        </form>
       </div>
     </template>
     <section id="head">
@@ -59,11 +79,14 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import { mapActions, mapGetters } from 'vuex'
 import checkAccountAge from '../../util/checkAccountAge.js'
 import TheFilters from './TheFilters'
 import TheFooter from './TheFooter'
 import UserMoments from './moments/UserMoments'
+
 export default {
   components: {
     UserMoments,
@@ -76,14 +99,45 @@ export default {
   data() {
     return {
       viewingProfile: true,
+      changeAvatar: false,
+      file: null,
     }
   },
   methods: {
-    ...mapGetters(['currentUser']),
+    ...mapGetters(['currentUser', 'token']),
     ...mapActions(['logout']),
     logMeOut() {
       this.logout()
       this.$router.replace('/login')
+    },
+    setChangeAvatar(val) {
+      this.changeAvatar = val
+    },
+    onFileSelected(event) {
+      console.log(event.target.files[0])
+      this.file = event.target.files[0]
+    },
+    onFileSubmit() {
+      console.log(this.token())
+      if (this.file.type.slice(0,5) !== "image") return
+      const config = {
+        headers: { authorization: `Bearer ${this.token()}` }
+      }
+
+      const fd = new FormData()
+      fd.append('image', this.file, this.file.name)
+      axios.post('http://localhost:5000/api/v1/users/setAvatar', fd, config)
+        
+      //   onUploadProgress: (uploadEvent) => {
+      //       console.log('progress:')
+      //       console.log(Math.round(uploadEvent.loaded / uploadEvent.total * 100) + '%')
+      //     }
+      // })
+      .then(req => {
+        this.file = null
+        console.log(req)
+      })
+      .catch(err => console.error(err))
     }
   },
   computed: {
@@ -212,6 +266,9 @@ h2 span {
 }
 #toggle-view .active {
   background-color: var(--theme-color-main);
+}
+form p {
+  color: var(--bg-color-main);
 }
 .no-select {
 -webkit-touch-callout: none; /* iOS Safari */
