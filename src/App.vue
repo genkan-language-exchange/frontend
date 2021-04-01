@@ -9,8 +9,8 @@
 <script>
 import '@/assets/index.css'
 import '@/assets/transitions.css'
-import TheNavbar from '@/components/TheNavbar.vue'
-import TheSidebar from '@/components/TheSidebar.vue'
+import TheNavbar from './components/TheNavbar.vue'
+import TheSidebar from './components/TheSidebar.vue'
 
 export default {
   name: 'Main',
