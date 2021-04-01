@@ -29,7 +29,7 @@
             </router-link>
           </li>
           <li>
-            <button class="signout-button" type="button" @click.prevent="$emit('logMeOut')">
+            <button class="signout-button" type="button" @click.prevent="logMeOut">
               <span><i class="fas fa-sign-out-alt"></i></span>Sign out
             </button>
           </li>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters(['currentUser', 'isAuth']),
@@ -50,6 +50,14 @@ export default {
       sidenavOpen: false,
     }
   },
+  methods: {
+    ...mapActions(['logout']),
+    logMeOut() {
+      this.sidenavOpen = false
+      this.logout()
+      this.$router.replace('/login')
+    }
+  }
 }
 </script>
 
