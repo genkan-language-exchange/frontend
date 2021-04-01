@@ -4,5 +4,5 @@ A mobile first, responsive design, cross-platform (web and mobile) language and 
 ## 🔗 Links
 - **[Twitter](https://www.twitter.com/gengo_koukan)**
 
-** API documentation
+## API documentation
 - Coming soon!
