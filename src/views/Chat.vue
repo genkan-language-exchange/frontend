@@ -26,7 +26,6 @@
     PlaceholderContacts,
     TheLoadSpinner,
   },
-  inject: ['isMobile'],
   data() {
     return {
       isMobile: window.innerWidth < 959,

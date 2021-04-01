@@ -1,6 +1,8 @@
 <template>
   <div id="side-nav" v-if="isAuth">
-    <button class="fa-icon-button menu-toggle-button-in" @click="sidenavOpen = true"><i class="fas fa-bars"></i></button>
+    <div class="pseudo-mobile-top-bar">
+      <button class="fa-icon-button menu-toggle-button-in" @click="sidenavOpen = true"><i class="fas fa-bars"></i></button>
+    </div>
     <transition name="slide-in-left" mode="out-in">
       <div v-if="sidenavOpen" class="side-menu">
         <button class="fa-icon-button menu-toggle-button-out" v-if="sidenavOpen" @click="sidenavOpen = false"><i class="fas fa-times"></i></button>
@@ -61,11 +63,19 @@ export default {
   background-color: var(--bg-color-secondary);
   z-index: 110;
 }
+.pseudo-mobile-top-bar {
+  position: fixed;
+  z-index: 110;
+  top: 0;
+  height: 55px;
+  width: 100%;
+  background-color: var(--bg-color-secondary);
+}
 .menu-toggle-button-in,
 .menu-toggle-button-out {
-  position: absolute;
-  top: 15px;
-  left: 12px;
+  position: fixed;
+  top: 8px;
+  left: 5px;
 }
 .menu-toggle-button-in { z-index: 100; }
 .menu-toggle-button-out { z-index: 200; }

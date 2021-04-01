@@ -8,14 +8,14 @@
 #creation {
   position: fixed;
   top: 5px;
-  right: 5px;
-  z-index: 99;
+  right: 15px;
+  z-index: 110;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
-  width: 50px;
-  height: 50px;
+  font-size: 2.6rem;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background-color: var(--theme-color-main);
   cursor: pointer;

@@ -17,10 +17,10 @@
     </div>
   </template>  
 
-  <transition name="fade-in" mode="out-in">
+  <transition name="fade-in-z" mode="out-in">
     <StoryModal @closeModal="closeModal" @report="switchModal" :story="modalData" :isCommenting="isCommenting" v-if="showModal" />
   </transition>
-  <transition name="fade-in" mode="out-in">
+  <transition name="fade-in-z" mode="out-in">
     <ReportModal @closeModal="closeReportModal" @cancelReport="cancelReport" :reporting="modalData" v-if="showReportModal" />
   </transition>
 </template>

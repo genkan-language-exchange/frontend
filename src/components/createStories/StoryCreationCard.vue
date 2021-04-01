@@ -3,12 +3,12 @@
   <transition-group name="creation" mode="out-in">
     <div id="creation-card" v-if="!sending">
       <div id="character-limit-box">
-        <h4 :style="content.trim().length > 899 && { color: `rgba(${parseInt(content.trim().length) - 745},0,0,1)` }">{{content.trim().length}} / 1000</h4>
+        <h4 :style="content.trim().length > 899 && { color: `rgba(${parseInt(content.trim().length) - 745},0,0,1)` }">{{content.trim().length.toString().padStart(4, '0')}} / 2000</h4>
       </div>
       <form @submit.prevent="() => handleSubmit('visible')">
         <textarea name="story" id="story" cols="30" rows="10" v-model="content"></textarea>
         <!-- <input name="tags" type="text" placeholder="Tags"> -->
-        <fieldset id="button-group" :disabled="!content.trim().length || content.trim().length > 1000">
+        <fieldset id="button-group" :disabled="!content.trim().length || content.trim().length > 2000">
           <button type="button" @click="() => handleSubmit('draft')"><i class="far fa-save"></i></button>
           <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </fieldset>
@@ -78,7 +78,7 @@
         this.content = val.content
       },
       content() {
-        if (this.content.trim().length > 1000) this.content = this.content.slice(0,1000)
+        if (this.content.trim().length > 2000) this.content = this.content.slice(0,2000)
       }
     }
   }
