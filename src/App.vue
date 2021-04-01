@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <template>
-      <TheSidebar v-if="isMobile"/>
-      <TheNavbar v-else />
-    </template>
+    <Navigation />
     <router-view />
   </div>
 </template>
@@ -11,38 +8,17 @@
 <script>
 import './assets/index.css'
 import './assets/transitions.css'
-import TheNavbar from '@/components/TheNavbar'
-import TheSidebar from '@/components/TheSidebar'
+import Navigation from '@/components/navigation/Navigation'
 
 export default {
   name: 'Main',
   components: {
-    TheNavbar,
-    TheSidebar,
+    Navigation,
+    // TheNavbar,
+    // TheSidebar,
   },
   created() {
     this.$store.dispatch('tryRefreshAuth')
-  },
-  provide() {
-    return {
-      isMobile: this.isMobile
-    }
-  },
-  data() {
-    return {
-      isMobile: window.innerWidth < 959,
-    }
-  },
-  mounted() {
-    window.addEventListener('resize', this.onResize)
-  },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.onResize)
-  },
-  methods: {
-    onResize() {
-      return this.isMobile = window.innerWidth < 900
-    }
   },
 }
 </script>
