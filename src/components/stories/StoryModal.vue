@@ -9,7 +9,8 @@
           </div>
           <div class="user-info">
             <div>
-              <h2>{{ freshStory.userId.name }}<span>#{{ freshStory.userId.identifier }}</span></h2>
+              <!-- <h2>{{ freshStory.userId.name }}<span>#{{ freshStory.userId.identifier }}</span></h2> -->
+              <h2>{{ freshStory.userId.name }}</h2>
             </div>
             <!-- languages -->
           </div>
