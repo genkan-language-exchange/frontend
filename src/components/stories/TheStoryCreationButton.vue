@@ -1,6 +1,6 @@
 <template>
   <div id="creation" @click="$router.push('/stories/create')">
-    <i class="fas fa-book-medical"></i>
+    <i class="fas fa-feather-alt"></i>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
   position: fixed;
   top: 5px;
   right: 15px;
-  z-index: 110;
+  z-index: 180;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,10 +17,10 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: var(--theme-color-main);
   cursor: pointer;
   transition: all 0.25s ease-out;
 }
+#creation, i { background-color: var(--theme-color-main) !important; }
 #creation:active,
 #creation:hover, i {
   background-color: var(--theme-color-secondary);
@@ -34,6 +34,7 @@
     left: 85%;
     width: 60px;
     height: 60px;
+    z-index: 100;
   }
 }
 </style>

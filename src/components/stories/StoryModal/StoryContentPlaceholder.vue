@@ -6,15 +6,13 @@
     </div>
     <div class="user-info">
       <div>
-        <h2>{{ story.userId.name }}<span>#{{ story.userId.identifier }}</span></h2>
+        <!-- <h2>{{ story.userId.name }}<span>#{{ story.userId.identifier }}</span></h2> -->
       </div>
       <!-- languages -->
     </div>
   </div>
   <div class="content">
-    <div :style="{ margin: '150px auto' }">
-      <TheLoadSpinner />
-    </div>
+    <TheLoadSpinner />
   </div>
   <div class="story-footer">
     <button class="likes"><i class="far fa-heart"></i></button>
@@ -25,12 +23,11 @@
 </template>
 
 <script>
-  import TheLoadSpinner from '../TheLoadSpinner'
+  import TheLoadSpinner from '../../TheLoadSpinner'
   export default {
     components: {
       TheLoadSpinner,
     },
-    props: ['story']
   }
 </script>
 

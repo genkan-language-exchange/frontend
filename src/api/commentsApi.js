@@ -14,11 +14,9 @@ async function commentStory({ storyId, content }) {
     }
   }
 
-  const response = await axios.post(url, data, config)
+  return axios.post(url, data, config)
   .then(res => res.data)
-  .catch(err => err)
-
-  return response
+  .catch(err => console.error(err))
 }
 
 async function editComment({ storyId, commentId, content, id }) {

@@ -3,6 +3,8 @@
     <div class="pseudo-mobile-top-bar">
       <button class="fa-icon-button menu-toggle-button-in" @click="sidenavOpen = true"><i class="fas fa-bars"></i></button>
     </div>
+
+    <div v-if="sidenavOpen" id="obscured"></div>
     <transition name="slide-in-left" mode="out-in">
       <div v-if="sidenavOpen" class="side-menu">
         <button class="fa-icon-button menu-toggle-button-out" v-if="sidenavOpen" @click="sidenavOpen = false"><i class="fas fa-times"></i></button>
@@ -62,6 +64,17 @@ export default {
 </script>
 
 <style scoped>
+#obscured {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 190;
+  background-color: rgba(0,0,0,0.7);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
 .side-menu {
   position: fixed;
   top: 0;
@@ -69,11 +82,11 @@ export default {
   height: 100%;
   border-right: 2px solid var(--theme-color-main);
   background-color: var(--bg-color-secondary);
-  z-index: 110;
+  z-index: 200;
 }
 .pseudo-mobile-top-bar {
   position: fixed;
-  z-index: 110;
+  z-index: 180;
   top: 0;
   height: 55px;
   width: 100%;
@@ -85,7 +98,7 @@ export default {
   top: 8px;
   left: 5px;
 }
-.menu-toggle-button-in { z-index: 100; }
+.menu-toggle-button-in { z-index: 190; }
 .menu-toggle-button-out { z-index: 200; }
 .signout-button {
   padding: 8px 12px;
@@ -104,19 +117,23 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 50px;
   margin: 0;
   padding: 0;
   margin-top: 50px;
   height: 80%;
 }
 li {
+  box-sizing: border-box;
   list-style: none;
   width: 100%;
   text-align: left;
+  margin-bottom: 30px;
 }
 
 a {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
   padding: 2rem;
   font-size: 2.6rem;
   font-weight: bold;
@@ -127,16 +144,9 @@ a {
 a:hover {
   color: var(--theme-color-main);
 }
-a span {
-  margin-left: 15px;
-}
-.router-link {
-  width: 100%;
-}
-li:last-child {
-  margin: auto 0 50px 20px;
-}
-.router-link-active, .router-link-exact-active {
-  color: var(--theme-color-main);
-}
+a span { margin-left: 15px; }
+button span { margin-right: 15px; }
+.router-link { width: 100%; }
+li:last-child { margin: auto -20px 50px 20px; }
+.router-link-active, .router-link-exact-active { color: var(--theme-color-main); }
 </style>

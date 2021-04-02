@@ -1,7 +1,7 @@
 <template>
   <div id="base">
     <div id="obscured" @click.prevent="closeModal"></div>
-    <div id="modal">
+    <div id="modal" :style="{ maxHeight: safeHeight }">
       <slot></slot>
     </div>
   </div>
@@ -18,6 +18,11 @@
       handleKeyPress(e) {
         if (e.code.toLowerCase() === 'escape') this.closeModal()
       },
+    },
+    computed: {
+      safeHeight() {
+        return screen.availHeight - 100 + 'px'
+      }
     },
     mounted() {
       window.addEventListener('keyup', this.handleKeyPress)
@@ -46,25 +51,26 @@
   }
   #modal {
     position: fixed;
-    top: 2.5%;
+    top: 65px;
     left: 0;
     right: 0;
-    height: 85%;
+    /* max-height: 55%; */
     box-sizing: border-box;
-    z-index: 101;
+    z-index: 110;
     width: 90%;
     margin: 0 auto;
     background-color: var(--theme-color-main);
     border-radius: 5px;
     font-size: 1.6rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     transform: all 0.2s ease-out;
   }
   @media (min-width: 959px) {
     #modal {
       top: 10%;
-      width: 400px;
-      height: 700px;
+      width: 500px;
+      max-height: 80% !important;
     }
   }
 </style>

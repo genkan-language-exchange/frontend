@@ -42,26 +42,24 @@
     </template>
 
     <template v-else>
-      <StoryContentPlaceholder :story="story" @finished="addNewComment" />
+      <StoryContentPlaceholder />
     </template>
   </transition-group>
 </BaseModal>
 </template>
 
 <script>
-  import { getStory } from '../../api/storyApi'
-  import { commentStory } from '../../api/commentsApi'
   import BaseModal from '../BaseModal'
-  import CommentComposition from './CommentComposition'
-  import CommentsSection from './CommentsSection'
-  import StoryContentPlaceholder from './StoryContentPlaceholder'
+  import CommentComposition from './StoryModal/CommentComposition'
+  import CommentsSection from './StoryModal/CommentsSection'
+  import StoryContentPlaceholder from './StoryModal/StoryContentPlaceholder'
   export default {
     name: 'StoryModal',
     emits: ['report'],
     props: ['story', 'isCommenting'],
     data() {
       return {
-        freshStory: {},
+        // freshStory: {},
         composing: false,
       }
     },
@@ -73,8 +71,9 @@
     },
     methods: {
       async refreshStory() {
-        const response = await getStory(this.story._id)
-        if (response.status === "success") this.freshStory = response.data
+        this.$store.dispatch('fetchStorySingle', { storyId: this.story._id })
+        // const response = await getStory(this.story._id)
+        // if (response.status === "success") this.freshStory = response.data
       },
       goToPassport(name, identifier) {
         this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })
@@ -83,28 +82,29 @@
         this.composing = !this.composing
       },
       async addNewComment(val) {
-        this.freshStory = {}
         this.composing = false
         const payload = {
           content: val,
           storyId: this.story._id
         }
-        const response = await commentStory(payload)
-        .then(res => res.data)
-        .catch(err => err)
+        
+        this.$store.dispatch('addNewComment', payload)
         this.refreshStory()
       }
     },
     computed: {
+      freshStory() {
+        return this.$store.getters.modalStory
+      },
       content() {
         return this.story.content.split('\n')
       },
       orderedComments() {
         const ordered = this.story.comments
         return ordered.sort((a, b) => a.createdAt - b.createdAt)
-      }
+      },
     },
-    mounted() {
+    created() {
       this.composing = this.isCommenting
       this.refreshStory()
     }
@@ -116,7 +116,8 @@
     font-size: 1.6rem;
   }
   #story-card {
-    height: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
   }
@@ -172,9 +173,8 @@
 
   .content #story-content {
     height: auto;
-    min-height: 125px;
     overflow-y: auto;
-    padding: 5px;
+    padding: 15px 8px;
   }
   .content #user-comments {
     padding: 0 5px;
