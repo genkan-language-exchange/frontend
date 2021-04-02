@@ -27,8 +27,7 @@
     </template>
     <section id="head">
       <div id="user-name-age">
-        <p v-if="newUser" class="material-icons new-icon">fiber_new</p>
-        <h2>{{user.name}} <span>#{{user.identifier}}</span></h2>
+        <h2>{{user.name}} <span v-if="isSelf">#{{user.identifier}}</span></h2>
         <p>{{user.matchSettings.age}} years old</p>
       </div>
       <div id="user-lang">
@@ -140,7 +139,7 @@ export default {
   },
   computed: {
     isSelf() {
-      return this.currentUser() === this.$route.params.id
+      return this.currentUser() === `${this.user.name}.${this.user.identifier}`
     },
     newUser() {
       return checkAccountAge(this.user.matchSettings.accountCreated)

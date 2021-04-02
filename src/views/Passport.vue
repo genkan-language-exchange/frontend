@@ -58,12 +58,18 @@ export default {
     }
   },
   mounted() {
-    this.findUser(this.$route.params.id)
+    let id
+    id = this.$store.getters.currentUser
+    if (this.$route.params.id) id = this.$route.params.id
+    this.findUser(id)
   },
   beforeRouteUpdate(to, from, next) {
+    let id
     if (to.params.id !== from.params.id) {
+      id = this.$store.getters.currentUser
+      if (this.$route.params.id) id = this.$route.params.id
       this.user = {}
-      this.findUser(to.params.id)
+      this.findUser(id)
       next()
     }
   }

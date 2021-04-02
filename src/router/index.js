@@ -38,16 +38,16 @@ const router = createRouter({
         requiresAuth: true,
       }
     },
+    // {
+    //   path: '/passport',
+    //   name: 'Passport',
+    //   component: () => import('../views/Passport.vue'),
+    //   meta: {
+    //     requiresAuth: true,
+    //   },
+    // },
     {
       path: '/passport',
-      name: 'Passport',
-      component: () => import('../views/Passport.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/passport/:id',
       name: 'Passport',
       props: true,
       component: () => import('../views/Passport.vue'),

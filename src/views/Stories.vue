@@ -18,10 +18,21 @@
   </template>  
 
   <transition name="fade-in-z" mode="out-in">
-    <StoryModal @closeModal="closeModal" @report="switchModal" :story="modalData" :isCommenting="isCommenting" v-if="showModal" />
+    <StoryModal
+      v-if="showModal"
+      @closeModal="closeModal"
+      @report="switchModal"
+      :story="modalData"
+      :isCommenting="isCommenting"
+    />
   </transition>
   <transition name="fade-in-z" mode="out-in">
-    <ReportModal @closeModal="closeReportModal" @cancelReport="cancelReport" :reporting="modalData" v-if="showReportModal" />
+    <ReportModal
+      v-if="showReportModal"
+      @closeModal="closeReportModal"
+      @cancelReport="cancelReport"
+      :reporting="modalData"
+    />
   </transition>
 </template>
 

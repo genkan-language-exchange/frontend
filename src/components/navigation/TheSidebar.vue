@@ -26,7 +26,7 @@
             </router-link>
             </li>
           <li>
-            <router-link :to="{ name: 'Passport', params: { id: currentUser } } " @click="sidenavOpen = false">
+            <router-link to="/passport" @click="sidenavOpen = false">
               <i class="fas fa-user-circle"></i><span>Passport</span>
             </router-link>
           </li>

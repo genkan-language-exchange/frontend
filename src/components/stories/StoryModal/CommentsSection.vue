@@ -38,10 +38,11 @@
         return formatted
       },
       commentUser() {
-        return `${this.comment.commenter.name}#${this.comment.commenter.identifier}`
+        // return `${this.comment.commenter.name}#${this.comment.commenter.identifier}`
+        return this.comment.commenter.name
       },
       isCurrentUser() {
-        return this.currentUser.split('.').join('#') === this.commentUser
+        return this.currentUser.split('.').join('#') === `${this.comment.commenter.name}#${this.comment.commenter.identifier}`
       }
     }
   }
