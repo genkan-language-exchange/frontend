@@ -21,7 +21,7 @@
     },
     computed: {
       safeHeight() {
-        return screen.availHeight - 100 + 'px'
+        return screen.availHeight - 200 + 'px'
       }
     },
     mounted() {

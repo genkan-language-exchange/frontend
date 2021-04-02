@@ -4,7 +4,7 @@
       <button class="fa-icon-button menu-toggle-button-in" @click="sidenavOpen = true"><i class="fas fa-bars"></i></button>
     </div>
 
-    <div v-if="sidenavOpen" id="obscured"></div>
+    <div v-if="sidenavOpen" id="obscured" @click="sidenavOpen = false"></div>
     <transition name="slide-in-left" mode="out-in">
       <div v-if="sidenavOpen" class="side-menu">
         <button class="fa-icon-button menu-toggle-button-out" v-if="sidenavOpen" @click="sidenavOpen = false"><i class="fas fa-times"></i></button>

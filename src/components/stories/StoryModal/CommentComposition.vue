@@ -2,7 +2,6 @@
   <div id="comment-adder">
     <form @submit.prevent="handleSubmit">
       <textarea
-        autofocus
         name="comment"
         v-model="content"
         ref="comment"
@@ -44,16 +43,13 @@
       }
     },
     mounted() {
+      document.activeElement.blur()
+      this.$refs.comment.focus()
       this.$refs.comment.addEventListener("keypress", this.submitOnEnter)
     },
     beforeUnmount() {
       this.$refs.comment.removeEventListener("keypress", this.submitOnEnter)
     },
-    watch: {
-      composing(val) {
-        console.log(val)
-      }
-    }
   }
 </script>
 

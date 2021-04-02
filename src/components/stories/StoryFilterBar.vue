@@ -1,35 +1,33 @@
 <template>
-  <form>
-    <fieldset>
-      <button
-        type="button"
-        value="all"
-        :class="storyFilter === 'all' ? 'active' : ''"
-        @click="handleClick('all')"
-      >
-        All
-      </button>
-      <button
-        type="button"
-        value="community"
-        :class="storyFilter === 'community' ? 'active' : ''"
-        disabled
-        @click="handleClick('community')"
-      >
-        
-        <abbr title="Not yet implemented">Community</abbr>
-      </button>
-      <button
-        type="button"
-        value="follow"
-        disabled
-        :class="storyFilter === 'follow' ? 'active' : ''"
-        @click="handleClick('follow')"
-      >
-        <abbr title="Not yet implemented">Following</abbr>
-      </button>
-    </fieldset>
-  </form>
+  <div id="filter-bar">
+    <button
+      type="button"
+      value="all"
+      :class="storyFilter === 'all' ? 'active' : ''"
+      @click="handleClick('all')"
+    >
+      All
+    </button>
+    <button
+      type="button"
+      value="community"
+      :class="storyFilter === 'community' ? 'active' : ''"
+      disabled
+      @click="handleClick('community')"
+    >
+      
+      <abbr title="Not yet implemented">Community</abbr>
+    </button>
+    <button
+      type="button"
+      value="follow"
+      disabled
+      :class="storyFilter === 'follow' ? 'active' : ''"
+      @click="handleClick('follow')"
+    >
+      <abbr title="Not yet implemented">Following</abbr>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -50,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-form {
+#filter-bar {
   position: sticky;
   top: 55px;
   margin: 55px auto 0;
@@ -59,9 +57,6 @@ form {
   width: 100%;
   background-color: var(--bg-color-secondary);
   z-index: 50;
-}
-fieldset {
-  border: none;
 }
 button {
   width: 30%;
@@ -84,14 +79,14 @@ button:focus, button:hover {
 button:disabled,
 button:disabled:hover {
   cursor: default;
-  color: #7f8fa6;
-  background: #718093;
+  color: var(--bg-color-main);
+  background: var(--bg-color-secondary);
 }
 .active {
   background-color: var(--theme-color-main);
 }
 @media (min-width: 959px) {
-  form {
+  #filter-bar {
     top: 62px;
     margin-top: 60px;
     width: 60%;

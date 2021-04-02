@@ -2,7 +2,7 @@
 <BaseModal>
   <transition-group mode="out-in" name="story-modal">
     <template v-if="freshStory._id">
-      <div id="story-card">
+      <div id="story-card" ref="card">
         <div class="story-header" @click.prevent="() => goToPassport(freshStory.userId.name, freshStory.userId.identifier)">
           <div class="story-avatar">
             <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
@@ -90,7 +90,12 @@
         
         this.$store.dispatch('addNewComment', payload)
         this.refreshStory()
-      }
+      },
+      scrollToCardBottom() {
+        const card = this.$refs.card
+        if (card == undefined) return
+        this.$nextTick(() => card.scrollIntoView({behavior: "smooth", block: "end" }))
+      },
     },
     computed: {
       freshStory() {
@@ -103,6 +108,14 @@
         const ordered = this.story.comments
         return ordered.sort((a, b) => a.createdAt - b.createdAt)
       },
+    },
+    watch: {
+      composing(val) {
+        if (val) this.scrollToCardBottom()
+      }
+    },
+    mounted() {
+      if (this.isCommenting) this.scrollToCardBottom()
     },
     created() {
       this.composing = this.isCommenting

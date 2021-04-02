@@ -18,11 +18,10 @@
   height: 45px;
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.25s ease-out;
 }
-#creation, i { background-color: var(--theme-color-main) !important; }
+#creation { background-color: var(--theme-color-main); }
 #creation:active,
-#creation:hover, i {
+#creation:hover {
   background-color: var(--theme-color-secondary);
 }
 @media (min-width: 959px) {

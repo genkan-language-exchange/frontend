@@ -35,7 +35,7 @@ html {
   html {
     --bg-color-main: #f5f6fa;
     --bg-color: var(--bg-color-main);
-    --bg-color-secondary: #e6e6e6;
+    --bg-color-secondary: #fff;
     --off-white-main: #2f3640;
     --off-white: var(--off-white-main);
   }

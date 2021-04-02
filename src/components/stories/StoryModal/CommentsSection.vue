@@ -8,10 +8,14 @@
         <h4 :style="isCurrentUser && { color: '#0097e6 !important' }">{{commentUser}}:</h4>
         <p class="created-at">{{formattedDate}}</p>
       </div>
-      <p>{{comment.content}} <span class="edited" v-if="comment.originalContent?.length">(edited)</span></p>
+      <p v-for="(line, idx) in comment.content.split('\n')" :key="idx">
+        {{/^\s*$/.test(line) ? '&nbsp;' : line}}
+        <span class="edited" v-if="idx === 0 && comment.originalContent?.length">(edited)</span>
+      </p>
+      <!-- <p>{{comment.content}} <span class="edited" v-if="comment.originalContent?.length">(edited)</span></p> -->
       <template v-if="isCurrentUser">
         <button class="edit-button">
-          <i class="fas fa-edit"></i>     
+          <i class="fas fa-pencil-alt"></i>    
         </button>
         <button class="delete-button" >
           <i class="fas fa-trash-alt"></i>     
@@ -67,7 +71,7 @@
   }
   .comment-card {
     background-color: var(--off-white-main);
-    height: 65px;
+    min-height: 65px;
     display: flex;
     padding: 5px;
     margin: 5px 0;
