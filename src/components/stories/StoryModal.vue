@@ -131,7 +131,6 @@
   }
   #story-card {
     max-height: 100%;
-    overflow-y: scroll;
     display: flex;
     flex-direction: column;
   }

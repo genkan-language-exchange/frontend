@@ -63,7 +63,7 @@
     border-radius: 5px;
     font-size: 1.6rem;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     transform: all 0.2s ease-out;
   }
   @media (min-width: 959px) {
