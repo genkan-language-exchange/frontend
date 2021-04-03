@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-const prefix = 'https://genkan.herokuapp.com/api/v1/users'
-// const prefix = 'http://localhost:5000/api/v1/users'
+const prefix = `${process.env.VUE_APP_API_URL}/api/v1/users`
 
 async function registerUser(name, email, password, passwordConfirm, incomingMatchSettings) {
   const url = prefix + '/signup'
@@ -11,7 +10,7 @@ async function registerUser(name, email, password, passwordConfirm, incomingMatc
     languageKnow: ["???"],
     languageLearn: ["???"],
     nationality: "???",
-    residence: "???",
+    residence: "Antarctica",
     ...incomingMatchSettings,
   }
   matchSettings.birthday = new Date(matchSettings.birthday)

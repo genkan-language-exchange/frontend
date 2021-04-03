@@ -45,18 +45,21 @@
         <p>Moments</p>
       </div>
     </section>
+    
     <transition-group name="fade-in" mode="out-in">
       <template v-if="viewingProfile">
         <TheAboutSection
           :about="user.profile.about"
           :languageGoal="user.profile.languageGoal"
           :interests="user.profile.interests"
+          key="about"
         />
 
         <TheFilters
           v-if="isSelf"
           :filterSettings="user.filterSettings"
           :role="user.role"
+          key="filters"
         />
       </template>
       <template v-else>
@@ -123,7 +126,7 @@ export default {
 
       const fd = new FormData()
       fd.append('image', this.file, this.file.name)
-      axios.post('http://localhost:5000/api/v1/users/setAvatar', fd, config)
+      axios.post(`${process.env.VUE_APP_API_URL}/api/v1/users/setAvatar`, fd, config)
         
       //   onUploadProgress: (uploadEvent) => {
       //       console.log('progress:')
@@ -265,15 +268,7 @@ h2 span {
 form p {
   color: var(--bg-color-main);
 }
-.no-select {
--webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none; /* Non-prefixed version, currently
-                                supported by Chrome and Opera */
-}
+
 @media (min-width: 959px) {
   #avatar {
     width: 300px;

@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-const prefix = 'https://genkan.herokuapp.com/api/v1/stories'
-// const prefix = 'http://localhost:5000/api/v1/stories'
+const prefix = `${process.env.VUE_APP_API_URL}/api/v1/stories`
 
 async function getStories(page) {
   const url = prefix + `?page=${page || 1}`

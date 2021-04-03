@@ -1,4 +1,4 @@
-const prefix = 'https://genkan.herokuapp.com/api/v1/stories'
+const prefix = `${process.env.VUE_APP_API_URL}/api/v1/stories`
 
 export default {
   state: {
