@@ -8,13 +8,13 @@
         <input id="email" name="email" type="email" v-model.trim="email" required placeholder="Enter your email address" />
       </label>
       <label for="username" key="username">Username
-        <input id="username" name="username" type="username" v-model.trim="username" required placeholder="Enter your username" />
+        <input id="username" name="username" type="username" v-model.trim="username" required maxlength="20" placeholder="Enter your username (max 20 characters)" />
       </label>
       <label for="password" key="password">Password
-        <input id="password" name="password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="password" required placeholder="Enter your password (min. 8 characters)" />
+        <input id="password" name="password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="password" minlength="8" required placeholder="Enter your password (min. 8 characters)" />
       </label>
       <label for="confirm-password" key="confirm-password">Confirm Password
-        <input id="confirm-password" name="confirm-password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="passwordConfirm" required placeholder="Confirm your password" />
+        <input id="confirm-password" name="confirm-password" :type="passwordVisible ? 'text' : 'password' " v-model.trim="passwordConfirm" minlength="8" required placeholder="Confirm your password" />
       </label>
 
       <div key="password-visibility">

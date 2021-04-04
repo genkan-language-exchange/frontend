@@ -4,7 +4,17 @@
       <StoryFilterBar />
       <section id="story-deck">
         <transition-group name="fade-in">
-          <StoryCard v-for="story in stories" :key="story._id" :userId="story.userId" :story="story" @openModal="openModal" @openReportModal="openReportModal" @deleteStory="deleteStory" />
+          <template v-for="story in stories">
+            <StoryCard
+              v-if="story.userId != null || story.userId != undefined"
+              :key="story._id"
+              :userId="story.userId"
+              :story="story"
+              @openModal="openModal"
+              @openReportModal="openReportModal"
+              @deleteStory="deleteStory"
+            />
+          </template>
         </transition-group>
       </section>
       <TheStoryCreationButton />
@@ -68,7 +78,7 @@
     methods: {
       async getStories() {
         const response = await getStories()
-        .then(res => res.data)
+        .then(res => res.data.filter(story => story.userId != null))
         .catch(err => err)
         this.stories = response
       },

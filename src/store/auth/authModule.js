@@ -2,10 +2,10 @@ import { loginWithEmailPassword, registerUser } from '../../api/userApi'
 
 const defaultState = {
   currentUser: '',
-  didAutoLogout: false,
   isAuth: false,
   role: 'guest',
   token: '',
+  verified: false,
 }
 
 export default {
@@ -15,6 +15,7 @@ export default {
       isAuth: false,
       role: 'guest',
       token: '',
+      verified: false,
     }
   },
   mutations: {
@@ -131,5 +132,6 @@ export default {
     currentUser: state => state.currentUser,
     isAuth: state => state.isAuth,
     token: state => state.token,
+    isVerified: state => state.verified,
   },
 }

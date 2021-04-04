@@ -47,14 +47,6 @@ const router = createRouter({
         requiresAuth: true,
       }
     },
-    // {
-    //   path: '/passport',
-    //   name: 'Passport',
-    //   component: () => import('../views/Passport.vue'),
-    //   meta: {
-    //     requiresAuth: true,
-    //   },
-    // },
     {
       path: '/passport',
       name: 'Passport',
@@ -89,6 +81,9 @@ const router = createRouter({
       meta: {
         guest: true,
       },
+      beforeEnter(_to, _from, next) {
+        if (store.getters.isVerified) next('/')
+      }
     },
     {
       path: '/roadmap',
@@ -98,6 +93,11 @@ const router = createRouter({
         guest: true,
       },
     },
+    // {
+    //   path: '/privacy',
+    //   name: 'Privacy',
+    //   component: () => import('../views/Privacy.vue'),
+    // },
     {
       path: '/account_not_found',
       name: 'ResourceNotFound',
@@ -143,7 +143,7 @@ router.beforeEach((to, _from, next) => {
   if (to.meta.requiresAuth && !store.getters.isAuth) {
     // route requires a user to be logged in
     // and the user is not logged in
-    next('/')
+    next('/login')
   }
   if (to.meta.requiresUnauth && store.getters.isAuth) {
     // route requires a user not logged in
