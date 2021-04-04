@@ -29,12 +29,30 @@ html, body {
   background-color: var(--bg-color-main);
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto"), url(./assets/fonts/Roboto-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Dot Gothic";
+  src: local("Dot Gothic"), url(./assets/fonts/DotGothic16-Regular.ttf) format("truetype");
+}
+/* Japanese */
+@font-face {
+  font-family: "Noto Sans JP";
+  src: local("Noto Sans JP"), url(./assets/fonts/NotoSansJP-Regular.otf) format("opentype");
+}
+@font-face {
+  font-family: "Potta One";
+  src: local("Potta One"), url(./assets/fonts/PottaOne-Regular.ttf) format("truetype");
+}
+
 #app {
   font-family: 'Roboto', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: var(--off-white-main);
+  color: var(--gk-font-color);
   /* position: relative; */
   /*
   font-family: 'Roboto', sans-serif;

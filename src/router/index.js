@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Chat from '../views/Chat.vue'
+import Landing from '../views/Landing.vue'
 import store from '../store'
 
 const router = createRouter({
@@ -8,8 +8,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Landing',
+      component: Landing,
+      meta: {
+        guest: true,
+        requiresUnauth: true,
+      }
+    },
+    {
+      path: '/chat',
       name: 'Chat',
-      component: Chat,
+      component: () => import('../views/Chat.vue'),
       meta: {
         requiresAuth: true,
       },
@@ -134,12 +143,12 @@ router.beforeEach((to, _from, next) => {
   if (to.meta.requiresAuth && !store.getters.isAuth) {
     // route requires a user to be logged in
     // and the user is not logged in
-    next('/login')
+    next('/')
   }
   if (to.meta.requiresUnauth && store.getters.isAuth) {
     // route requires a user not logged in
     // and the user is logged in
-    next('/')
+    next('/chat')
   }
   next()
 })

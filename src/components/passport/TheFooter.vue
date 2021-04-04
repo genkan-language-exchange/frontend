@@ -8,7 +8,7 @@
         <a href="https://twitter.com/gengo_koukan"><i class="fab fa-twitter"></i></a>
         <router-link :to="{ name: 'Roadmap' }"><i class="fas fa-map-marked"></i></router-link>
       </div>
-      <button type="button" @click.prevent="$emit('logMeOut')"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
+      <button v-if="isPassport" type="button" @click.prevent="$emit('logMeOut')"><span><i class="fas fa-sign-out-alt"></i></span>Sign out</button>
     </section>
   </footer>
 </template>
@@ -16,7 +16,12 @@
 <script>
   export default {
     props: ['isSelf'],
-    emits: ['logMeOut']
+    emits: ['logMeOut'],
+    computed: {
+      isPassport() {
+        return this.$route.fullPath === "/passport"
+      }
+    }
   }
 </script>
 

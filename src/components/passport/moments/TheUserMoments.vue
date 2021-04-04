@@ -65,4 +65,9 @@
   box-sizing: border-box;
   width: 100%;
 }
+@media (min-width: 959px) {
+  .story-card {
+    width: 100%;
+  }
+}
 </style>

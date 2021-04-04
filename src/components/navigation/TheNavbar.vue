@@ -1,7 +1,7 @@
 <template>
   <div id="nav" v-if="isAuth">
     <ul>
-      <li><router-link to="/"><i class="fas fa-comments"></i></router-link></li>
+      <li><router-link to="/chat"><i class="fas fa-comments"></i></router-link></li>
       <li><router-link to="/stories"><i class="fas fa-book-open"></i></router-link></li>
       <li><router-link to="/search"><i class="fas fa-globe"></i></router-link></li>
       <li><router-link to="/passport"><i class="fas fa-user-circle"></i></router-link></li>

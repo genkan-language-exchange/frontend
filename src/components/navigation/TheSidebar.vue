@@ -11,7 +11,7 @@
         <h1>Genkan</h1>
         <ul>
           <li>
-            <router-link to="/" @click="sidenavOpen = false">
+            <router-link to="/chat" @click="sidenavOpen = false">
               <i class="fas fa-comments"></i><span>Chat</span>
             </router-link>
           </li>

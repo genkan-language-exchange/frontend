@@ -11,6 +11,8 @@ html {
   --bg-color-main: #2f3640;
   --bg-color: var(--bg-color-main);
   --bg-color-secondary: #353b48;
+
+  --gk-font-color: #f5f6fa;
 }
 
 .fa-icon-button {
@@ -38,6 +40,7 @@ html {
     --bg-color-secondary: #fff;
     --off-white-main: #f5f6fa;
     --off-white: var(--off-white-main);
+    --gk-font-color: #2f3640;
   }
 }
 
