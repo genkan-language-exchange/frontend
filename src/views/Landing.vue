@@ -66,27 +66,27 @@ header div {
   justify-content: space-between;
 }
 h1 {
-  font-family: 'Potta One', sans-serif;
+  font-family: 'Potta One', Arial, Helvetica, sans-serif;
   color: var(--theme-color-main);
   font-size: 3.4rem;
   margin: 0;
 }
 h2 {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
   font-size: 2.8rem;
   margin: 50px 0;
 }
 .jp-title {
-  font-family: 'Potta One';
+  font-family: 'Potta One', Arial, Helvetica, sans-serif;
 }
 .jp-font {
-  font-family: "Noto Sans JP";
+  font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
 }
 .purple {
   color: var(--theme-color-main);
 }
 .bit-crush {
-  font-family: "Dot Gothic";
+  font-family: "Dot Gothic", Arial, Helvetica, sans-serif;
 }
 p .bit-crush {
   font-size: 2rem;
