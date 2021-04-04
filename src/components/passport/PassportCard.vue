@@ -42,7 +42,7 @@
         <p>Profile</p>
       </div>
       <div @click="() => viewingProfile = false"  class="tab-moments" :class="!viewingProfile && 'active'">
-        <p>Moments</p>
+        <p>Stories</p>
       </div>
     </section>
     
@@ -63,7 +63,7 @@
         />
       </template>
       <template v-else>
-        <TheUserMoments :user="user" />
+        <TheUserStories :user="user" />
       </template>
     </transition-group>
 
@@ -83,13 +83,13 @@ import { mapActions, mapGetters } from 'vuex'
 import checkAccountAge from '@/util/checkAccountAge.js'
 
 import TheAboutSection from './TheAboutSection'
-import TheUserMoments from './moments/TheUserMoments'
+import TheUserStories from './UserStories/TheUserStories'
 import TheFilters from './TheFilters'
 import TheFooter from './TheFooter'
 export default {
   components: {
     TheAboutSection,
-    TheUserMoments,
+    TheUserStories,
     TheFilters,
     TheFooter,
   },
