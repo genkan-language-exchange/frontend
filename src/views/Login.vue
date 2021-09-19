@@ -2,20 +2,27 @@
   <div id="login-outer">
     <transition name="fade-drop" mode="out-in">
       <LoginForm
-        v-if="isLogin"
+        v-if="!forgotPassword && isLogin"
         @changeMode="setMode"
+        @forgotPassword="setForgotPassword"
         @togglePasswordVisibility="togglePasswordVisibility"
         @setLoading="setLoading"
         :loading="loading"
         :passwordVisible="passwordVisible"
       />
       <RegistrationForm
-        v-else-if="!isLogin"
+        v-else-if="!forgotPassword && !isLogin"
         @changeMode="setMode"
         @togglePasswordVisibility="togglePasswordVisibility"
         @setLoading="setLoading"
         :loading="loading"
         :passwordVisible="passwordVisible"
+      />
+      <PasswordResetRequestForm
+        v-else
+        :loading="loading"
+        @setLoading="setLoading"
+        @forgotPassword="setForgotPassword"
       />
     </transition>
   </div>
@@ -25,33 +32,40 @@
 import { mapActions } from 'vuex'
 import LoginForm from '@/components/authentication/LoginForm.vue'
 import RegistrationForm from '@/components/authentication/RegistrationForm.vue'
-  export default {
-    data() {
-      return {
-        isLogin: true,
-        loading: false,
-        passwordVisible: false,
-      }
+import PasswordResetRequestForm from '@/components/authentication/PasswordResetRequestForm.vue'
+
+export default {
+  data() {
+    return {
+      isLogin: true,
+      forgotPassword: false,
+      loading: false,
+      passwordVisible: false,
+    }
+  },
+  components: {
+    LoginForm,
+    RegistrationForm,
+    PasswordResetRequestForm,
+  },
+  methods: {
+    ...mapActions({
+      login: 'login'
+    }),
+    setMode() {
+      this.isLogin = !this.isLogin
     },
-    components: {
-      LoginForm,
-      RegistrationForm,
+    setForgotPassword() {
+      this.forgotPassword = !this.forgotPassword
     },
-    methods: {
-      ...mapActions({
-        login: 'login'
-      }),
-      setMode() {
-        this.isLogin = !this.isLogin
-      },
-      setLoading(val) {
-        this.loading = !!val
-      },
-      togglePasswordVisibility() {
-        this.passwordVisible = !this.passwordVisible
-      },
+    setLoading(val) {
+      this.loading = !!val
     },
-  }
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible
+    },
+  },
+}
 </script>
 
 <style scoped>

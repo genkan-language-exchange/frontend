@@ -9,15 +9,41 @@
 import './assets/index.css'
 import './assets/transitions.css'
 import Navigation from '@/components/navigation/Navigation'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Main',
   components: {
     Navigation,
   },
+  data() {
+    return {
+      pingInterval: null
+    }
+  },
+  methods: {
+    ...mapActions(['pingThatServer']),
+    setPingInterval() {
+      if (this.pingInterval != null) clearInterval(this.pingInterval)
+      
+      this.pingInterval = setInterval(() => {
+        this.ping()
+      }, 900000)
+    },
+    async ping() {
+      const response = await this.pingThatServer()
+      console.log(response)
+    }
+  },
   created() {
     this.$store.dispatch('tryRefreshAuth')
   },
+  mounted() {
+    this.setPingInterval()
+  },
+  beforeUnmount() {
+    clearInterval(this.pingInterval)
+  }
 }
 </script>
 
@@ -41,10 +67,6 @@ html, body {
 @font-face {
   font-family: "Noto Sans JP";
   src: local("Noto Sans JP"), url(./assets/fonts/NotoSansJP-Regular.otf) format("opentype");
-}
-@font-face {
-  font-family: "Potta One";
-  src: local("Potta One"), url(./assets/fonts/PottaOne-Regular.ttf) format("truetype");
 }
 
 #app {

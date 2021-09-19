@@ -1,75 +1,71 @@
 <template>
-  <form @submit.prevent="callLogin">
-    <div class="error-message">
-      <h2>{{ error && error }}</h2>
+  <form @submit.prevent="submitRequestPasswordForm" v-if="!requestSuccess">
+    <div v-if="error" class="error-message">
+      <h2>Please enter your email address</h2>
     </div>
     <fieldset :disabled="loading" :aria-busy="loading">
       <label for="email" key="email">Email Address
         <input id="email" name="email" v-model.trim="email" type="email" aria-errormessage="Missing email address" required placeholder="Enter your email address" />
       </label>
-      <label for="password" key="password">Password
-        <input id="password" name="password" v-model.trim="password" :type="passwordVisible ? 'text' : 'password' " aria-errormessage="Missing password" required placeholder="Enter your password" />
-      </label>
-
-      <div key="password-visibility">
-        <button
-          type="button"
-          @click.prevent="$emit('togglePasswordVisibility')"
-          class="password-visibility"
-          aria-name="toggle password visibility"
-        >
-          <i :class="passwordVisible ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-        </button>
-      </div>
 
       <div id="finalize" key="finalize">
-        <p><span @click="$emit('forgotPassword')">Forgot your password?</span></p>
-        <p><span @click="$emit('changeMode')">Don't have an account yet?</span></p>
-        <button type="submit" @click.prevent="callLogin" :disabled="password.length < 8">Login</button>
+        <p><span @click="$emit('forgotPassword')">I remembered my password</span></p>
+        <button>Request New Password</button>
       </div>
     </fieldset>
   </form>
+  <div class="success-message" v-else>
+    <h2>Check your inbox for an email from <span>support@genkan.app</span>!</h2>
+  </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    name: 'LoginForm',
-    emits: ['changeMode', 'forgotPassword', 'setLoading', 'togglePasswordVisibility',],
-    props: ['loading', 'passwordVisible'],
-    data() {
-      return {
-        error: null,
-        email: '',
-        password: '',
-      }
-    },
-    methods: {
-      ...mapActions({
-        login: 'login'
-      }),
-      async callLogin() {
-        this.$emit('setLoading', true)
-        if (this.password.length < 8) return this.error = "Password too short"
-        if (this.email === '' || this.password === '') return this.error = "Please fill out the fields"
+import { mapActions } from 'vuex'
+export default {
+  name: "PasswordResetRequestForm.vue",
+  emits: ["forgotPassword"],
+  props: ['loading'],
+  data() {
+    return {
+      error: false,
+      email: "",
+      requestSuccess: false,
+    }
+  },
+  methods: {
+    ...mapActions({
+      requestPasswordToken: 'requestPasswordToken'
+    }),
+    async submitRequestPasswordForm() {
+      this.$emit('setLoading', true)
+      this.error = false
+      if (this.email === '') return this.error = true
 
-        const response = await this.login({ email: this.email, password: this.password })
-        .then(() => {
-          this.$router.replace('/')
-        })
-        .catch(err => err)
-        if (!response) {
-          this.error = "Could not login"
-          this.$emit('setLoading', false)
-        }
+      const response = await this.requestPasswordToken({ email: this.email })
+      
+      if (response.status === 200) {
+        this.email = ""
+        this.requestSuccess = true
+      } else {
+        this.error = "Could not fulfill request"
       }
-    },
+
+      this.$emit('setLoading', false)
+    }
   }
+}
 </script>
 
 <style scoped>
 .error-message {
   padding: 20px;
+}
+.success-message {
+  padding: 20px;
+}
+h2 { margin: 0; }
+h2 span {
+  color: var(--theme-color-main);
 }
 form {
   width: 90%;

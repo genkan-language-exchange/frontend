@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Landing from '../views/Landing.vue'
+
 import store from '../store'
 
 const router = createRouter({
@@ -83,7 +84,21 @@ const router = createRouter({
       },
       beforeEnter(_to, _from, next) {
         if (store.getters.isVerified) next('/')
+        else next()
       }
+    },
+    {
+      path: '/reset/:token',
+      name: 'ResetPassword',
+      component: () => import('../views/ResetPassword.vue'),
+      meta: {
+        guest: true,
+        requiresUnauth: true,
+      },
+      beforeEnter(_to, _from, next) {
+        if (store.getters.isVerified) next('/')
+        else next()
+      },
     },
     {
       path: '/roadmap',
@@ -144,13 +159,13 @@ router.beforeEach((to, _from, next) => {
     // route requires a user to be logged in
     // and the user is not logged in
     next('/login')
-  }
-  if (to.meta.requiresUnauth && store.getters.isAuth) {
+  } else if (to.meta.requiresUnauth && store.getters.isAuth) {
     // route requires a user not logged in
     // and the user is logged in
     next('/chat')
+  } else {
+    next()
   }
-  next()
 })
 
 export default router

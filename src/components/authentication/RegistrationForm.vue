@@ -23,23 +23,13 @@
           @click.prevent="$emit('togglePasswordVisibility')"
           class="password-visibility"
           aria-name="toggle password visibility"
-          v-if="passwordVisible"
         >
-          <i class="fas fa-eye"></i>
-        </button>
-        <button
-          type="button"
-          @click.prevent="$emit('togglePasswordVisibility')"
-          class="password-visibility"
-          aria-name="toggle password visibility"
-          v-else
-        >
-          <i class="fas fa-eye-slash"></i>
+          <i :class="passwordVisible ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
         </button>
       </div>
 
       <div id="finalize" key="finalize">
-        <p>Already have an account? Click <span @click="$emit('changeMode')">here</span></p>
+        <p><span @click="$emit('changeMode')">Already have an account? </span></p>
         <button type="submit" :disabled="password.length < 8 || password !== passwordConfirm">Register</button>
       </div>
     </fieldset>
@@ -116,6 +106,9 @@ fieldset p {
 p span {
   text-decoration: underline;
   cursor: pointer;
+}
+p span:hover {
+  color: var(--theme-color-main);
 }
 #finalize {
   width: 100%;

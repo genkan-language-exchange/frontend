@@ -66,7 +66,7 @@ header div {
   justify-content: space-between;
 }
 h1 {
-  font-family: 'Potta One', Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
   color: var(--theme-color-main);
   font-size: 3.4rem;
   margin: 0;
@@ -77,7 +77,7 @@ h2 {
   margin: 50px 0;
 }
 .jp-title {
-  font-family: 'Potta One', Arial, Helvetica, sans-serif;
+  font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
 }
 .jp-font {
   font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;

@@ -20,9 +20,7 @@ async function registerUser(name, email, password, passwordConfirm, incomingMatc
   const data = { name, email, password, passwordConfirm, matchSettings }
 
   const response = await axios.post(url, data)
-  .then(res => res.data)
-  .catch(err => err)
-  return response
+  return response.data
 }
 
 async function loginWithEmailPassword(email, password) {
@@ -30,12 +28,7 @@ async function loginWithEmailPassword(email, password) {
   const data = { email, password }
 
   const response = await axios.post(url, data)
-  .then(res => res.data)
-  .catch((error) => {
-    console.error(error)
-    return error
-  })
-  return response
+  return response.data
 }
 
 async function getUserByNameIdentifierCombo(name, identifier) {
@@ -50,9 +43,7 @@ async function getUserByNameIdentifierCombo(name, identifier) {
   }
 
   const response = await axios.post(url, data, config)
-  .then(res => res.data)
-  .catch(err => err)
-  return response
+  return response.data
 }
 
 async function getUsers(filter, page) {
@@ -87,9 +78,7 @@ async function getUsersMany(page) {
   }
 
   const response = await axios.get(url, config)
-  .then(res => res.data)
-  .catch(err => err)
-  return response
+  return response.data
 }
 async function getUsersOnline(page) {
   const url = `${prefix}/online?matchSettings.age[gt]=18&page=${page || 1}`
@@ -102,9 +91,7 @@ async function getUsersOnline(page) {
   }
 
   const response = await axios.get(url, config)
-  .then(res => res.data)
-  .catch(err => err)
-  return response
+  return response.data
 }
 
 async function getUsersNew(page) {
@@ -118,18 +105,50 @@ async function getUsersNew(page) {
   }
 
   const response = await axios.get(url, config)
-  .then(res => res.data)
-  .catch(err => err)
-  return response
+  return response.data
 }
 
 async function validateAccount(validationToken) {
   const url = `${prefix}/validation/${validationToken}`
 
   const response = await axios.patch(url)
-  .then(res => res)
-  .catch(err => err)
   return response
+}
+
+async function requestPasswordToken(email) {
+  const url = `${prefix}/forgotPassword`
+  const response = await axios.post(url, { email })
+  return response
+}
+
+async function testResetPasswordToken(token) {
+  const url = `${prefix}/testResetPasswordToken/${token}`
+  const response = await axios.get(url)
+  return response
+}
+
+async function resetPassword(token, password, passwordConfirm) {
+  const url = `${prefix}/resetPassword/${token}`
+  const response = await axios.patch(url, { password, passwordConfirm })
+  return response
+}
+
+async function resendValidationEmail(email) {
+  const url = `${prefix}/revalidate`
+  const response = await axios.post(url, { email })
+  return response
+}
+
+async function pingServer(token) {
+  const url = `${prefix}/ping`
+  
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  return axios.get(url, config)
 }
 
 export {
@@ -137,5 +156,10 @@ export {
   loginWithEmailPassword,
   getUserByNameIdentifierCombo,
   getUsers,
-  validateAccount
+  validateAccount,
+  requestPasswordToken,
+  testResetPasswordToken,
+  resetPassword,
+  resendValidationEmail,
+  pingServer
 }

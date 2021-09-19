@@ -3,6 +3,9 @@ html {
   --theme-color-secondary: #9c88ff;
   --theme-color: var(--theme-color-main);
 
+  --red: #d63031;
+  --green: #00b894;
+
   --vip-gold: #fbc531;
 
   --off-white-main: #f5f6fa;

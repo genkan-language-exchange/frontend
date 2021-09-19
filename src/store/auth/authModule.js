@@ -1,4 +1,4 @@
-import { loginWithEmailPassword, registerUser } from '../../api/userApi'
+import { loginWithEmailPassword, registerUser, requestPasswordToken, pingServer, resetPassword } from '../../api/userApi'
 
 const defaultState = {
   currentUser: '',
@@ -48,6 +48,39 @@ export default {
         ...payload,
         mode: 'signup'
       })      
+    },
+    async requestPasswordToken(_, payload) {
+      const { email } = payload
+      const response = await requestPasswordToken(email)
+      return response
+    },
+    async resetPassword(ctx, payload) {
+      const { resetToken, password, passwordConfirm } = payload
+      try {
+        const response = await resetPassword(resetToken, password, passwordConfirm)
+        const { data: { user }, status, token } = response.data
+
+        if (status === "success") {
+          console.log("password reset successful, logging in...")
+          const d = new Date()
+          const expires = d.setTime(d.getTime() + (1000 * 60 * 60 * 24))
+
+          localStorage.setItem('userId', `${user.name}.${user.identifier}`)
+          localStorage.setItem('genkan-token', token)
+          localStorage.setItem('sessionExpires', expires)
+
+          user.token = token
+          // send response to mutation
+          ctx.commit('setUser', user)
+          return true
+        } else return false
+      } catch (error) {
+        return false
+      }
+    },
+    async pingThatServer(ctx) {
+      if (!ctx.getters.isAuth) return false
+      return pingServer(ctx.getters.token)
     },
     async logout(ctx) {
       localStorage.removeItem('userId')
