@@ -56,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    let languages = this.langPopular.concat(this.langAll)
+    const languages = this.langPopular.concat(this.langAll)
     if (this.languageKnow) {
       const known = this.languageKnow
       for (let i = 0; i < languages.length ; i++) {

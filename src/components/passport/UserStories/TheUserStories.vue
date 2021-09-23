@@ -1,5 +1,5 @@
 <template>
-  <section id="story-deck" v-if="stories.length">
+  <section id="story-deck" v-if="!!stories.length">
     <transition-group name="fade-in">
       <StoryCard
         v-for="story in stories"
@@ -28,6 +28,7 @@
     },
     methods: {
       async getUserStories() {
+        // TODO: what is this mess? what's wrong with me
         const token = this.$store.getters.token
         await fetch(`${process.env.VUE_APP_API_URL}/api/v1/stories/user-stories`, {
           method: "POST",

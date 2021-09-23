@@ -79,7 +79,10 @@
       },
       doesUserLike() {
         const currentUser = this.currentUser.split('.').join('#')
-        this.userLikes = !!this.story.likes.find(like => `${like.likeUser.name}#${like.likeUser.identifier}` === currentUser)
+        this.userLikes = !!this.story.likes
+          .filter(like => like.likeUser != null || like.likeUser != undefined)
+          .find(like => `${like.likeUser.name}#${like.likeUser.identifier}` === currentUser
+        )
       },
     },
     computed: {
@@ -92,11 +95,17 @@
       whoLiked() {
         const likes = this.likes
         const sortedLikes = likes.sort((a, b) => a.createdAt - b.createdAt)
-        let likeUsersArray = []
+        const likeUsersArray = []
 
         for (let i = 0 ; i < sortedLikes.length ; i++) {
           if (i > 2) break
           const like = sortedLikes[i]
+
+          if (!like.likeUser || like.likeUser == null || like.likeUser == undefined) {
+            likeUsersArray.push("[deleted user]")
+            continue
+          }
+
           const likeUser = `${like.likeUser.name}#${like.likeUser.identifier}`
           const currentUser = this.currentUser.split('.').join('#')
           if (likeUser === currentUser || like.likeUser.name == undefined) {
@@ -112,7 +121,7 @@
           likeUsersArray.push(likeUser)
         }
 
-        if (likeUsersArray.length > 2) likeUsersArray.push(' and others') 
+        if (likeUsersArray.length > 3) likeUsersArray.push(' and others') 
         return likeUsersArray.length !== 2 ? likeUsersArray.join(', ') : likeUsersArray.join(' and ')
       },
       isSelf() {

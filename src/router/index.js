@@ -38,7 +38,45 @@ const router = createRouter({
       component: () => import('../views/StoryCreation.vue'),
       meta: {
         requiresAuth: true,
+        requiresVerified: true,
       }
+    },
+    {
+      path: '/lessons',
+      name: 'UserLessons',
+      component: () => import('../views/UserLessons.vue'),
+      meta: {
+        requiresAuth: true,
+        requiresVerified: true,
+      },
+    },
+    {
+      path: '/lessons/:language',
+      name: 'LessonsOverview',
+      component: () => import('../views/LessonsOverview.vue'),
+      meta: {
+        requiresAuth: true,
+        requiresVerified: true,
+      }
+    },
+    {
+      path: '/lessons/creation/:language',
+      name: 'LessonCreationOverview',
+      component: () => import('../views/LessonCreationOverview.vue'),
+      meta: {
+        requiresAuth: true,
+        requiresVerified: true,
+      },
+    },
+    {
+      path: "/lessons/creation/:language/:id",
+      name: "LessonCreator",
+      component: () => import('../views/LessonCreator.vue'),
+      props: route => ({ query: route.query.id }),
+      meta: {
+        requiresAuth: true,
+        requiresVerified: true,
+      },
     },
     {
       path: '/search',
@@ -134,7 +172,7 @@ const router = createRouter({
       path: '/example', // can add :id here or make `children` array
       name: 'ExampleNested',
       component: () => import('../views/ExampleNested.vue'),
-      children: [ path: ':id' component: ..., props: ...] // a second router-view needs to be placed in the parent component template tree
+      children: [ {path: ':id' component: ..., props: ... } ] // a second router-view needs to be placed in the parent component template tree
       props: true, // pass the :id param as props into the component,
       redirect: '/',
       alias: '/' // alias this route to another (put this on the route it should go to)
@@ -154,7 +192,7 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.getters.isAuth) {
     // route requires a user to be logged in
     // and the user is not logged in
@@ -162,7 +200,11 @@ router.beforeEach((to, _from, next) => {
   } else if (to.meta.requiresUnauth && store.getters.isAuth) {
     // route requires a user not logged in
     // and the user is logged in
-    next('/chat')
+    next('/stories')
+  } else if (to.meta.requiresVerified && !store.getters.isVerified) {
+    console.log(store.getters.isVerified)
+    // protect route from users who haven't verified their email address
+    next(from)
   } else {
     next()
   }

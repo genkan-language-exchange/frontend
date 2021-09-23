@@ -4,21 +4,22 @@
       <h2>Here's where we're headed</h2>
     </header>
     <div id="timeline">
+      <div class="timeline-item"><p>Profile and Settings</p></div>
       <div class="timeline-item"><p>Story Tags</p></div>
-      <div class="timeline-item"><p>Implement Privacy Settings</p></div>
-      <div class="timeline-item"><p>Slow Mode Chatting - Why Rush!</p></div>
-      <div class="timeline-item"><p>Communities - Join a group of people with shared interests</p></div>
-      <div class="timeline-item"><p>Real Time Chatting</p></div>
-      <div class="timeline-item"><p>Friend Requests</p></div>
-      <div class="timeline-item"><p>Custom Profile Pictures</p></div>
       <div class="timeline-item"><p>Corrections Feature</p></div>
+      <div class="timeline-item"><p>Slow Mode Chatting - Why Rush!</p></div>
+      <div class="timeline-item"><p>Friend Requests</p></div>
+      <div class="timeline-item"><p>Real Time Chatting</p></div>
+      <div class="timeline-item"><p>Custom Profile Pictures</p></div>
+      <div class="timeline-item"><p>User Created Mini-Lessons</p></div>
+      <div class="timeline-item"><p>Communities</p></div>
+      <div class="timeline-item"><p>Awards</p></div>
       <div class="timeline-item"><p>Multiple Like/React Types</p></div>
-      <div class="timeline-item"><p>Custom Stickers</p></div>
       <div class="timeline-item"><p>Notifications</p></div>
       <div class="timeline-item"><p>Subscription Model to Support Development</p></div>
       <div class="timeline-item"><p>Mobile App</p></div>
       <div class="timeline-item"><p>2FA</p></div>
-      <div class="timeline-item"><p>Hire More Than 1 Dev?</p></div>
+      <div class="timeline-item"><p>Custom Stickers</p></div>
       <div class="timeline-item"><p>Better Story Sorting Algorithms</p></div>
       <div class="timeline-item"><p>Voice Profile/Notes</p></div>
       <div class="timeline-item"><p>Matching Algorithm</p></div>

@@ -142,6 +142,17 @@
         this.skip = 4
         this.error = false
         this.popupMessage = true
+        
+        if (this.matchSettings.languageKnow.length) {
+          this.matchSettings.languageKnow.map(lang => {
+            return [lang, 0]
+          })
+        }
+        if (this.matchSettings.languageLearn.length) {
+          this.matchSettings.languageLearn.map(lang => {
+            return [lang, 0]
+          })
+        }
 
         const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm, matchSettings: this.matchSettings })
         .then(res => res)

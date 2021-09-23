@@ -20,6 +20,11 @@
       <TheStoryCreationButton />
     </div>
   </template>
+  <template v-else-if="!stories?.length">
+    <div id="story-view">
+      <TheStoryCreationButton />
+    </div>
+  </template>
 
   <template v-else>
     <div id="loading">

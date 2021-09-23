@@ -10,14 +10,19 @@
         <button class="fa-icon-button menu-toggle-button-out" v-if="sidenavOpen" @click="sidenavOpen = false"><i class="fas fa-times"></i></button>
         <h1>Genkan</h1>
         <ul>
-          <li>
+          <!-- <li>
             <router-link to="/chat" @click="sidenavOpen = false">
               <i class="fas fa-comments"></i><span>Chat</span>
             </router-link>
-          </li>
+          </li> -->
           <li>
             <router-link to="/stories" @click="sidenavOpen = false">
               <i class="fas fa-book-open"></i><span>Stories</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/lessons" @click="sidenavOpen = false">
+              <i class="fas fa-language"></i><span>Lessons</span>
             </router-link>
           </li>
           <li>

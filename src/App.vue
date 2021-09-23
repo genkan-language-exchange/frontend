@@ -93,6 +93,16 @@ html, body {
                                   supported by Chrome and Opera */
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* .route-enter-from {
   opacity: 0;
 }

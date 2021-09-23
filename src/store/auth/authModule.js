@@ -1,4 +1,4 @@
-import { loginWithEmailPassword, registerUser, requestPasswordToken, pingServer, resetPassword } from '../../api/userApi'
+import { getUserByNameIdentifierCombo, loginWithEmailPassword, registerUser, requestPasswordToken, pingServer, resetPassword } from '../../api/userApi'
 
 const defaultState = {
   currentUser: '',
@@ -28,6 +28,7 @@ export default {
         // set auth
         state.isAuth = true
         state.token = payload.token
+        state.verified = payload.verified
       }
       // TODO: otherwise ask if they want to reactivate
     },
@@ -82,6 +83,10 @@ export default {
       if (!ctx.getters.isAuth) return false
       return pingServer(ctx.getters.token)
     },
+    async getUserInfo(_, payload) {
+      const response = await getUserByNameIdentifierCombo(payload.name, payload.identifier)
+      return response.data[0]
+    },
     async logout(ctx) {
       localStorage.removeItem('userId')
       localStorage.removeItem('genkan-token')
@@ -131,6 +136,8 @@ export default {
           localStorage.setItem('sessionExpires', expires)
 
           user.token = response.token
+          user.verified = user.accountStatus
+
           // send response to mutation
           ctx.commit('setUser', user)
         }
@@ -139,21 +146,32 @@ export default {
     },
     async tryRefreshAuth(ctx) {
       const expires = localStorage.getItem('sessionExpires')
-      let today = new Date().getTime()
-      
+      if (!expires) {
+        console.log("no token; not refreshing auth")
+        return ctx.dispatch('logout')
+      }
+
+      const today = new Date().getTime()
+      const tokenIsNotExpired = today <= +expires
+
       // expires - if future date, continue
       // expires - else logout
-      if (today < expires) {
-        const _id = localStorage.getItem('_id')
+      if (expires != null && tokenIsNotExpired) {
         const userId = localStorage.getItem('userId')
         const token = localStorage.getItem('genkan-token')
 
         if (token && userId) {
           const name = userId.split('.')[0]
           const identifier = userId.split('.')[1]
-          const payload = { name, identifier, active: true, _id, }
+          const payload = { name, identifier, active: true }
           payload.token = token
+
+          const response = await ctx.dispatch('getUserInfo', { name, identifier })
+          payload.verified = response.accountStatus
+          payload.role = response.role
+
           ctx.commit('setUser', payload)
+          return
         }
       } else {
         ctx.dispatch('logout')
@@ -166,5 +184,6 @@ export default {
     isAuth: state => state.isAuth,
     token: state => state.token,
     isVerified: state => state.verified,
+    hasRole: state => state.role,
   },
 }

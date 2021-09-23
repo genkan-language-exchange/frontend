@@ -5,7 +5,7 @@ const prefix = `${process.env.VUE_APP_API_URL}/api/v1/users`
 async function registerUser(name, email, password, passwordConfirm, incomingMatchSettings) {
   const url = prefix + '/signup'
   const matchSettings = {
-    birthday: "2000-01-01",
+    birthday: "1970-01-01",
     gender: "non-binary",
     languageKnow: ["???"],
     languageLearn: ["???"],
@@ -29,6 +29,24 @@ async function loginWithEmailPassword(email, password) {
 
   const response = await axios.post(url, data)
   return response.data
+}
+
+async function getSelf() {
+  const url = prefix + '?self=true'
+  
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await axios.post(url, {}, config)
+    return response.data
+  } catch (error) {
+    return false
+  }
 }
 
 async function getUserByNameIdentifierCombo(name, identifier) {
@@ -154,6 +172,7 @@ async function pingServer(token) {
 export {
   registerUser,
   loginWithEmailPassword,
+  getSelf,
   getUserByNameIdentifierCombo,
   getUsers,
   validateAccount,

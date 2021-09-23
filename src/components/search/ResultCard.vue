@@ -28,8 +28,8 @@
         </h3>
       </div>
       <div>
-        <p>Speaks: {{user.matchSettings.languageKnow.join(', ')}}</p>
-        <p>Learns: {{user.matchSettings.languageLearn.join(', ')}}</p>
+        <div><p>Speaks: <span v-for="lang in languageKnow" :key="lang[0]">{{ lang[0] }}</span></p></div>
+        <div><p>Learns: <span v-for="lang in languageLearn" :key="lang[0]">{{ lang[0] }}</span></p></div>
       </div>
     </div>
     
@@ -52,6 +52,12 @@ export default {
     }
   },
   computed: {
+    languageKnow() {
+      return this.user.matchSettings.languageKnow
+    },
+    languageLearn() {
+      return this.user.matchSettings.languageLearn
+    },
     newUser() {
       return checkAccountAge(this.user.matchSettings.accountCreated)
     },
@@ -114,7 +120,7 @@ h3 {
   font-size: 1.6rem;
   font-weight: 600;
 }
-span {
+h3 span {
   font-size: 1.8rem;
   color: var(--theme-color-main);
   vertical-align: middle;

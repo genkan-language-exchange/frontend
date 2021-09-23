@@ -31,8 +31,10 @@
         <p>{{user.matchSettings.age}} years old</p>
       </div>
       <div id="user-lang">
-        <p><span>Speaks: </span>{{user.matchSettings.languageKnow.join(', ')}}</p>
-        <p><span>Learns: </span>{{user.matchSettings.languageLearn.join(', ')}}</p>
+        <h4>Speaks</h4>
+        <p v-for="lang in user.matchSettings.languageKnow" :key="lang">{{ lang[0] }}&nbsp;&nbsp;<span v-for="index in lang[1]" :key="index"><i class="fas fa-star"></i></span></p>
+        <h4>Learns</h4>
+        <p v-for="lang in user.matchSettings.languageLearn" :key="lang">{{ lang[0] }}&nbsp;&nbsp;<span v-for="index in lang[1]" :key="index"><i class="fas fa-star"></i></span></p>
       </div>
     </section>
     <!-- TODO: add stories list view tab -->

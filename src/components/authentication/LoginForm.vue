@@ -48,20 +48,20 @@
       ...mapActions({
         login: 'login'
       }),
-      async callLogin() {
-        this.$emit('setLoading', true)
+      callLogin() {
         if (this.password.length < 8) return this.error = "Password too short"
         if (this.email === '' || this.password === '') return this.error = "Please fill out the fields"
 
-        const response = await this.login({ email: this.email, password: this.password })
+        this.$emit('setLoading', true)
+        this.login({ email: this.email, password: this.password })
         .then(() => {
           this.$router.replace('/')
         })
-        .catch(err => err)
-        if (!response) {
+        .catch(err => {
+          console.error(err)
           this.error = "Could not login"
           this.$emit('setLoading', false)
-        }
+        })
       }
     },
   }
