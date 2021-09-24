@@ -20,7 +20,7 @@
               <i class="fas fa-book-open"></i><span>Stories</span>
             </router-link>
           </li>
-          <li>
+          <li v-if="canViewLink">
             <router-link to="/lessons" @click="sidenavOpen = false">
               <i class="fas fa-language"></i><span>Lessons</span>
             </router-link>
@@ -50,7 +50,10 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   computed: {
-    ...mapGetters(['currentUser', 'isAuth']),
+    ...mapGetters(['currentUser', 'isAuth', 'hasRole']),
+    canViewLink() {
+      return this.hasRole === "admin" || this.hasRole === "owner"
+    }
   },
   data() {
     return {
