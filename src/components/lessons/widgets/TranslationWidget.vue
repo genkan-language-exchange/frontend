@@ -17,6 +17,26 @@
 </template>
 
 <script>
+/*
+{
+  _id: "adsfsaga",
+  type: "TranslationWidget",
+  content: [
+    {
+      main: "blahblahblah",
+      target: "なんやらなんやらなんやら"
+    },
+    {
+      main: "wowowow",
+      target: "すごい"
+    },
+    {
+      main: "wowowow",
+      target: "すごい"
+    },
+  ]
+}
+*/
 import BaseWidget from './BaseWidget.vue'
 export default {
   name: "TranslationWidget",

@@ -8,7 +8,7 @@
       {{ editing ? "Editing..." : "Edit"}}
     </button>
     <template v-if="!editing">
-      <div id="render-view" v-for="widget in widgets" :key="widget._id">
+      <div id="render-view" v-for="widget in widgets" :key="widget.type + '-' + widget._id">
         <TableWidget
           v-if="widget.type === 'TableWidget'"
           :widget="widget"

@@ -6,9 +6,9 @@
           <textarea v-model="content[idx]" :style="{ textAlign }" name="text" id="text" cols="30" rows="4" required />
         </div>
         <div class="tools">
-          <button><i class="fas fa-bars"><i class="fas fa-plus-circle"></i></i></button>
-          <button @click="toggleAlignment"><i :class="`fas fa-align-${textAlign}`"></i></button>
-          <button><i class="fas fa-save"></i></button>
+          <button title="Add group"><i class="fas fa-bars"><i class="fas fa-plus-circle"></i></i></button>
+          <button title="Text alignment" @click="toggleAlignment"><i :class="`fas fa-align-${textAlign}`"></i></button>
+          <button title="Save"><i class="fas fa-save"></i></button>
         </div>
       </div>
     </template>
