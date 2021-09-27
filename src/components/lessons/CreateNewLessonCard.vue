@@ -1,7 +1,8 @@
 <template>
   <div
     class="lesson-card"
-    @click="navigateToLessonCreation('new')"
+    :class="loading && 'loading'"
+    @click="createNewLesson()"
   >
     <h2 class="title">Create new lesson</h2>
     <i class="fas fa-plus-circle no-select"></i>
@@ -11,7 +12,7 @@
 <script>
 export default {
   name: "CreateNewLessonCard",
-  props: ["navigateToLessonCreation"]
+  props: ["loading", "createNewLesson"]
 }
 </script>
 
@@ -20,7 +21,7 @@ export default {
   background-color: var(--theme-color-main);
   width: 250px;
   height: 125px;
-  margin: 82px auto 25px;
+  margin: 0 auto 25px;
   border-radius: 3px;
   cursor: pointer;
   display: flex;
@@ -30,6 +31,15 @@ export default {
 }
 .lesson-card:hover {
   background-color: var(--theme-color-secondary);
+}
+.loading {
+  background-color: var(--gray);
+  color: #bbb;
+  cursor: wait;
+}
+.loading:hover {
+  background-color: var(--gray);
+  color: #bbb;
 }
 h2.title {
   margin: 0;

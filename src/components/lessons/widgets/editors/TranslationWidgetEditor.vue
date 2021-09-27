@@ -7,8 +7,9 @@
           <input type="text" v-model="content[idx].target" />
         </div>
         <div class="tools">
-          <button title="Add group"><i class="fas fa-bars"><i class="fas fa-plus-circle"></i></i></button>
-          <button title="Save"><i class="fas fa-save"></i></button>
+          <button title="Remove group" @click="removeGroup"><i class="fas fa-bars"><i class="fas fa-minus-circle"></i></i></button>
+          <button title="Add group" @click="addGroup"><i class="fas fa-bars"><i class="fas fa-plus-circle"></i></i></button>
+          <button title="Save" @click="handleSave"><i class="fas fa-save"></i></button>
         </div>
       </div>
     </template>
@@ -27,10 +28,25 @@ export default {
     BaseWidgetEditor,
     TranslationWidget
   },
-  props: ["editingWidget", "setEditingWidget", "widget"],
+  props: ["editingWidget", "setEditingWidget", "widget", "onSave"],
   data() {
     return {
-      content: this.widget.content || []
+      content: this.widget.content || [{ main: "", target: "" }]
+    }
+  },
+  methods: {
+    handleSave() {
+      const payload = {
+        content: this.content,
+      }
+
+      this.onSave(this.widget._id, payload)
+    },
+    addGroup() {
+      this.content.push({ main: "", target: "" })
+    },
+    removeGroup() {
+      this.content.pop()
     }
   }
 }

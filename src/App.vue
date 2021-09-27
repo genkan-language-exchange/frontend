@@ -8,6 +8,7 @@
 <script>
 import './assets/index.css'
 import './assets/transitions.css'
+import './assets/animations.css'
 import Navigation from '@/components/navigation/Navigation'
 import { mapActions } from 'vuex'
 
@@ -91,16 +92,6 @@ html, body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* .route-enter-from {

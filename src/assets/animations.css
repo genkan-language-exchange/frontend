@@ -1,0 +1,21 @@
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathing {
+  0% {
+    box-shadow: 0 0 6px 2px var(--green);
+  }
+  80% {
+    box-shadow: 0 0 8px 4px var(--green);
+  }
+  100% {
+    box-shadow: 0 0 12px 4px var(--green);
+  }
+}

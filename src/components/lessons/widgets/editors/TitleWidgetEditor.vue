@@ -5,7 +5,7 @@
         <label for="title">Title:</label>
         <input v-model="content" type="text" placeholder="Enter a title..." required aria-required="true">
         <div class="tools">
-          <button><i class="fas fa-save"></i></button>
+          <button @click="handleSave"><i class="fas fa-save"></i></button>
         </div>
       </div>
     </template>
@@ -24,10 +24,19 @@ export default {
     BaseWidgetEditor,
     TitleWidget
   },
-  props: ["editingWidget", "setEditingWidget", "widget"],
+  props: ["editingWidget", "setEditingWidget", "widget", "onSave"],
   data() {
     return {
       content: this.widget?.content || ""
+    }
+  },
+  methods: {
+    handleSave() {
+      const payload = {
+        content: this.content
+      }
+
+      this.onSave(this.widget._id, payload)
     }
   }
 }

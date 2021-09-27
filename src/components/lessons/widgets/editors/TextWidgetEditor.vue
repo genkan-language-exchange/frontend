@@ -6,9 +6,10 @@
           <textarea v-model="content[idx]" :style="{ textAlign }" name="text" id="text" cols="30" rows="4" required />
         </div>
         <div class="tools">
-          <button title="Add group"><i class="fas fa-bars"><i class="fas fa-plus-circle"></i></i></button>
+          <button title="Remove group" @click="removeBlock"><i class="fas fa-bars"><i class="fas fa-minus-circle"></i></i></button>
           <button title="Text alignment" @click="toggleAlignment"><i :class="`fas fa-align-${textAlign}`"></i></button>
-          <button title="Save"><i class="fas fa-save"></i></button>
+          <button title="Add group" @click="addBlock"><i class="fas fa-bars"><i class="fas fa-plus-circle"></i></i></button>
+          <button title="Save" @click="handleSave"><i class="fas fa-save"></i></button>
         </div>
       </div>
     </template>
@@ -31,7 +32,7 @@ import BaseWidgetEditor from './BaseWidgetEditor.vue'
 import TextWidget from '../TextWidget.vue'
 export default {
   name: "TextWidgetEditor",
-  props: ["editingWidget", "setEditingWidget", "widget"],
+  props: ["editingWidget", "setEditingWidget", "widget", "onSave"],
   components: {
     BaseWidgetEditor,
     TextWidget
@@ -43,6 +44,13 @@ export default {
     }
   },
   methods: {
+    addBlock() {
+      console.log("adding")
+      this.content.push("")
+    },
+    removeBlock() {
+      this.content.pop()
+    },
     toggleAlignment() {
       const options = ["left", "center", "right", "justify"]
       const current = options.indexOf(this.textAlign)
@@ -50,6 +58,14 @@ export default {
       if (current === 2) this.textAlign = "justify"
       if (current === 1) this.textAlign = "right"
       if (current === 0) this.textAlign = "center"
+    },
+    handleSave() {
+      const payload = {
+        content: this.content,
+        textAlign: this.textAlign
+      }
+
+      this.onSave(this.widget._id, payload)
     }
   }
 }
@@ -89,6 +105,7 @@ export default {
   border: 1px solid var(--theme-color-main);
   border-radius: 3px;
   padding: 4px;
+  font-size: 1.6rem !important;
 }
 .text-editor div textarea:focus {
   border-color: var(--theme-color-secondary);

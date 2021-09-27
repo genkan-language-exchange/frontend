@@ -8,7 +8,7 @@
     <transition name="slide-in-left" mode="out-in">
       <div v-if="sidenavOpen" class="side-menu">
         <button class="fa-icon-button menu-toggle-button-out" v-if="sidenavOpen" @click="sidenavOpen = false"><i class="fas fa-times"></i></button>
-        <h1>Genkan</h1>
+        <h1 class="title">Genkan</h1>
         <ul>
           <!-- <li>
             <router-link to="/chat" @click="sidenavOpen = false">
@@ -116,7 +116,6 @@ export default {
   background-color: var(--theme-color-main);
 }
 h1 {
-  font-family: 'Sriracha', cursive;
   text-decoration: none;
   color: var(--theme-color-main);
   margin: 8px 0;

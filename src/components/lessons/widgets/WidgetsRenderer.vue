@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <button
-      class="edit-button"
+      class="edit-button button"
       v-if="canEdit"
       @click="setEditing"
     >
@@ -34,47 +34,56 @@
     <template v-else>
       <div>
         <div id="render-view" v-for="widget in widgets" :key="widget._id">
+          <TheLoadSpinner v-if="busyWidget === widget._id" />
           <TableWidgetEditor
             v-if="widget.type === 'TableWidget'"
+            :class="busyWidget === widget._id && 'busy'"
             :widget="widget"
             :editingWidget="editingWidget"
             :setEditingWidget="setEditingWidget"
+            :onSave="editWidget"
           />
           <TextWidgetEditor
             v-else-if="widget.type === 'TextWidget'"
+            :class="busyWidget === widget._id && 'busy'"
             :widget="widget"
             :editingWidget="editingWidget"
             :setEditingWidget="setEditingWidget"
+            :onSave="editWidget"
           />
           <TitleWidgetEditor
             v-else-if="widget.type === 'TitleWidget'"
+            :class="busyWidget === widget._id && 'busy'"
             :widget="widget"
             :editingWidget="editingWidget"
             :setEditingWidget="setEditingWidget"
+            :onSave="editWidget"
           />
           <TranslationWidgetEditor
             v-else-if="widget.type === 'TranslationWidget'"
+            :class="busyWidget === widget._id && 'busy'"
             :widget="widget"
             :editingWidget="editingWidget"
             :setEditingWidget="setEditingWidget"
+            :onSave="editWidget"
           />
         </div>
-        <div id="widgets-selector">
-          <select v-model="newWidget" name="widgets" id="widgets">
-            <option value="" selected disabled>Select a widget...</option>
-            <option value="TitleWidget">Title</option>
-            <option value="TextWidget">Text</option>
-            <option value="TableWidget">Table</option>
-            <option value="TranslationWidget">Translation</option>
-          </select>
-          <button @click.prevent="addWidget">Add Widget</button>
-        </div>
+        
+        <button class="button" @click.prevent="openModal">Add Widget</button>
+        
+        <AddWidgetModal
+          v-if="modalOpen"
+          @closeModal="modalOpen = false"
+          :addWidget="addWidget"
+        />
       </div>
     </template>
   </div>
 </template>
 
 <script>
+import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
+import AddWidgetModal from './AddWidgetModal.vue'
 import TableWidget from './TableWidget.vue'
 import TextWidget from './TextWidget.vue'
 import TitleWidget from './TitleWidget.vue'
@@ -88,6 +97,8 @@ import TranslationWidgetEditor from './editors/TranslationWidgetEditor.vue'
 export default {
   name: "WidgetsRenderer",
   components: {
+    TheLoadSpinner,
+    AddWidgetModal,
     TableWidget,
     TextWidget,
     TitleWidget,
@@ -97,12 +108,13 @@ export default {
     TitleWidgetEditor,
     TranslationWidgetEditor,
   },
-  props: ["canEdit", "widgets"],
+  props: ["canEdit", "widgets", "addWidgetToLesson", "editWidgetContent"],
   data() {
     return {
       editing: false,
       editingWidget: "",
-      newWidget: ""
+      busyWidget: "",
+      modalOpen: false,
     }
   },
   methods: {
@@ -116,12 +128,19 @@ export default {
         this.editingWidget = _id
       }
     },
-    addWidget() {
-      // this.lessonWidgets.push({
-      //   _id: Date.now().toString(),
-      //   type: this.newWidget
-      // })
-      // this.newWidget = ""
+    openModal() {
+      this.modalOpen = true
+    },
+    addWidget(w) {
+      this.addWidgetToLesson(w)
+    },
+    onLoadEnd() {
+      this.busyWidget = ""
+    },
+    editWidget(id, payload) {
+      this.busyWidget = this.editingWidget
+      this.editingWidget = ""
+      this.editWidgetContent(id, payload, this.onLoadEnd)
     }
   },
   mounted() {
@@ -134,22 +153,37 @@ export default {
   #wrapper {
     position: relative;
   }
+  #wrapper div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #wrapper div button {
+    display: inline-block;
+    margin: 0 auto;
+    font-size: 1.6rem;
+  }
+  .busy {
+    display: none;
+    visibility: hidden;
+  }
+  .button {
+    cursor: pointer;
+    color: var(--off-white);
+    border: 1px solid var(--theme-color-main);
+    background-color: var(--theme-color-main);
+    border-radius: 5px;
+    padding: 5px 8px;
+  }
   .edit-button {
     position: absolute;
     float: right;
     top: -62px;
     right: 5px;
-    cursor: pointer;
     opacity: 0.3;
-    padding: 5px 8px;
     display: flex;
     justify-content: center;
-    align-items: center;
-
-    color: var(--off-white);
-    border: 1px solid var(--theme-color-main);
-    background-color: var(--theme-color-main);
-    border-radius: 5px;
+    align-items: center;    
   }
   .edit-button:hover {
     opacity: 1;

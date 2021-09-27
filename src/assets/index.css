@@ -8,6 +8,8 @@ html {
 
   --vip-gold: #fbc531;
   --yellow: #fdcb6e;
+  --gray: #7f8fa6;
+  --grey: var(--gray);
 
   --off-white-main: #f5f6fa;
   --off-white: var(--off-white);

@@ -7,7 +7,8 @@
       Whoops!
     </template>
     <template v-else>
-      <CreateNewLessonCard :navigateToLessonCreation="navigateToLessonCreation" />
+      <h3 class="error" v-if="error_draftExists">You may only have one draft in progress at a time!</h3>
+      <CreateNewLessonCard :loading="loading" :createNewLesson="createNewLesson" />
       <h2 class="title">Your created lessons</h2>
       <LessonCardDeck
         :createdLessons="createdLessons"
@@ -18,75 +19,13 @@
 </template>
 
 <script>
-const created_lessons = [
-  {
-    _id: "#sdngba2aa@3!",
-    language: "Japanese",
-    title: "は vs が - the compendium",
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    published: true,
-    creator: {
-      _id: "!fsdsga@",
-      username: "anewday",
-      identifier: "6943",
-      matchSettings: {
-        languageKnow: [
-          ["English", 3],
-          ["Japanese", 2],
-        ],
-      },
-    },
-    rating: 4.2,
-    likes: [
-      {
-        _id: "fsjndbfda",
-        username: "new_joe",
-        identifier: "4649"
-      },
-      {
-        _id: "fsjndbfd3",
-        username: "old_joe",
-        identifier: "4219"
-      },
-    ],
-    content: [
-      {
-        _id: "fmuno342g",
-        type: "TitleWidget",
-        content: "は vs が - the compendium"
-      },
-      {
-        _id: "sdgbndefi23",
-        type: "TextWidget",
-        textAlign: "left",
-        content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.\nQuibusdam necessitatibus nisi nihil iure maxime error blanditiis at temporibus totam est, dolorem laboriosam. Doloremque aspernatur commodi dolore harum sunt necessitatibus placeat?"
-      },
-      {
-        _id: "fsdkbjndk;",
-        type: "TableWidget",
-        content: [
-          ["wa", "は"],
-          ["ga", "が"],
-        ],
-      },
-      {
-        _id: "adsfsaga",
-        type: "TranslationWidget",
-        content: [
-          {
-            main: "blahblahblah",
-            target: "なんやらなんやらなんやら"
-          }
-        ]
-      }
-    ],
-  },
-]
 
 import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
 import LessonCardDeck from '@/components/lessons/LessonCardDeck.vue'
 import CreateNewLessonCard from '@/components/lessons/CreateNewLessonCard.vue'
+
+import { getMyLessons, createLesson } from '@/api/lessonsApi.js'
+
 export default {
   name: "LessonCreationOverview",
   components: {
@@ -98,21 +37,31 @@ export default {
     return {
       loading: true,
       error: false,
+      error_draftExists: false,
       createdLessons: [],
     }
   },
   methods: {
-    fetchLessons() {
-      // console.log(this.$route.params.language)
-      // do api stuff
-      this.pseudoLoader()
+    async fetchLessons() {
+      this.loading = true
+      const language = this.$route.params.language
+      const response = await getMyLessons(language)
+      this.createdLessons = response.data
+      this.loading = false
     },
-    pseudoLoader() {
-      const params = this.$route.params.language
-      setTimeout(() => {
+    async createNewLesson() {
+      if (this.loading) return
+      this.loading = true
+      const language = this.$route.params.language
+      const response = await createLesson(language)
+      if (response.success) {
+        this.fetchLessons()
+      } else {
+        if (response.message === "DRAFT_EXISTS") {
+          this.error_draftExists = true
+        }
         this.loading = false
-        this.createdLessons = created_lessons.filter(lesson => lesson.language.toLowerCase() === params.toLowerCase())
-      }, 1000)
+      }
     },
     navigateToLessonCreation(id) {
       this.$router.push({ name: 'LessonCreator', params: { id } })
@@ -126,12 +75,16 @@ export default {
 
 <style scoped>
 .container {
-  margin-top: 62px;
+  margin-top: 82px;
   font-size: 1.8rem;
 }
 h2 {
   margin: 20px auto;
   padding: 0;
+}
+.error {
+  color: var(--red);
+  margin: 0 auto 20px;
 }
 button {
   margin-top: 55px;

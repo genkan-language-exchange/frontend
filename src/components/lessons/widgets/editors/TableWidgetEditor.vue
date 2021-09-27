@@ -2,6 +2,7 @@
   <BaseWidgetEditor @setEditingWidget="setEditingWidget(widget._id)">
     <template v-if="editingWidget === widget._id">
       <div class="table-editor">
+        <h2 v-if="error_colCountLimit">Too many columns!</h2>
         <div class="table-group">
           <table cellspacing="0" v-cloak>
             <thead>
@@ -25,7 +26,7 @@
           <button title="Add column" @click="handleAddCol" :disabled="saving"><i class="fas fa-grip-lines-vertical"><i class="fas fa-plus-circle"></i></i></button>
           <button title="Add row" @click="handleAddRow" :disabled="saving"><i class="fas fa-grip-lines"><i class="fas fa-plus-circle"></i></i></button>
           <button title="Bold header" @click="toggleHeader" :disabled="saving"><i class="fas" :class="hasHead ? 'fa-table' : 'fa-border-all'"></i></button>
-          <button title="Save" @click="pseudoSave" :disabled="saving"><i :class="saving ? 'fas fa-fan' : 'fas fa-save'"></i></button>
+          <button title="Save" @click="handleSave" :disabled="saving"><i :class="saving ? 'fas fa-fan' : 'fas fa-save'"></i></button>
         </div>
       </div>
     </template>
@@ -57,36 +58,66 @@ export default {
     BaseWidgetEditor,
     TableWidget
   },
-  props: ["editingWidget", "setEditingWidget", "widget"],
+  props: ["editingWidget", "setEditingWidget", "widget", "onSave"],
   data() {
     return {
       hasHead: this.widget?.hasHead || true,
-      content: this.widget?.content || [[],[]],
+      content: this.widget?.content || [
+        ["", ""],
+        ["", ""],
+      ],
       saving: false,
+      error_colCountLimit: false,
     }
   },
   methods: {
     toggleHeader() {
       this.hasHead = !this.hasHead
     },
-    pseudoSave() {
-      this.saving = true
-      console.log(this.hasHead)
-      console.log(this.content)
-      setTimeout(() => {
-        this.saving = false
-      }, 500)
+    handleSave() {
+      const payload = {
+        content: this.content,
+        hasHead: this.hasHead
+      }
+      
+      this.onSave(this.widget._id, payload)
     },
     handleAddRow() {
-      console.log("ADD ROW")
+      const newRow = []
+      // get number of columns in each row
+      // (should be the same for each row, so just get the first row)
+      let colCount = this.content[0].length
+
+      // add cell to newRow colCount times
+      while (colCount > 0) {
+        newRow.push("")
+        --colCount
+      }
+
+      // push to content array
+      this.content.push(newRow)
     },
     handleAddCol() {
-      console.log("ADD COL")
+      const updatedTable = []
+      
+      // limit number of columns to avoid readability issues
+      const colCount = this.content[0].length
+      if (colCount > 3) return this.error_colCountLimit = true
+
+      // duplicate current cells and add new cell to each
+      this.content.forEach(cell => {
+        const newRow = [...cell]
+        newRow.push("")
+        updatedTable.push(newRow)
+      })
+
+      // push to content array
+      this.content = updatedTable
     }
   },
   computed: {
     columnCount() {
-      return parseInt(this.widget.content[0].length)
+      return parseInt(this.content[0].length)
     },
     tableCellStyles() {
       return ({ display: 'table-cell', width: `${(1 / this.columnCount) * 100}%` })
@@ -112,11 +143,16 @@ export default {
   flex-direction: column;
   align-items: stretch;
 }
+.table-editor h2 {
+  text-align: center;
+  color: var(--red);
+}
 .table-group {
   height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 .add-col {
   padding: 8px;

@@ -6,108 +6,23 @@
     <template v-else-if="error">
       Whoops!
     </template>
-    <template v-else-if="newLesson">
-
-    </template>
     <template v-else>
       <div id="lesson-view">
         <h2 class="title">{{ lesson?.title }}</h2>
-        <WidgetsRenderer :canEdit="true" :widgets="lesson.content" />
+        <WidgetsRenderer
+          :canEdit="true"
+          :widgets="lesson.widgets"
+          :addWidgetToLesson="addWidgetToLesson"
+          :editWidgetContent="editWidgetContent"
+        />
       </div>
     </template>
   </div>
 </template>
 
 <script>
-const lesson = {
-    _id: "#sdngba2aa@3!",
-    language: "Japanese",
-    target_languages: ["English", "Korean"],
-    title: "は vs が - the compendium",
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    published: true,
-    creator: {
-      _id: "!fsdsga@",
-      username: "anewday",
-      identifier: "6943",
-      matchSettings: {
-        languageKnow: [
-          ["English", 3],
-          ["Japanese", 2],
-        ],
-      },
-    },
-    rating: 4.2,
-    likes: [
-      {
-        _id: "fsjndbfda",
-        username: "new_joe",
-        identifier: "4649"
-      },
-      {
-        _id: "fsjndbfd3",
-        username: "old_joe",
-        identifier: "4219"
-      },
-    ],
-    content: [
-      {
-        _id: "fmuno342g",
-        type: "TitleWidget",
-        content: "Putting it all together"
-      },
-      {
-        _id: "sdgbndefi232",
-        type: "TextWidget",
-        textAlign: "left",
-        content: ["Lorem ipsum, dolor sit amet consectetur adipisicing elit.\nQuibusdam necessitatibus nisi nihil iure maxime error blanditiis at temporibus totam est, dolorem laboriosam. Doloremque aspernatur commodi dolore harum sunt necessitatibus placeat?", "Nulla facilisi. Pellentesque ac malesuada lorem, eu sagittis odio. Duis rutrum nisi maximus feugiat imperdiet. In hac habitasse platea dictumst. Ut scelerisque eu tellus et pulvinar. Duis sit amet ipsum est. Nam nec nisi sapien. Sed et elit in mi tempor cursus ac sit amet enim. Proin rutrum aliquam imperdiet. Vivamus egestas sit amet eros id venenatis."]
-      },
-      {
-        _id: "fsdkbjndk;fsdag",
-        type: "TableWidget",
-        hasHead: true,
-        content: [
-          ["romaji", "kana", "한글"],
-          ["wa", "は", "은/는"],
-          ["ga", "が", "이/가"],
-        ],
-      },
-      {
-        _id: "sdgbndefi23",
-        type: "TextWidget",
-        textAlign: "left",
-        content: ["Lorem ipsum, dolor sit amet consectetur adipisicing elit.\nQuibusdam necessitatibus nisi nihil iure maxime error blanditiis at temporibus totam est, dolorem laboriosam. Doloremque aspernatur commodi dolore harum sunt necessitatibus placeat?"]
-      },
-      {
-        _id: "fsdkbjndk;",
-        type: "TableWidget",
-        hasHead: false,
-        content: [
-          ["e", "へ"],
-          ["ni", "に"],
-        ],
-      },
-      {
-        _id: "adsfsaga",
-        type: "TranslationWidget",
-        content: [
-          {
-            main: "blahblahblah",
-            target: "なんやらなんやらなんやら"
-          },
-          {
-            main: "wowowow",
-            target: "すごい"
-          },
-          {
-            main: "wowowow",
-            target: "すごい"
-          },
-        ]
-      }
-    ],
-  }
+
+import { getSingleLesson, addWidget, editWidget } from '@/api/lessonsApi.js'
 
 import TheLoadSpinner from '@/components/TheLoadSpinner.vue'
 import WidgetsRenderer from '@/components/lessons/widgets/WidgetsRenderer.vue'
@@ -119,26 +34,37 @@ export default {
   },
   data() {
     return {
+      busy: false,
       error: false,
       loading: true,
-      newLesson: false,
       lesson: {}
     }
   },
   methods: {
-    pseudoLoad() {
-      if (this.$route.params.id === "new") {
-        this.loading = false
-        this.newLesson = true
-      }
-      setTimeout(() => {
-        this.lesson = lesson
-        this.loading = false
-      }, 500)
+    async fetchLesson() {
+      const id = this.$route.params.id
+      const response = await getSingleLesson(id)
+      this.lesson = response.data
+      this.loading = false
+    },
+    async addWidgetToLesson(type) {
+      if (this.loading) return
+      this.loading = true
+      const id = this.$route.params.id
+      const response = await addWidget(id, type)
+      this.fetchLesson()
+    },
+    async editWidgetContent(widget_id, payload, onLoadEnd) {
+      if (this.busy) return
+      this.busy = true
+      await editWidget(widget_id, payload)
+      await this.fetchLesson()
+      onLoadEnd()
+      this.busy = false
     }
   },
   mounted() {
-    this.pseudoLoad()
+    this.fetchLesson()
   },
 }
 </script>
