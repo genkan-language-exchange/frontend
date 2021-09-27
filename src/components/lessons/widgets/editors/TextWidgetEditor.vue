@@ -2,7 +2,7 @@
   <BaseWidgetEditor @setEditingWidget="setEditingWidget(widget._id)">
     <template v-if="editingWidget === widget._id">
       <div class="text-editor">
-        <div v-for="block, idx in widget.content" :key="idx">
+        <div v-for="(block, idx) in widget.content" :key="idx">
           <textarea v-model="content[idx]" :style="{ textAlign }" name="text" id="text" cols="30" rows="4" required />
         </div>
         <div class="tools">

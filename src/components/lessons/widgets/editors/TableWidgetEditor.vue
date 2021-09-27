@@ -7,14 +7,14 @@
           <table cellspacing="0" v-cloak>
             <thead>
               <tr>
-                <th v-for="cell, idx in content[0]" :key="'head-' + idx" :style="tableCellStyles">
+                <th v-for="(cell, idx) in content[0]" :key="'head-' + idx" :style="tableCellStyles">
                   <input type="text" v-model="content[0][idx]" />
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row, idx in content.slice(1)" :key="'row-' + idx">
-                <td v-for="cell, jdx in row" :key="'cell-' + jdx" :style="tableCellStyles">
+              <tr v-for="(row, idx) in content.slice(1)" :key="'row-' + idx">
+                <td v-for="(cell, jdx) in row" :key="'cell-' + jdx" :style="tableCellStyles">
                   <input type="text" v-model="content[idx + 1][jdx]" />
                 </td>
               </tr>

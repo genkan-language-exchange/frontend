@@ -50,6 +50,27 @@ html {
     --gk-font-color: #2f3640;
   }
 }
+h1::selection,
+h2::selection,
+h3::selection,
+h4::selection,
+h5::selection,
+h6::selection,
+p::selection,
+i::selection,
+li::selection,
+a::selection,
+button::selection,
+span::selection,
+label::selection,
+input::selection,
+div::selection {
+  background-color: var(--yellow);
+  color: var(--bg-color-main);
+}
+img::selection {
+  background-color: var(--yellow);
+}
 
 h1 {
   font-size: 2.8rem;

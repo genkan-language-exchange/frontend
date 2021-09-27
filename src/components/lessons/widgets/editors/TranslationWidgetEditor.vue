@@ -2,7 +2,7 @@
   <BaseWidgetEditor @setEditingWidget="setEditingWidget(widget._id)">
     <template v-if="editingWidget === widget._id">
       <div class="text-editor">
-        <div class="input-group" v-cloak v-for="block, idx in content" :key="idx">
+        <div class="input-group" v-cloak v-for="(block, idx) in content" :key="idx">
           <input type="text" v-model="content[idx].main" />
           <input type="text" v-model="content[idx].target" />
         </div>

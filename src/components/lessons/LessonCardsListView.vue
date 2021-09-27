@@ -38,7 +38,20 @@ h2.title {
   width: 100vw;
   max-width: calc(100vw - 30px);
   overflow-x: scroll;
-  height: 152px;
+  height: 162px;
+  scrollbar-color: var(--theme-color-main) var(--bg-color-secondary);
+  scrollbar-width: thin;
+}
+.language-list::-webkit-scrollbar {
+  height: 8px;
+  background-color: var(--bg-color-secondary);
+  overflow: hidden;
+  border-radius: 4px;
+  
+}
+.language-list::-webkit-scrollbar-thumb {
+  background: var(--theme-color-main);
+  border-radius: 4px;
 }
 .language-list>div {
   box-sizing: border-box;
@@ -57,7 +70,7 @@ h2.title {
 }
 .language-list-mini {
   justify-content: flex-start;
-  height: 112px;
+  height: 122px;
 }
 .language-list-mini>div {
   min-width: 100px;
@@ -78,15 +91,17 @@ h2.title {
 
 @media (min-width: 959px) {
   .language-list {
-    margin-top: 30px;
+    margin: 30px 15px;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 100px;
   }
   .mini-list-view {
     margin-top: 60px;
   }
   .language-list-mini {
     justify-content: flex-start;
+    gap: 10px;
   }
   .language-list-mini>div {
     opacity: 0.5;

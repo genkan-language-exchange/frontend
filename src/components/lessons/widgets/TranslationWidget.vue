@@ -1,6 +1,6 @@
 <template>
   <BaseWidget>
-    <div class="translation-block" v-for="block, idx in widget.content" :key="idx + block.main">
+    <div class="translation-block" v-for="(block, idx) in widget.content" :key="idx + block.main">
       <div class="translate">
         <p><span>{{ idx + 1 }}. </span>{{ block.main }}</p>
         <div class="no-select" @click="setViewAnswer(idx)"><i class="fas" :class="viewAnswer === idx ? 'fa-eye' : 'fa-eye-slash'"></i></div>

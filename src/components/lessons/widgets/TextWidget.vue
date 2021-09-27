@@ -1,7 +1,7 @@
 <template>
   <BaseWidget>
     <div class="text-widget" :style="{ textAlign: widget.textAlign }">
-      <div v-for="block, idx in widget.content" :key="idx">
+      <div v-for="(block, idx) in widget.content" :key="idx">
         <p>{{ block }}</p>
       </div>
     </div>

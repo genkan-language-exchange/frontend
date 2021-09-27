@@ -12,7 +12,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row, idx in widget.content.slice(1)" :key="idx">
+            <tr v-for="(row, idx) in widget.content.slice(1)" :key="idx">
               <td v-for="cell in row" :key="cell" :style="tableCellStyles">
                 {{ cell }}
               </td>
@@ -25,7 +25,7 @@
         
         <template v-else>
           <tbody>
-            <tr v-for="row, idx in widget.content" :key="idx">
+            <tr v-for="(row, idx) in widget.content" :key="idx">
               <td v-for="cell in row" :key="cell" :style="tableCellStyles">
                 {{ cell }}
               </td>
