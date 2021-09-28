@@ -8,14 +8,14 @@
             <thead>
               <tr>
                 <th v-for="(cell, idx) in content[0]" :key="'head-' + idx" :style="tableCellStyles">
-                  <input type="text" v-model="content[0][idx]" />
+                  <input type="text" v-model="content[0][idx]" @blur="content[0][idx].trim()" />
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(row, idx) in content.slice(1)" :key="'row-' + idx">
                 <td v-for="(cell, jdx) in row" :key="'cell-' + jdx" :style="tableCellStyles">
-                  <input type="text" v-model="content[idx + 1][jdx]" />
+                  <input type="text" v-model="content[idx + 1][jdx]" @blur="content[idx + 1][jdx].trim()" />
                 </td>
               </tr>
             </tbody>
@@ -25,6 +25,7 @@
         <div class="tools">
           <button title="Add column" @click="handleAddCol" :disabled="saving"><i class="fas fa-grip-lines-vertical"><i class="fas fa-plus-circle"></i></i></button>
           <button title="Add row" @click="handleAddRow" :disabled="saving"><i class="fas fa-grip-lines"><i class="fas fa-plus-circle"></i></i></button>
+          <button title="Shift rows down" @click="handleShiftRowsDown" :disabled="saving"><i class="fas fa-caret-square-down"></i></button>
           <button title="Bold header" @click="toggleHeader" :disabled="saving"><i class="fas" :class="hasHead ? 'fa-table' : 'fa-border-all'"></i></button>
           <button title="Save" @click="handleSave" :disabled="saving"><i :class="saving ? 'fas fa-fan' : 'fas fa-save'"></i></button>
         </div>
@@ -75,8 +76,10 @@ export default {
       this.hasHead = !this.hasHead
     },
     handleSave() {
+      const formattedContent = this.content.map(row => row.map(cell => cell.trim()))
+
       const payload = {
-        content: this.content,
+        content: formattedContent,
         hasHead: this.hasHead
       }
       
@@ -113,6 +116,10 @@ export default {
 
       // push to content array
       this.content = updatedTable
+    },
+    handleShiftRowsDown() {
+      const newFirstRow = this.content.pop()
+      this.content.unshift(newFirstRow)
     }
   },
   computed: {

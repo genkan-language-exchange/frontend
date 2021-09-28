@@ -34,7 +34,7 @@
     <template v-else>
       <div>
         <div id="render-view" v-for="widget in widgets" :key="widget._id">
-          <TheLoadSpinner v-if="busyWidget === widget._id" />
+          <TheLoadSpinner style="margin: 0 auto !important;" v-if="busyWidget === widget._id" />
           <TableWidgetEditor
             v-if="widget.type === 'TableWidget'"
             :class="busyWidget === widget._id && 'busy'"
@@ -69,7 +69,18 @@
           />
         </div>
         
-        <button class="button" @click.prevent="openModal">Add Widget</button>
+        <button class="modal-button button" @click.prevent="openModal">Add Widget</button>
+        
+        <div class="lesson-status">
+          <label for="status">Lesson status:</label>
+          <select name="status" id="status" v-model="status" @change="handleStatusChange">
+            <option value="" selected disabled>Change Lesson Status</option>
+            <option value="draft" disabled>Draft</option>
+            <option value="published">Published</option>
+            <option value="private">Private</option>
+            <option value="deleted">Delete</option>
+          </select>
+        </div>
         
         <AddWidgetModal
           v-if="modalOpen"
@@ -108,17 +119,19 @@ export default {
     TitleWidgetEditor,
     TranslationWidgetEditor,
   },
-  props: ["canEdit", "widgets", "addWidgetToLesson", "editWidgetContent"],
+  props: ["canEdit", "lesson", "widgets", "addWidgetToLesson", "editWidgetContent", "onEditing", "onStatusChange"],
   data() {
     return {
       editing: false,
       editingWidget: "",
       busyWidget: "",
       modalOpen: false,
+      status: "",
     }
   },
   methods: {
     setEditing() {
+      this.onEditing()
       this.editing = !this.editing
     },
     setEditingWidget(_id) {
@@ -129,6 +142,7 @@ export default {
       }
     },
     openModal() {
+      this.editingWidget = "-1"
       this.modalOpen = true
     },
     addWidget(w) {
@@ -141,15 +155,28 @@ export default {
       this.busyWidget = this.editingWidget
       this.editingWidget = ""
       this.editWidgetContent(id, payload, this.onLoadEnd)
-    }
+    },
+    handleStatusChange() {
+      if (this.status === 'deleted') {
+        const answer = prompt('Are you sure you want to delete this lesson? Type "YES" to continue.')
+        if (answer?.trim()?.toLowerCase() !== 'yes') return
+      }
+      this.onStatusChange(this.status)
+    },
   },
   mounted() {
+    this.status = this.lesson.status
     if (this.canEdit && !this.widgets?.length) this.editing = true
   }
 }
 </script>
 
 <style scoped>
+  #render-view{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   #wrapper {
     position: relative;
   }
@@ -188,6 +215,9 @@ export default {
   .edit-button:hover {
     opacity: 1;
   }
+  .modal-button {
+    margin-top: 20px !important;
+  }
   #widgets-selector {
     display: flex;
     justify-content: center;
@@ -201,5 +231,16 @@ export default {
     padding: 5px 10px;
     color: var(--bg-color-main);
     cursor: pointer;
+  }
+  .lesson-status {
+    width: 30%;
+    margin: 20px auto;
+  }
+  .lesson-status label {
+    margin-bottom: 5px;
+  }
+  .lesson-status select {
+    padding: 5px;
+    font-size: 1.6rem;
   }
 </style>

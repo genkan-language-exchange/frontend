@@ -16,6 +16,10 @@ const prefix = `${process.env.VUE_APP_API_URL}/api/v1/lessons`
   PATCH /:id/widget/edit - edits a widget and returns the widget
 */
 
+// ****************
+//     LESSONS
+// ****************
+
 async function getSingleLesson(id) {
   const url = `${prefix}/single/${id}`
 
@@ -73,6 +77,29 @@ async function createLesson(language) {
   }
 }
 
+async function updateLesson(id, payload) {
+  const url = `${prefix}/${id}/edit`
+
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await axios.patch(url, payload, config)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}
+
+// ****************
+//     WIDGETS
+// ****************
+
 async function addWidget(id, type) {
   const url = `${prefix}/${id}/widget`
 
@@ -115,6 +142,7 @@ export {
   getSingleLesson,
   getMyLessons,
   createLesson,
+  updateLesson,
   addWidget,
   editWidget,
 }

@@ -147,7 +147,8 @@
     margin: 0;
   }
   .story-card {
-    width: 95%;
+    min-width: 800px;
+    max-width: 800px;
     max-height: 300px;
     margin: 0 auto 20px;
     background-color: var(--bg-color-secondary);

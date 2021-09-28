@@ -65,6 +65,7 @@ button::selection,
 span::selection,
 label::selection,
 input::selection,
+td::selection,
 div::selection {
   background-color: var(--yellow);
   color: var(--bg-color-main);

@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     addBlock() {
-      console.log("adding")
       this.content.push("")
     },
     removeBlock() {
