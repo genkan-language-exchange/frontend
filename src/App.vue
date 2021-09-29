@@ -11,6 +11,7 @@ import './assets/transitions.css'
 import './assets/animations.css'
 import Navigation from '@/components/navigation/Navigation'
 import { mapActions } from 'vuex'
+// import { io } from 'socket.io-client'
 
 export default {
   name: 'Main',
@@ -19,7 +20,8 @@ export default {
   },
   data() {
     return {
-      pingInterval: null
+      pingInterval: null,
+      socket: null,
     }
   },
   methods: {
@@ -31,13 +33,23 @@ export default {
         this.ping()
       }, 900000)
     },
-    async ping() {
-      const response = await this.pingThatServer()
-      console.log(response)
-    }
+    ping() {
+      this.pingThatServer()
+    },
   },
   created() {
     this.$store.dispatch('tryRefreshAuth')
+    
+    // this.socket = io(process.env.VUE_APP_API_URL)
+    
+    // this.socket.on("connect", () => {
+    //   console.log("connected to socket")
+    // })
+
+    // this.socket.on("disconnect", (reason) => {
+    //   console.log("disconnected from socket")
+    //   console.log(reason)
+    // })
   },
   mounted() {
     this.setPingInterval()
@@ -66,7 +78,7 @@ html, body {
 }
 /* Japanese */
 @font-face {
-  font-family: "Noto Sans JP";
+  font-family: "Noto Sans JP", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   src: local("Noto Sans JP"), url(./assets/fonts/NotoSansJP-Regular.otf) format("opentype");
 }
 
@@ -76,12 +88,6 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--gk-font-color);
-  /* position: relative; */
-  /*
-  font-family: 'Roboto', sans-serif;
-  font-family: 'Sriracha', cursive;
-  font-family: 'Kosugi Maru', sans-serif;
-  */
 }
 
 .no-select {
@@ -93,37 +99,6 @@ html, body {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
-
-/* .route-enter-from {
-  opacity: 0;
-}
-.route-enter-to {
-  opacity: 1;
-}
-.route-enter-active {
-  animation: slide 0.4s ease-out;
-}
-.route-leave-active {
-  animation: slide 0.4s ease-in;
-}
-
-@keyframes slide {
-  from {
-    opacity: 0;
-    transform: translateX(-45px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-} */
-
-/* @media (prefers-color-scheme: light) {
-  html, body {
-    background-color: #f5f6fa;
-  }
-} */
 
 /* font-feature-settings: 'tnum'; */
 /* font-variant-numeric: 'tabular-nums'; */

@@ -51,7 +51,14 @@ export default {
     },
     async createNewLesson() {
       if (this.loading) return
+
+      const filteredLessons = this.createdLessons.filter(lesson => lesson.status === "draft")
+      if (filteredLessons.length) {
+        return this.error_draftExists = true
+      }
+
       this.loading = true
+      
       const language = this.$route.params.language
       const response = await createLesson(language)
       if (response.success) {

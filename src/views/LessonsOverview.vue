@@ -2,18 +2,50 @@
   <div class="container">
     
     <section>
-      <h2 class="title">Culture</h2>
+      <transition-group name="fade-in" mode="out-in">
+        <h2 class="title">Culture</h2>
+        <p v-if="!loading">{{ cultureLessons }} lesson{{ cultureLessons === 1 ? '' : 's'}}</p>
+      </transition-group>
     </section>
+
     <section>
-      <h2 class="title">Language</h2>
+      <transition-group name="fade-in" mode="out-in">
+        <h2 class="title">Language</h2>
+        <p v-if="!loading">{{ languageLessons }} lesson{{ languageLessons === 1 ? '' : 's'}}</p>
+      </transition-group>
     </section>
 
   </div>
 </template>
 
 <script>
+import { getLessonCount } from '@/api/lessonsApi.js'
 export default {
-  
+  data() {
+    return {
+      loading: true,
+      cultureLessons: 0,
+      languageLessons: 0,
+    }
+  },
+  methods: {
+    async fetchLessons() {
+      const language = this.$route.params.language
+      
+      const languageResponse = await getLessonCount(language, 'language')
+      const cultureResponse = await getLessonCount(language, 'culture')
+
+      console.log(languageResponse.lesson_count)
+      console.log(cultureResponse.lesson_count)
+
+      this.languageLessons = languageResponse.lesson_count
+      this.cultureLessons = cultureResponse.lesson_count
+      this.loading = false
+    },
+  },
+  created() {
+    this.fetchLessons()
+  }
 }
 </script>
 
@@ -36,6 +68,7 @@ section {
   padding-top: 5px;
   width: 50%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;

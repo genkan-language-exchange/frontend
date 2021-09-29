@@ -25,6 +25,7 @@
           :addWidgetToLesson="addWidgetToLesson"
           :editWidgetContent="editWidgetContent"
           :onStatusChange="handleStatusChange"
+          :onTypeChange="handleTypeChange"
         />
       </div>
     </template>
@@ -52,7 +53,8 @@ export default {
       editingTitle: false,
       lesson: {},
       title: "",
-      status: ""
+      status: "",
+      type: ""
     }
   },
   methods: {
@@ -98,12 +100,16 @@ export default {
       this.status = updated_status
       this.saveLesson()
     },
+    handleTypeChange(updated_type) {
+      this.type = updated_type
+      this.saveLesson()
+    },
     async saveLesson() {
       if (this.loading) return
       this.loading = true
       this.editingTitle = false
 
-      const payload = { widgets: this.lesson.widgets, title: this.title, status: this.status }
+      const payload = { widgets: this.lesson.widgets, title: this.title, status: this.status, type: this.type }
 
       await updateLesson(this.lesson._id, payload)
       await this.fetchLesson()

@@ -12,6 +12,7 @@ const router = createRouter({
       name: 'Landing',
       component: Landing,
       meta: {
+        title: "Genkan",
         guest: true,
         requiresUnauth: true,
       }
@@ -21,6 +22,7 @@ const router = createRouter({
       name: 'Chat',
       component: () => import('../views/Chat.vue'),
       meta: {
+        title: "Chat | Genkan",
         requiresAuth: true,
       },
     },
@@ -29,6 +31,7 @@ const router = createRouter({
       name: 'Stories',
       component: () => import('../views/Stories.vue'),
       meta: {
+        title: "Stories | Genkan",
         requiresAuth: true,
       }
     },
@@ -37,6 +40,7 @@ const router = createRouter({
       name: 'StoryCreation',
       component: () => import('../views/StoryCreation.vue'),
       meta: {
+        title: "Share your story | Genkan",
         requiresAuth: true,
         requiresVerified: true,
       }
@@ -46,6 +50,7 @@ const router = createRouter({
       name: 'UserLessons',
       component: () => import('../views/UserLessons.vue'),
       meta: {
+        title: "Lessons | Genkan",
         requiresAuth: true,
         requiresVerified: true,
       },
@@ -55,15 +60,17 @@ const router = createRouter({
       name: 'LessonsOverview',
       component: () => import('../views/LessonsOverview.vue'),
       meta: {
+        title: "Lessons | Genkan",
         requiresAuth: true,
         requiresVerified: true,
-      }
+      },
     },
     {
       path: '/lessons/creation/:language',
       name: 'LessonCreationOverview',
       component: () => import('../views/LessonCreationOverview.vue'),
       meta: {
+        title: "Your created lessons | Genkan",
         requiresAuth: true,
         requiresVerified: true,
       },
@@ -74,6 +81,7 @@ const router = createRouter({
       component: () => import('../views/LessonCreator.vue'),
       props: route => ({ query: route.query.id }),
       meta: {
+        title: "Create a lesson | Genkan",
         requiresAuth: true,
         requiresVerified: true,
       },
@@ -83,6 +91,7 @@ const router = createRouter({
       name: 'Search',
       component: () => import('../views/Search.vue'),
       meta: {
+        title: "Search | Genkan",
         requiresAuth: true,
       }
     },
@@ -92,6 +101,7 @@ const router = createRouter({
       props: true,
       component: () => import('../views/Passport.vue'),
       meta: {
+        title: "Passport | Genkan",
         requiresAuth: true,
       },
     },
@@ -100,6 +110,7 @@ const router = createRouter({
       name: 'Login',
       component: () => import('../views/Login.vue'),
       meta: {
+        title: "Login | Genkan",
         guest: true,
         requiresUnauth: true,
       }
@@ -109,6 +120,7 @@ const router = createRouter({
       name: 'Welcome',
       component: () => import('../views/Welcome.vue'),
       meta: {
+        title: "Genkan",
         guest: true,
         requiresUnauth: true,
       }
@@ -118,6 +130,7 @@ const router = createRouter({
       name: 'Verify',
       component: () => import('../views/VerifyAccount.vue'),
       meta: {
+        title: "Genkan",
         guest: true,
       },
       beforeEnter(_to, _from, next) {
@@ -130,6 +143,7 @@ const router = createRouter({
       name: 'ResetPassword',
       component: () => import('../views/ResetPassword.vue'),
       meta: {
+        title: "Genkan",
         guest: true,
         requiresUnauth: true,
       },
@@ -143,6 +157,7 @@ const router = createRouter({
       name: 'Roadmap',
       component: () => import('../views/Roadmap.vue'),
       meta: {
+        title: "Genkan",
         guest: true,
       },
     },
@@ -156,6 +171,7 @@ const router = createRouter({
       name: 'ResourceNotFound',
       component: () => import('../views/ResourceNotFound.vue'),
       meta: {
+        title: "Genkan",
         guest: true
       }
     },
@@ -164,6 +180,7 @@ const router = createRouter({
       name: 'PageNotFound',
       component: () => import('../views/PageNotFound.vue'),
       meta: {
+        title: "Genkan",
         guest: true
       }
     },
@@ -193,6 +210,19 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // This goes through the matched routes from last to first, finding the closest route with a title.
+  // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
+  // `/nested`'s will be chosen.
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+  const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+
+  // If a route with a title was found, set the document (page) title to that value.
+  if(nearestWithTitle) {
+    document.title = nearestWithTitle.meta.title;
+  } else if(previousNearestWithMeta) {
+    document.title = previousNearestWithMeta.meta.title;
+  }
+
   if (to.meta.requiresAuth && !store.getters.isAuth) {
     // route requires a user to be logged in
     // and the user is not logged in

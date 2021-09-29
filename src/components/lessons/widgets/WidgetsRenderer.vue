@@ -71,10 +71,16 @@
         
         <button class="modal-button button" @click.prevent="openModal">Add Widget</button>
         
+        <div class="lesson-type">
+          <label for="type">Lesson type:</label>
+          <select name="type" id="type" v-model="type" @change="handleTypeChange">
+            <option value="language">Language</option>
+            <option value="culture">Culture</option>
+          </select>
+        </div>
         <div class="lesson-status">
           <label for="status">Lesson status:</label>
           <select name="status" id="status" v-model="status" @change="handleStatusChange">
-            <option value="" selected disabled>Change Lesson Status</option>
             <option value="draft" disabled>Draft</option>
             <option value="published">Published</option>
             <option value="private">Private</option>
@@ -119,7 +125,7 @@ export default {
     TitleWidgetEditor,
     TranslationWidgetEditor,
   },
-  props: ["canEdit", "lesson", "widgets", "addWidgetToLesson", "editWidgetContent", "onEditing", "onStatusChange"],
+  props: ["canEdit", "lesson", "widgets", "addWidgetToLesson", "editWidgetContent", "onEditing", "onStatusChange", "onTypeChange"],
   data() {
     return {
       editing: false,
@@ -127,6 +133,7 @@ export default {
       busyWidget: "",
       modalOpen: false,
       status: "",
+      type: "",
     }
   },
   methods: {
@@ -163,10 +170,16 @@ export default {
       }
       this.onStatusChange(this.status)
     },
+    handleTypeChange() {
+      this.onTypeChange(this.type)
+    }
   },
   mounted() {
     this.status = this.lesson.status
-    if (this.canEdit && !this.widgets?.length) this.editing = true
+    if (this.canEdit && !this.widgets?.length) {
+      this.editing = true
+      this.onEditing()
+    }
   }
 }
 </script>
@@ -232,14 +245,14 @@ export default {
     color: var(--bg-color-main);
     cursor: pointer;
   }
-  .lesson-status {
+  .lesson-status, .lesson-type {
     width: 30%;
     margin: 20px auto;
   }
-  .lesson-status label {
+  .lesson-status label, .lesson-type label {
     margin-bottom: 5px;
   }
-  .lesson-status select {
+  .lesson-status select, .lesson-type select {
     padding: 5px;
     font-size: 1.6rem;
   }

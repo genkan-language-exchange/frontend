@@ -4,16 +4,17 @@ const prefix = `${process.env.VUE_APP_API_URL}/api/v1/lessons`
 
 /*
   routes:
-  GET /MyLessons/[?language=] - get user's own lessons
-  GET /UserLessons/[?language=] - get all of a user's published lessons
-  GET /all/:language - get published lessons for a language
+  GET /MyLessons[?language=] - get user's own lessons
+  GET /UserLessons[?language=] - get all of a user's published lessons
+  GET /all[?language=&type=] - get published lessons for a language by type (no queries = all lessons)
+  GET /count[?language=&type=] - get published lessons for a language by type (no queries = all lessons)
   GET /single/:id - get a lesson by id
 
   POST /:language/new - creates a new lesson and returns the id
   PATCH /:id/edit - edits a lesson (editing title, status, adding widgets) and returns the lesson
 
   POST /:id/widget - creates a widget and returns the id and lesson
-  PATCH /:id/widget/edit - edits a widget and returns the widget
+  PATCH /:id/widget - edits a widget and returns the widget
 */
 
 // ****************
@@ -41,6 +42,26 @@ async function getSingleLesson(id) {
 
 async function getMyLessons(language) {
   const url = `${prefix}/MyLessons${language ? `?language=${language.toLowerCase()}` : ""}`
+
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await axios.get(url, config)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}
+
+async function getLessonCount(language, type) {
+  if (!language || !type) return false
+  const url = `${prefix}/count?language=${language.toLowerCase()}&type=${type.toLowerCase()}`
 
   const token = localStorage.getItem('genkan-token');
   const config = {
@@ -120,7 +141,7 @@ async function addWidget(id, type) {
 }
 
 async function editWidget(id, payload) {
-  const url = `${prefix}/${id}/widget/edit`
+  const url = `${prefix}/${id}/widget`
 
   const token = localStorage.getItem('genkan-token');
   const config = {
@@ -141,6 +162,7 @@ async function editWidget(id, payload) {
 export {
   getSingleLesson,
   getMyLessons,
+  getLessonCount,
   createLesson,
   updateLesson,
   addWidget,
