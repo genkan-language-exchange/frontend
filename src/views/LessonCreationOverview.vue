@@ -46,7 +46,9 @@ export default {
       this.loading = true
       const language = this.$route.params.language
       const response = await getMyLessons(language)
-      this.createdLessons = response.data
+      const draftLessons = response.data.filter(lesson => lesson.status === 'draft')
+      const nonDraftLessons = response.data.filter(lesson => lesson.status !== 'draft')
+      this.createdLessons = draftLessons.concat(nonDraftLessons)
       this.loading = false
     },
     async createNewLesson() {

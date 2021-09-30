@@ -79,6 +79,26 @@ async function getLessonCount(language, type) {
   }
 }
 
+async function getPublishedLessons(language, type, page = 0) {
+  if (!language || !type) return false
+  const url = `${prefix}/all?language=${language.toLowerCase()}&type=${type.toLowerCase()}&page=${page}`
+
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await axios.get(url, config)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}
+
 async function createLesson(language) {
   const url = `${prefix}/${language}/new`
 
@@ -163,6 +183,7 @@ export {
   getSingleLesson,
   getMyLessons,
   getLessonCount,
+  getPublishedLessons,
   createLesson,
   updateLesson,
   addWidget,

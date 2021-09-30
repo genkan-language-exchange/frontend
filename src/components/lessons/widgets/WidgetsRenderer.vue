@@ -176,6 +176,7 @@ export default {
   },
   mounted() {
     this.status = this.lesson.status
+    this.type = this.lesson.type
     if (this.canEdit && !this.widgets?.length) {
       this.editing = true
       this.onEditing()

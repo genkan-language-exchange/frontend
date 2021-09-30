@@ -66,6 +66,7 @@ export default {
         this.lesson = response.data
         this.title = response.data.title
         this.status = response.data.status
+        this.type = response.data.type
       } else {
         this.$router.push('/lessons')
       }

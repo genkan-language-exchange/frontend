@@ -66,7 +66,17 @@ const router = createRouter({
       },
     },
     {
-      path: '/lessons/creation/:language',
+      path: '/lesson/:id',
+      name: 'LessonPage',
+      component: () => import('../views/LessonPage.vue'),
+      meta: {
+        title: "Lesson | Genkan",
+        requiresAuth: true,
+        requiresVerified: true,
+      },
+    },
+    {
+      path: '/lesson/creation/:language',
       name: 'LessonCreationOverview',
       component: () => import('../views/LessonCreationOverview.vue'),
       meta: {
@@ -76,7 +86,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/lessons/creation/:language/:id",
+      path: "/lesson/creation/:language/:id",
       name: "LessonCreator",
       component: () => import('../views/LessonCreator.vue'),
       props: route => ({ query: route.query.id }),
