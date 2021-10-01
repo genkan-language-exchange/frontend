@@ -3,14 +3,14 @@
     <transition-group name="fade-in" mode="out-in">
 
       <template v-if="!selectedType">
-        <section class="culture" key="culture" @click="handleTypeSelect('culture')">
+        <section class="culture" :class="loading || cultureLessons === 0 && 'loading'" key="culture" @click="loading || cultureLessons === 0 ? null : handleTypeSelect('culture')">
           <transition-group name="fade-in" mode="out-in">
             <h2 key="title" class="title">Culture</h2>
             <p key="count" v-if="!loading">{{ cultureLessons }} lesson{{ cultureLessons === 1 ? '' : 's'}}</p>
           </transition-group>
         </section>
 
-        <section class="language" key="language" @click="handleTypeSelect('language')">
+        <section class="language" :class="loading || languageLessons === 0 && 'loading'" key="language" @click="loading || languageLessons === 0 ? null : handleTypeSelect('language')">
           <transition-group name="fade-in" mode="out-in">
             <h2 key="title" class="title">Language</h2>
             <p key="count" v-if="!loading">{{ languageLessons }} lesson{{ languageLessons === 1 ? '' : 's'}}</p>
@@ -141,6 +141,12 @@ h1.title {
 }
 section:hover, section:active {
   background-color: var(--theme-color-main);
+}
+.loading {
+  cursor: default;
+}
+.loading:hover, .loading:active {
+  background-color: transparent;
 }
 .scroll-view {
   /* margin-top: 25px; */
