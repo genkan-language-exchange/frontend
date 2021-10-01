@@ -99,7 +99,12 @@ export default {
     },
     handleStatusChange(updated_status) {
       this.status = updated_status
-      this.saveLesson()
+      this.saveLesson().then(() => {
+        if (updated_status === 'deleted') {
+          const language = this.$route.params.language
+          this.$router.push({ name: 'LessonCreationOverview', params: { language: language.split(" ").join("_").toLowerCase() } })
+        }
+      })
     },
     handleTypeChange(updated_type) {
       this.type = updated_type
