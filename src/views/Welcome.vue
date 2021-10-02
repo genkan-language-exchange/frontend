@@ -3,7 +3,7 @@
 
     <div v-if="skip < 3">
       <transition name="cards" mode="out-in">
-        <TheLanguageDropdown v-if="onboardStep === 0" @next="next" :languageKnow="['Undecided']" >What language(s) do you speak?</TheLanguageDropdown>
+        <TheLanguageDropdown v-if="onboardStep === 0" @next="next" :languageKnow="[{ language: 'Undecided', level: 0 }]" >What language(s) do you speak?</TheLanguageDropdown>
         <TheLanguageDropdown v-else-if="onboardStep === 1" @next="next" :languageKnow="matchSettings.languageKnow">What language(s) are you interested in?</TheLanguageDropdown>
         <TheCountryDropdown v-else-if="onboardStep === 2" @next="next">Where are you from?</TheCountryDropdown>
         <TheCountryDropdown v-else-if="onboardStep === 3" @next="next">Where do you live?</TheCountryDropdown>
@@ -143,16 +143,16 @@
         this.error = false
         this.popupMessage = true
         
-        if (this.matchSettings.languageKnow.length) {
-          this.matchSettings.languageKnow.map(lang => {
-            return [lang, 0]
-          })
-        }
-        if (this.matchSettings.languageLearn.length) {
-          this.matchSettings.languageLearn.map(lang => {
-            return [lang, 0]
-          })
-        }
+        // if (this.matchSettings.languageKnow.length) {
+        //   this.matchSettings.languageKnow.map(lang => {
+        //     return [lang, 0]
+        //   })
+        // }
+        // if (this.matchSettings.languageLearn.length) {
+        //   this.matchSettings.languageLearn.map(lang => {
+        //     return [lang, 0]
+        //   })
+        // }
 
         const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm, matchSettings: this.matchSettings })
         .then(res => res)

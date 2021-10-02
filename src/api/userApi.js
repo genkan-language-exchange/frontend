@@ -7,8 +7,8 @@ async function registerUser(name, email, password, passwordConfirm, incomingMatc
   const matchSettings = {
     birthday: "1970-01-01",
     gender: "non-binary",
-    languageKnow: ["???"],
-    languageLearn: ["???"],
+    languageKnow: [{ language: "???", level: 0 }],
+    languageLearn: [{ language: "???", level: 0 }],
     nationality: "???",
     residence: "Antarctica",
     ...incomingMatchSettings,

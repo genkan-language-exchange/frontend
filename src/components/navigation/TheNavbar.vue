@@ -1,6 +1,8 @@
 <template>
   <div id="nav" v-if="isAuth">
     <ul>
+      
+      <li v-if="canViewLink"><router-link to="/chat"><i class="fas fa-envelope"></i></router-link></li>
       <!-- <li><router-link to="/chat"><i class="fas fa-comments"></i></router-link></li> -->
       <li><router-link to="/stories"><i class="fas fa-book-open"></i></router-link></li>
       <li><router-link to="/lessons"><i class="fas fa-language"></i></router-link></li>
@@ -11,6 +13,8 @@
 </template>
 
 <script>
+// <i class="fas fa-envelope-open-text"></i> // user has new mail
+// <i class="fas fa-envelope"></i>           // user has no new mail
 import { mapGetters } from 'vuex'
 export default {
   computed: {

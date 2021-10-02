@@ -26,7 +26,7 @@ const countriesAll  = [
   { code: "BM", name: ["Bermuda"] },
   { code: "BT", name: ["Bhutan"] },
   { code: "BO", name: ["Bolivia", "Plurinational State of"] },
-  { code: "BQ", name: ["Bonaire", "Sint Eustatius and Saba"] },
+  { code: "BQ", name: ["Bonaire"] },
   { code: "BA", name: ["Bosnia and Herzegovina"] },
   { code: "BW", name: ["Botswana"] },
   { code: "BV", name: ["Bouvet Island"] },

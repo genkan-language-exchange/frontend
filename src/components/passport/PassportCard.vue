@@ -1,11 +1,11 @@
 <template>
   <div id="base" v-if="user._id">
-    <template v-if="!user.avatar">
+    
       <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
         <img
           v-if="true"
           ref="avatar"
-          src='@/assets/avatar1.png'
+          :src="user.gravatar"
           alt="User"
           draggable="false"
         >
@@ -19,37 +19,58 @@
           >
           <button type="button" @click.prevent="$refs.fileInput.click()">Pick File</button>
           <template v-if="file">
-            <p>{{file.name}}</p>
+            <p>{{ file.name }}</p>
             <button type="button" @click.prevent="onFileSubmit">Upload</button>
           </template>
         </form>
       </div>
-    </template>
+    
     <section id="head">
       <div id="user-name-age">
-        <h2>{{user.name}} <span v-if="isSelf">#{{user.identifier}}</span></h2>
-        <p>{{user.matchSettings.age}} years old</p>
+        <h2>{{ user.name }} <span v-if="isSelf">#{{ user.identifier }}</span></h2>
+        <p>{{ user.matchSettings.age }} years old</p>
       </div>
       <div id="user-lang">
         <h4>Speaks</h4>
-        <p v-for="lang in user.matchSettings.languageKnow" :key="lang">{{ lang[0] }}&nbsp;&nbsp;<span v-for="index in lang[1]" :key="index"><i class="fas fa-star"></i></span></p>
+        <p
+          v-for="lang in user.matchSettings.languageKnow"
+          :key="lang"
+        >
+          {{ lang.language }}&nbsp;&nbsp;
+          <template v-if="lang.level > 0">
+            <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
+          </template>
+          <template v-else>
+            <span><i class="far fa-star"></i></span>
+          </template>
+        </p>
         <h4>Learns</h4>
-        <p v-for="lang in user.matchSettings.languageLearn" :key="lang">{{ lang[0] }}&nbsp;&nbsp;<span v-for="index in lang[1]" :key="index"><i class="fas fa-star"></i></span></p>
+        <p
+          v-for="lang in user.matchSettings.languageLearn"
+          :key="lang"
+        >
+          {{ lang.language }}&nbsp;&nbsp;
+          <template v-if="lang.level > 0">
+            <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
+          </template>
+          <template v-else>
+            <span><i class="far fa-star"></i></span>
+          </template>
+        </p>
       </div>
     </section>
-    <!-- TODO: add stories list view tab -->
     
-    <section id="toggle-view">
+    <!-- <section id="toggle-view">
       <div @click="() => viewingProfile = true" class="tab-profile" :class="viewingProfile && 'active'">
         <p>Profile</p>
       </div>
       <div @click="() => viewingProfile = false"  class="tab-moments" :class="!viewingProfile && 'active'">
         <p>Stories</p>
       </div>
-    </section>
+    </section> -->
     
-    <transition-group name="fade-in" mode="out-in">
-      <template v-if="viewingProfile">
+    <!-- <transition-group name="fade-in" mode="out-in">
+      <template v-if="viewingProfile"> -->
         <TheAboutSection
           :about="user.profile.about"
           :languageGoal="user.profile.languageGoal"
@@ -57,7 +78,7 @@
           key="about"
         />
 
-        <TheFilters
+        <!-- <TheFilters
           v-if="isSelf"
           :filterSettings="user.filterSettings"
           :role="user.role"
@@ -67,7 +88,7 @@
       <template v-else>
         <TheUserStories :user="user" />
       </template>
-    </transition-group>
+    </transition-group> -->
 
 
     <!-- <section v-if="isSelf" id="blocked">
@@ -79,20 +100,21 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 
-import { mapActions, mapGetters } from 'vuex'
 import checkAccountAge from '@/util/checkAccountAge.js'
 
 import TheAboutSection from './TheAboutSection'
-import TheUserStories from './UserStories/TheUserStories'
-import TheFilters from './TheFilters'
+// import TheUserStories from './UserStories/TheUserStories'
+// import TheFilters from './TheFilters'
 import TheFooter from './TheFooter'
+
 export default {
   components: {
     TheAboutSection,
-    TheUserStories,
-    TheFilters,
+    // TheUserStories,
+    // TheFilters,
     TheFooter,
   },
   props: {
@@ -182,7 +204,7 @@ h2 span {
   justify-content: center;
   align-items: center;
   width: 80%;
-  max-width: 400px;
+  max-width: 200px;
   margin: 0 auto 25px;
   border: 2px solid var(--theme-color-main);
   background-color: var(--off-white-main);
@@ -273,7 +295,7 @@ form p {
 
 @media (min-width: 959px) {
   #avatar {
-    width: 300px;
+    width: 200px;
   }
   section {
     max-width: 60%;

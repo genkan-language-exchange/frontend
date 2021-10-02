@@ -46,6 +46,7 @@ export default {
 
       if (response.status !== "success") this.isError = true
       this.user = response.data[0]
+      this.user.gravatar = response.gravatar
     },
     logMeOut() {
       this.logout()

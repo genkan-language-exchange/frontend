@@ -167,7 +167,7 @@ button:disabled:hover {
 @media (min-width: 959px) {
   form {
     width: 500px;
-    margin: 150px 75px 0 auto;
+    margin: 150px auto 0;
   }
   input, button {
     font-size: 1.4rem;

@@ -4,7 +4,12 @@
       <slot></slot>
     </h2>
     <section class="language-list" :class="mini ? 'language-list-mini': ''">
-      <div v-for="lang in languages" :key="mini ? lang.code : lang" @click="handleLessonNavigation(mini ? lang.name : lang)">
+      <div
+        v-for="lang in languages"
+        :key="mini ? lang.code : lang"
+        :title="mini ? `${lang.name} Lessons` : `${lang} Lessons`"
+        @click="handleLessonNavigation(mini ? lang.name : lang)"
+      >
         {{ mini ? lang.name : lang }}
       </div>
     </section>

@@ -3,25 +3,41 @@
     <div>
       <div class="answers">
         <h3><slot></slot></h3>
-        <p>{{checked.length ? checked.join(', ') : '&nbsp;'}}</p>
         <div id="scrollview">
-          <label
-            v-for="lang of filteredLanguages"
+
+          <div
+            v-for="(lang) of filteredLanguages"
             :key="lang.code"
-            class="item"
           >
-            <div :for="lang.code" class="label">
-              <p>{{ lang.name }}</p>
-              <p>{{ lang.endonym }}</p>
-            </div>
-            <input
-              :id="lang.code"
-              v-model="checked"
-              type="checkbox"
-              :value="lang.name"
+            <label
+              class="item"
             >
-            <span class="checkmark" />
-          </label>
+              <div :for="lang.code" class="label">
+                <p>{{ lang.name }}</p>
+                <p>{{ lang.endonym }}</p>
+              </div>
+              <input
+                :id="lang.code"
+                v-model="checked"
+                type="checkbox"
+                class="checkbox"
+                :value="lang.name"
+              >
+              <span class="checkmark" />
+            </label>
+            <input
+              v-if="filterChecked.includes(lang.name)"
+              type="range"
+              min="0"
+              max="3"
+              class="slider"
+              :value="langLevels[lang.name]"
+              @change="e => handleSlide(e.target.value, lang.name)"
+              :id="`levelSlider_${lang.name}`"
+            />
+            <p v-if="filterChecked.includes(lang.name)">{{ levels[langLevels[lang.name]] }}</p>
+          </div>
+
         </div>
       </div>
     </div>
@@ -43,11 +59,34 @@ export default {
       langPopular,
       filteredLanguages: [],
       checked: [],
+      langLevels: {},
+      levels: {
+        0: "Beginner",
+        1: "Intermediate",
+        2: "Advanced",
+        3: "Fluent"
+      }
     }
   },
   methods: {
+    handleSlide(val, langCode) {
+      this.langLevels = {
+        ...this.langLevels,
+        [langCode]: val 
+      }
+    },
     handleClick() {
-      this.$emit('next', this.checked)
+      const payload = []
+
+      this.checked.forEach(lang => {
+        const newLang = {
+          language: lang,
+          level: this.langLevels[lang]
+        }
+        payload.push(newLang)
+      })
+      
+      this.$emit('next', payload)
     },
   },
   watch: {
@@ -55,15 +94,23 @@ export default {
       if (val.length > 3) return this.checked.shift()
     }
   },
+  computed: {
+    filterChecked() {
+      const _checked = this.checked.filter(lang => lang.toLowerCase() !== 'undecided')
+      return _checked
+    }
+  },
   mounted() {
     const languages = this.langPopular.concat(this.langAll)
     if (this.languageKnow) {
       const known = this.languageKnow
+      console.log(known)
       for (let i = 0; i < languages.length ; i++) {
         for (let j = 0 ; j < known.length ; j++) {
-          if (languages[i].name.toLowerCase() === known[j].toLowerCase()) {
+          if (languages[i].name.toLowerCase() === known[j].language.toLowerCase()) {
             languages.splice(i, 1)
           }
+          this.langLevels[languages[i].name] = 0
         }
       }
     }
@@ -134,7 +181,7 @@ h2 {
 	display: flex;
 	align-items: center;
 }
-.checkbox-form .item input {
+.checkbox-form .item .checkbox {
 	position: absolute;
 	opacity: 0;
 	cursor: pointer;
@@ -180,9 +227,94 @@ h2 {
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
+#sliders>div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 20px 0;
+}
 .next-button {
   bottom: -150px;
 }
+
+input[type=range] {
+  height: 23px;
+  -webkit-appearance: none;
+  margin: 10px 0 10px 20px;
+  width: 90%;
+  background-color: transparent;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: #8C7AE6;
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+  border: 1px solid transparent;
+  height: 15px;
+  width: 50px;
+  border-radius: 20px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3.5px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #8C7AE6;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: #8C7AE6;
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+input[type=range]::-moz-range-thumb {
+  border: 1px solid transparent;
+  height: 15px;
+  width: 50px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #8C7AE6;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #8C7AE6;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  border: 1px solid transparent;
+  height: 15px;
+  width: 50px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #8C7AE6;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #8C7AE6;
+}
+
 @media (max-width: 480px) {
   #scrollview {
     border-right-width: 2px;

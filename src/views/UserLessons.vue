@@ -52,21 +52,36 @@ export default {
     },
     handleCreateLessonNavigation(language) {
       this.$router.push({ name: 'LessonCreationOverview', params: { language: language.split(" ").join("_").toLowerCase() } })
+    },
+    mapToList(arr) { // take array of Object<language, level> and return an array of language
+      const result = []
+      for (const obj of arr) {
+        result.push(obj.language)
+      }
+      return result
     }
   },
   computed: {
     languagesKnow() {
-      return this.getLanguagesKnow().filter(lang => lang[1] > 0).map(lang => lang[0])
+      const _languagesKnow = this.getLanguagesKnow()
+      if (!_languagesKnow.length) return
+      return this.mapToList(_languagesKnow)
     },
     languagesLearn() {
-      return this.getLanguagesLearn().map(lang => lang[0])
+      const _languagesLearn = this.getLanguagesLearn()
+      if (!_languagesLearn.length) return
+      return this.mapToList(_languagesLearn)
+
     },
     languagesOther() {
       const allLanguages = langPopular.concat(langAll).filter(lang => lang.name !== "Undecided")
       let _languages = []
 
+      const _userLanguages = this.getLanguages()
+      const _userLangsAsList = this.mapToList(_userLanguages)
+
       allLanguages.forEach(lang => {
-        if (!this.getLanguages().map(lang => lang[0]).includes(lang.name)) _languages.push(lang)
+        if (!_userLangsAsList.includes(lang.name)) _languages.push(lang)
       })
 
       _languages = _languages.sort((a, b) => a.name > b.name)
