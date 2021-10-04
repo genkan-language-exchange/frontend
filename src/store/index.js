@@ -5,6 +5,7 @@ import authModule from './auth/authModule'
 import searchModule from './search/searchModule'
 import storyModule from './story/storyModule'
 import lessonsModule from './lessons/lessonsModule'
+import notificationsModule from './notifications/notificationsModule'
 
 export default createStore({
   state: {
@@ -22,6 +23,7 @@ export default createStore({
     searchModule,
     storyModule,
     lessonsModule,
+    notificationsModule
   },
   plugins: [
     createPersistedState({

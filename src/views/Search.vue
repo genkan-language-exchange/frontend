@@ -1,17 +1,21 @@
 <template>
-  <template v-if="loading && !users.length">
-    <TheLoadSpinner />
-  </template>
-  <template v-else>
-    <SearchBar @triggerSearch="handleSearchFilter" />
-    <transition-group tag="div" name="rotate" mode="out-in">
-      <template v-if="users.length">
-        <ResultCard v-for="user in users" :key="user._id" :user="user" />
-      </template>
-    </transition-group>
-    <TheResultCardPlaceholder v-if="!users.length"/>
-    <div ref="bottom"></div>
-  </template>
+  <div class="container">
+    <template v-if="loading && !users.length">
+      <TheLoadSpinner />
+    </template>
+    <template v-else>
+      <div class="card-deck">
+        <SearchBar @triggerSearch="handleSearchFilter" />
+        <transition-group tag="div" name="rotate" mode="out-in">
+          <template v-if="users.length">
+            <ResultCard v-for="user in users" :key="user._id" :user="user" />
+          </template>
+        </transition-group>
+        <TheResultCardPlaceholder v-if="!users.length"/>
+        <div ref="bottom"></div>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -71,6 +75,9 @@ export default {
 </script>
 
 <style scoped>
+.card-deck {
+  padding-top: 60px;
+}
 #loading {
   display: flex;
   justify-content: center;

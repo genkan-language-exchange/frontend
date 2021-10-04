@@ -63,8 +63,8 @@ export default {
 <style scoped>
 form {
   position: sticky;
-  top: 55px;
-  margin: 55px auto 0;
+  top: 50px;
+  margin: 0 auto;
   padding: 5px;
   box-sizing: border-box;
   width: 100%;
@@ -101,7 +101,6 @@ background-color: var(--theme-color-main);
 @media (min-width: 959px) {
   form {
     top: 62px;
-    margin-top: 60px;
     width: 60%;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;

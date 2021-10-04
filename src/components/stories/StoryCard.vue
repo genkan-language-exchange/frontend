@@ -2,7 +2,7 @@
   <div class="story-card">
     <div class="story-header" @click.prevent="() => goToPassport(userId.name, userId.identifier)">
       <div class="story-avatar">
-        <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
+        <img ref="avatar" :src="userId.gravatar" draggable="false">
       </div>
       <div class="user-info">
         {{ userId.name }}

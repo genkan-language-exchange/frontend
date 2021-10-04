@@ -11,25 +11,53 @@
         :class="onlineRecently ? 'online' : 'offline'"
       ></div>
       <div
-        class="avatar"
+        class="avatar no-select"
         :style="user.role === 'vip' ? 'border-color: var(--vip-gold);' : (
           newUser ? 'border-color: var(--theme-color-main);' : ''
         )"
       >
-        {{user.name[0].toUpperCase()}}
+        <template v-if="user.gravatar">
+          <img :src="user.gravatar" class="no-select" draggable="false" />
+        </template>
+        <template v-else>
+          {{ user.name[0].toUpperCase() }}
+        </template>
       </div>
     </div>
 
     <div class="info">
       <div>
         <h3>
-          <span v-if="newUser" class="material-icons">fiber_new</span>
+          <span v-if="newUser" class="material-icons no-select">fiber_new</span>
           {{user.name}}
         </h3>
       </div>
       <div>
-        <div><p>Speaks: <span v-for="lang in languageKnow" :key="lang[0]">{{ lang[0] }}</span></p></div>
-        <div><p>Learns: <span v-for="lang in languageLearn" :key="lang[0]">{{ lang[0] }}</span></p></div>
+        <div>
+          <p>Speaks: <span v-for="lang in languageKnow" :key="lang.language">
+            {{ lang.language }}
+            <template v-if="lang.level > 0">
+              <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
+            </template>
+            <template v-else>
+              <span><i class="far fa-star"></i></span>
+            </template>
+            </span>
+          </p>
+        </div>
+
+        <div>
+          <p>Learns: <span v-for="lang in languageLearn" :key="lang.language">
+            {{ lang.language }}
+            <template v-if="lang.level > 0">
+              <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
+            </template>
+            <template v-else>
+              <span><i class="far fa-star"></i></span>
+            </template>
+            </span>
+          </p>
+        </div>
       </div>
     </div>
     
@@ -115,6 +143,7 @@ export default {
   justify-content: center;
   align-items: center;
   border: 3px solid var(--bg-color-main);
+  overflow: hidden;
 }
 h3 {
   font-size: 1.6rem;

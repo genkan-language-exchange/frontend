@@ -26,11 +26,13 @@
 /* FADE IN SIMPLE */
 
 .fade-in-enter-from,
-.fade-in-z-enter-from {
+.fade-in-z-enter-from,
+.notification-enter-from {
   opacity: 0;
 }
 .fade-in-enter-to,
-.fade-in-z-enter-to {
+.fade-in-z-enter-to,
+.notification-enter-to {
   opacity: 1;
 }
 .fade-in-enter-active,
@@ -39,11 +41,13 @@
 }
 
 .fade-in-leave-from,
-.fade-in-z-leave-from {
+.fade-in-z-leave-from,
+.notification-leave-from {
   opacity: 1;
 }
 .fade-in-leave-to,
-.fade-in-z-leave-to {
+.fade-in-z-leave-to,
+.notification-leave-to {
   opacity: 0;
 }
 .fade-in-leave-active,
@@ -55,6 +59,11 @@
 .fade-in-move,
 .fade-in-z-move {
   transition: transform 0.5s ease;
+}
+
+.notification-enter-active,
+.notification-leave-active {
+  transition: all 0.1s ease-in;
 }
 
 .fade-in-z-enter-active, .fade-in-z-leave-active { z-index: 110; }

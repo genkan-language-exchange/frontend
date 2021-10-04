@@ -1,26 +1,28 @@
 <template>
   <div class="container">
-    <template v-if="loading">
-      <TheLoadSpinner />
-    </template>
-    <template v-else-if="error">
-      <div>
-        Whoops! Something went wrong.
-      </div>
-    </template>
-    <template v-else>
-      <LessonCardsListView :languages="languagesLearn" :mini="false" :handleLessonNavigation="handleLessonNavigation" >
-        Languages you study
-      </LessonCardsListView>
-      <div class="spacer"></div>
-      <LessonCardsListView :languages="languagesKnow" :mini="false" :handleLessonNavigation="handleCreateLessonNavigation" >
-        Create a lesson
-      </LessonCardsListView>
-      <div class="spacer"></div>
-      <LessonCardsListView :languages="languagesOther" :mini="true" :handleLessonNavigation="handleLessonNavigation" >
-        More languages
-      </LessonCardsListView>
-    </template>
+    <div>
+      <template v-if="loading">
+        <TheLoadSpinner />
+      </template>
+      <template v-else-if="error">
+        <div>
+          Whoops! Something went wrong.
+        </div>
+      </template>
+      <template v-else>
+        <LessonCardsListView :languages="languagesLearn" :mini="false" :handleLessonNavigation="handleLessonNavigation" >
+          Languages you study
+        </LessonCardsListView>
+        <div class="spacer"></div>
+        <LessonCardsListView :languages="languagesKnow" :mini="false" :handleLessonNavigation="handleCreateLessonNavigation" >
+          Create a lesson
+        </LessonCardsListView>
+        <div class="spacer"></div>
+        <LessonCardsListView :languages="languagesOther" :mini="true" :handleLessonNavigation="handleLessonNavigation" >
+          More languages
+        </LessonCardsListView>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -102,17 +104,23 @@ export default {
 
 <style scoped>
 .container {
-  margin: 62px 0 0;
+  margin: 0 auto;
   font-size: 1.8rem;
 }
 .spacer {
   margin: 65px 0 0;
 }
+.container>div {
+  margin-top: 60px;
+}
 @media (min-width: 959px) {
   .container {
     width: 60%;
-    margin: 102px auto 0;
+    margin: 0 auto;
     overflow-x: hidden;
+  }
+  .container>div {
+    margin-top: 100px;
   }
 }
 </style>

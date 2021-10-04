@@ -12,7 +12,6 @@ import './assets/animations.css'
 import Navigation from '@/components/navigation/Navigation'
 import { mapActions } from 'vuex'
 // import { io } from 'socket.io-client'
-
 export default {
   name: 'Main',
   components: {
@@ -25,16 +24,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['pingThatServer']),
+    ...mapActions(['pingThatServer', 'getNotifications']),
     setPingInterval() {
       if (this.pingInterval != null) clearInterval(this.pingInterval)
       
       this.pingInterval = setInterval(() => {
         this.ping()
-      }, 900000)
+      }, 300000)
     },
     ping() {
       this.pingThatServer()
+      this.getNotifications()
     },
   },
   created() {
@@ -53,6 +53,7 @@ export default {
   },
   mounted() {
     this.setPingInterval()
+    this.getNotifications()
   },
   beforeUnmount() {
     clearInterval(this.pingInterval)
@@ -83,11 +84,13 @@ html, body {
 }
 
 #app {
+  position: relative;
   font-family: 'Roboto', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--gk-font-color);
+  width: 100vw;
 }
 
 .no-select {

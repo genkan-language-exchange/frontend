@@ -1,7 +1,7 @@
 <template>
   <div id="base" v-if="user._id">
     
-      <div id="avatar" :style="newUser ? { border: '2px solid #8c7ae6' } : { border: '2px solid white' }">
+      <div id="avatar" :style="newUser && { border: '2px solid var(--green)' }">
         <img
           v-if="true"
           ref="avatar"
@@ -206,7 +206,7 @@ h2 span {
   width: 80%;
   max-width: 200px;
   margin: 0 auto 25px;
-  border: 2px solid var(--theme-color-main);
+  border: 2px solid var(--off-white-main);
   background-color: var(--off-white-main);
   overflow: hidden;
   border-radius: 5px;
