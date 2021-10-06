@@ -29,7 +29,7 @@
       <div>
         <h3>
           <span v-if="newUser" class="material-icons no-select">fiber_new</span>
-          {{user.name}}
+          {{ user.name }}
         </h3>
       </div>
       <div>

@@ -1,121 +1,59 @@
 <template>
   <div id="base" v-if="user._id">
-    
-      <div id="avatar" :style="newUser && { border: '2px solid var(--green)' }">
-        <img
-          v-if="true"
-          ref="avatar"
-          :src="user.gravatar"
-          alt="User"
-          draggable="false"
+    <div id="avatar" :style="newUser && { border: '2px solid var(--green)' }">
+      <img
+        v-if="true"
+        ref="avatar"
+        :src="user.gravatar"
+        alt="User"
+        draggable="false"
+      >
+      <form v-else>
+        <input
+          type="file"
+          style="display: none"
+          name="userAvatar"
+          @change="onFileSelected"
+          ref="fileInput"
         >
-        <form v-else>
-          <input
-            type="file"
-            style="display: none"
-            name="userAvatar"
-            @change="onFileSelected"
-            ref="fileInput"
-          >
-          <button type="button" @click.prevent="$refs.fileInput.click()">Pick File</button>
-          <template v-if="file">
-            <p>{{ file.name }}</p>
-            <button type="button" @click.prevent="onFileSubmit">Upload</button>
-          </template>
-        </form>
-      </div>
+        <button type="button" @click.prevent="$refs.fileInput.click()">Pick File</button>
+        <template v-if="file">
+          <p>{{ file.name }}</p>
+          <button type="button" @click.prevent="onFileSubmit">Upload</button>
+        </template>
+      </form>
+    </div>
     
-    <section id="head">
+    <section>
       <div id="user-name-age">
         <h2>{{ user.name }} <span v-if="isSelf">#{{ user.identifier }}</span></h2>
         <p>{{ user.matchSettings.age }} years old</p>
       </div>
       <div id="user-lang">
-        <h4>Speaks</h4>
-        <p
-          v-for="lang in user.matchSettings.languageKnow"
-          :key="lang"
-        >
-          {{ lang.language }}&nbsp;&nbsp;
-          <template v-if="lang.level > 0">
-            <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
-          </template>
-          <template v-else>
-            <span><i class="far fa-star"></i></span>
-          </template>
-        </p>
-        <h4>Learns</h4>
-        <p
-          v-for="lang in user.matchSettings.languageLearn"
-          :key="lang"
-        >
-          {{ lang.language }}&nbsp;&nbsp;
-          <template v-if="lang.level > 0">
-            <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
-          </template>
-          <template v-else>
-            <span><i class="far fa-star"></i></span>
-          </template>
-        </p>
+        <div>
+          <h4>Speaks</h4>
+          <LanguageLevel :language="user.matchSettings.languageKnow" />
+        </div>
+        <div>
+          <h4>Learns</h4>
+          <LanguageLevel :language="user.matchSettings.languageLearn" />
+        </div>
       </div>
     </section>
-    
-    <!-- <section id="toggle-view">
-      <div @click="() => viewingProfile = true" class="tab-profile" :class="viewingProfile && 'active'">
-        <p>Profile</p>
-      </div>
-      <div @click="() => viewingProfile = false"  class="tab-moments" :class="!viewingProfile && 'active'">
-        <p>Stories</p>
-      </div>
-    </section> -->
-    
-    <!-- <transition-group name="fade-in" mode="out-in">
-      <template v-if="viewingProfile"> -->
-        <TheAboutSection
-          :about="user.profile.about"
-          :languageGoal="user.profile.languageGoal"
-          :interests="user.profile.interests"
-          key="about"
-        />
-
-        <!-- <TheFilters
-          v-if="isSelf"
-          :filterSettings="user.filterSettings"
-          :role="user.role"
-          key="filters"
-        />
-      </template>
-      <template v-else>
-        <TheUserStories :user="user" />
-      </template>
-    </transition-group> -->
-
-
-    <!-- <section v-if="isSelf" id="blocked">
-      <h3>Manage Blocked Users</h3>
-    </section> -->
-    
-    <TheFooter :isSelf="isSelf" @logMeOut="logMeOut" />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 import checkAccountAge from '@/util/checkAccountAge.js'
+import LanguageLevel from './LanguageLevel'
 
-import TheAboutSection from './TheAboutSection'
-// import TheUserStories from './UserStories/TheUserStories'
-// import TheFilters from './TheFilters'
-import TheFooter from './TheFooter'
 
 export default {
   components: {
-    TheAboutSection,
-    // TheUserStories,
-    // TheFilters,
-    TheFooter,
+    LanguageLevel,
   },
   props: {
     user: Object
@@ -129,11 +67,7 @@ export default {
   },
   methods: {
     ...mapGetters(['currentUser', 'token']),
-    ...mapActions(['logout']),
-    logMeOut() {
-      this.logout()
-      this.$router.replace('/login')
-    },
+
     setChangeAvatar(val) {
       this.changeAvatar = val
     },
@@ -189,44 +123,45 @@ export default {
 h1, h2, h3, h4, p, a, ul, li { margin: 0; }
 h2, h3, h4, #user-lang span { color: var(--theme-color-main); }
 h2 span {
-  color: gray;
+  color: #555;
   font-size: 1.4rem;
 }
 #base {
   width: 100%;
-  margin: 80px 0;
+  margin-top: 80px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
   text-align: left;
+  padding: 20px 0 30px;
 }
 #avatar {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 80%;
+  min-width: 200px;
   max-width: 200px;
-  margin: 0 auto 25px;
+  min-height: 200px;
+  max-height: 200px;
+  margin-right: 20px;
   border: 2px solid var(--off-white-main);
   background-color: var(--off-white-main);
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 15px;
   box-sizing: border-box;
+  margin-right: 40px;
 }
 #avatar img {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
-#head, #about, #blocked, #toggle-view {
+section {
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px 10px;
   margin: 0 auto;
   box-sizing: border-box;
-  border-bottom: 2px solid var(--theme-color-main);
-}
-#head {
   border: none;
 }
 .new-icon {
@@ -242,67 +177,21 @@ h2 span {
   margin-bottom: 15px;
 }
 #user-name-age h2 {
-  /* overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis; */
   font-size: 1.8rem;
 }
-#user-name-age, #user-lang {
+#user-name-age {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  gap: 12px;
 }
-#about {
-  gap: 30px;
-}
-#blocked h3 {
-  color: var(--off-white-main);
-}
-#genders {
-  text-transform: capitalize;
-}
-#toggle-view {
+#user-lang {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  padding: 0;
-  overflow: hidden;
-}
-#toggle-view>div {
-  width: 50%;
-  margin: 0;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  color: var(--off-white-main);
-  background-color: var(--bg-color-main);
-  border: none;
-  outline: none;
-  width: 100%;
-  cursor: pointer;
-}
-#toggle-view>div:hover {
-  background-color: var(--theme-color-secondary);
-}
-#toggle-view .active {
-  background-color: var(--theme-color-main);
+  gap: 20px;
 }
 form p {
   color: var(--bg-color-main);
 }
 
-@media (min-width: 959px) {
-  #avatar {
-    width: 200px;
-  }
-  section {
-    max-width: 60%;
-  }
-  #toggle-view {
-    border-top-right-radius: 15px;
-    border-top-left-radius: 15px;
-  }
-}
 </style>

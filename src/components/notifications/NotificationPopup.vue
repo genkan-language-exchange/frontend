@@ -1,14 +1,21 @@
 <template>
   <div id="notifications">
-    <div
-      v-for="n in notifications"
-      :key="n._id"
-      :class="`${n.read && 'read'} ${selectedNotification != null && selectedNotification._id === n._id && 'selected'}`"
-      class="no-select"
-      @click="handleSelectNotification(n)"  
-    >
-      <p><i class="fas" :class="n.read ? ' fa-envelope-open' : ' fa-envelope'"></i>{{ n.title }}</p>
-    </div>
+    <template v-if="notifications.length">
+      <div
+        v-for="n in notifications"
+        :key="n._id"
+        :class="`${n.read && 'read'} ${selectedNotification != null && selectedNotification._id === n._id && 'selected'}`"
+        class="no-select"
+        @click="handleSelectNotification(n)"  
+      >
+        <p><i class="fas" :class="n.read ? ' fa-envelope-open' : ' fa-envelope'"></i>{{ n.title }}</p>
+      </div>
+    </template>
+    <template v-else>
+      <div class="no-select no-hover">
+        <p>No notifications!</p>
+      </div>
+    </template>
     <teleport to="#app">
       <NotificationModal
         v-if="selectedNotification != null"
@@ -82,6 +89,12 @@ export default {
 .selected {
   background-color: var(--theme-color-main);
   border-radius: 5px;
+}
+.no-hover {
+  cursor: default !important;
+}
+.no-hover:hover {
+  background-color: transparent !important;
 }
 .read {
   color: #838da4 !important;

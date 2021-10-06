@@ -45,7 +45,7 @@
 
 <script>
   import TextButton from '../components/TextButton'
-  import TheFooter from '../components/passport/TheFooter'
+  import TheFooter from '../components/TheFooter'
   export default {
     components: {
       TextButton,
