@@ -32,11 +32,15 @@
       <div id="user-lang">
         <div>
           <h4>Speaks</h4>
-          <LanguageLevel :language="user.matchSettings.languageKnow" />
+          <LanguageLevel :language="user.matchSettings.languageKnow1" :level="user.matchSettings.languageKnow1Level" />
+          <LanguageLevel v-if="user.matchSettings.languageKnow2" :language="user.matchSettings.languageKnow2" :level="user.matchSettings.languageKnow2Level" />
+          <LanguageLevel v-if="user.matchSettings.languageKnow3" :language="user.matchSettings.languageKnow3" :level="user.matchSettings.languageKnow3Level" />
         </div>
         <div>
           <h4>Learns</h4>
-          <LanguageLevel :language="user.matchSettings.languageLearn" />
+          <LanguageLevel :language="user.matchSettings.languageLearn1" :level="user.matchSettings.languageLearn1Level" />
+          <LanguageLevel v-if="user.matchSettings.languageLearn2" :language="user.matchSettings.languageLearn2" :level="user.matchSettings.languageLearn2Level" />
+          <LanguageLevel v-if="user.matchSettings.languageLearn3" :language="user.matchSettings.languageLearn3" :level="user.matchSettings.languageLearn3Level" />
         </div>
       </div>
     </section>

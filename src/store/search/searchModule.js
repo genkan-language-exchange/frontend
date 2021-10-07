@@ -1,6 +1,6 @@
 export default {
   state: {
-    activeFilter: 'all',
+    activeFilter: 0,
     customFilter: [],
   },
   mutations: {

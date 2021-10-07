@@ -7,8 +7,8 @@ async function registerUser(name, email, password, passwordConfirm, incomingMatc
   const matchSettings = {
     birthday: "1970-01-01",
     gender: "non-binary",
-    languageKnow: [{ language: "???", level: 0 }],
-    languageLearn: [{ language: "???", level: 0 }],
+    languageKnow1: "???",
+    languageLearn1: 0,
     nationality: "???",
     residence: "Antarctica",
     ...incomingMatchSettings,
@@ -64,56 +64,11 @@ async function getUserByNameIdentifierCombo(name, identifier) {
   return response.data
 }
 
-async function getUsers(filter, page) {
-  let response
+async function getUsers(filter, page = 1) {
+  let url = `${prefix}?page=${page}`
 
-  switch(filter) {
-    case "all":
-      response = await getUsersMany(page)
-      break;
-    case "online":
-      response = await getUsersOnline(page)
-      break;
-    case "new":
-      response = await getUsersNew(page)
-      break;
-    default:
-      response = await getUsersMany(page)
-      break;
-  }
-
-  return response
-}
-
-async function getUsersMany(page) {
-  const url = `${prefix}?matchSettings.age[gt]=18&page=${page || 1}`
-
-  const token = localStorage.getItem('genkan-token');
-  const config = {
-    headers: {
-      authorization: `Bearer ${token}`
-    }
-  }
-
-  const response = await axios.get(url, config)
-  return response.data
-}
-async function getUsersOnline(page) {
-  const url = `${prefix}/online?matchSettings.age[gt]=18&page=${page || 1}`
-
-  const token = localStorage.getItem('genkan-token');
-  const config = {
-    headers: {
-      authorization: `Bearer ${token}`
-    }
-  }
-
-  const response = await axios.get(url, config)
-  return response.data
-}
-
-async function getUsersNew(page) {
-  const url = `${prefix}/new?matchSettings.age[gt]=18&page=${page || 1}`
+  if (filter.partnerType) url = `${url}&partnerType=${filter.partnerType}`
+  if (filter.language) url = `${url}&language=${filter.language}`
 
   const token = localStorage.getItem('genkan-token');
   const config = {

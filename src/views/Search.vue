@@ -40,25 +40,25 @@ export default {
       users: [],
       loading: false,
       page: 1,
-      limit: 5,
+      limit: 25,
     }
   },
   methods: {
-    handleSearchFilter() {
+    handleSearchFilter(partnerType) {
       this.page = 1
-      this.findUsers()
+      this.findUsers(partnerType)
     },
-    async findUsers() {
-      const response = await getUsers(this.activeFilter, this.page)
-      .then(res => {
-        this.loading = false
-        return res
-      })
-      .catch(err => {
-        this.loading = false
-        return err
-      })
-      this.users = response.data
+    async findUsers(partnerType) {
+      this.loading = true
+      try {
+        const response = await getUsers({ language: this.activeFilter, partnerType }, this.page)
+        if (response.status === 'success') {
+          this.users = response.data
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      this.loading = false
     },
   },
   computed: {

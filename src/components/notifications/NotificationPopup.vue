@@ -1,6 +1,6 @@
 <template>
   <div id="notifications">
-    <template v-if="notifications.length">
+    <template v-if="notifications?.length">
       <div
         v-for="n in notifications"
         :key="n._id"

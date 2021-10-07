@@ -40,7 +40,7 @@ export default {
       return this.hasRole === "admin" || this.hasRole === "owner"
     },
     unreadNotifications() {
-      if (!this.notifications.length) return []
+      if (!this.notifications?.length) return []
       return this.notifications.filter(noti => !noti.read)
     }
   },

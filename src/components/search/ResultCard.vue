@@ -34,29 +34,17 @@
       </div>
       <div>
         <div>
-          <p>Speaks: <span v-for="lang in languageKnow" :key="lang.language">
-            {{ lang.language }}
-            <template v-if="lang.level > 0">
-              <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
-            </template>
-            <template v-else>
-              <span><i class="far fa-star"></i></span>
-            </template>
-            </span>
-          </p>
+          <p>Speaks:</p>
+          <LanguageLevel :language="user.matchSettings.languageKnow1" :level="user.matchSettings.languageKnow1Level" />
+          <LanguageLevel v-if="user.matchSettings.languageKnow2" :language="user.matchSettings.languageKnow2" :level="user.matchSettings.languageKnow2Level" />
+          <LanguageLevel v-if="user.matchSettings.languageKnow3" :language="user.matchSettings.languageKnow3" :level="user.matchSettings.languageKnow3Level" />
         </div>
 
         <div>
-          <p>Learns: <span v-for="lang in languageLearn" :key="lang.language">
-            {{ lang.language }}
-            <template v-if="lang.level > 0">
-              <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
-            </template>
-            <template v-else>
-              <span><i class="far fa-star"></i></span>
-            </template>
-            </span>
-          </p>
+          <p>Learns:</p>
+          <LanguageLevel :language="user.matchSettings.languageLearn1" :level="user.matchSettings.languageLearn1Level" />
+          <LanguageLevel v-if="user.matchSettings.languageLearn2" :language="user.matchSettings.languageLearn2" :level="user.matchSettings.languageLearn2Level" />
+          <LanguageLevel v-if="user.matchSettings.languageLearn3" :language="user.matchSettings.languageLearn3" :level="user.matchSettings.languageLearn3Level" />
         </div>
       </div>
     </div>
@@ -67,7 +55,11 @@
 <script>
 import checkAccountAge from '@/util/checkAccountAge.js'
 import checkLastOnline from '@/util/checkLastOnline.js'
+import LanguageLevel from '@/components/passport/LanguageLevel'
 export default {
+  components: {
+    LanguageLevel
+  },
   props: {
     user: {
       type: Object,
@@ -79,13 +71,7 @@ export default {
       this.$router.push({ name: 'Passport', params: { id: `${name}.${identifier}` } })
     }
   },
-  computed: {
-    languageKnow() {
-      return this.user.matchSettings.languageKnow
-    },
-    languageLearn() {
-      return this.user.matchSettings.languageLearn
-    },
+  computed: {    
     newUser() {
       return checkAccountAge(this.user.matchSettings.accountCreated)
     },
@@ -159,13 +145,15 @@ h3 span {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
 }
 .info p {
   font-size: 1.4rem;
   text-align: left;
-  text-overflow: ellipsis;
-  font-feature-settings: "liga" 0;
+  margin: 10px 4px 5px 0;
+  padding: 0;
+}
+.info>div>div {
+  display: flex;
 }
 /* font-feature-settings: 'tnum'; */
 /* font-variant-numeric: 'tabular-nums'; */

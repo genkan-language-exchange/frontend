@@ -14,7 +14,7 @@
           Languages you study
         </LessonCardsListView>
         <div class="spacer"></div>
-        <LessonCardsListView :languages="languagesKnow" :mini="false" :handleLessonNavigation="handleCreateLessonNavigation" >
+        <LessonCardsListView v-if="languagesKnow.length" :languages="languagesKnow" :mini="false" :handleLessonNavigation="handleCreateLessonNavigation" >
           Create a lesson
         </LessonCardsListView>
         <div class="spacer"></div>
@@ -58,7 +58,7 @@ export default {
     mapToList(arr) { // take array of Object<language, level> and return an array of language
       const result = []
       for (const obj of arr) {
-        result.push(obj.language)
+        if (obj) result.push(obj.language)
       }
       return result
     }
@@ -67,7 +67,8 @@ export default {
     languagesKnow() {
       const _languagesKnow = this.getLanguagesKnow()
       if (!_languagesKnow.length) return
-      return this.mapToList(_languagesKnow)
+
+      return this.mapToList(_languagesKnow.filter(l => l != null && l.level > 2))
     },
     languagesLearn() {
       const _languagesLearn = this.getLanguagesLearn()

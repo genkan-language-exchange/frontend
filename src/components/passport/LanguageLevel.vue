@@ -1,11 +1,8 @@
 <template>
-  <p
-    v-for="lang in language"
-    :key="lang"
-  >
-    {{ lang.language }}&nbsp;&nbsp;
-    <template v-if="lang.level > 0">
-      <span v-for="level in lang.level" :key="level"><i class="fas fa-star"></i></span>
+  <p>
+    {{ language }}&nbsp;&nbsp;
+    <template v-if="level > 0">
+      <span v-for="l in level" :key="l"><i class="fas fa-star"></i></span>
     </template>
     <template v-else>
       <span><i class="far fa-star"></i></span>
@@ -15,6 +12,6 @@
 
 <script>
 export default {
-  props: ['language'] // takes an array of language object { language: String, level: Number }
+  props: ['language', 'level']
 }
 </script>

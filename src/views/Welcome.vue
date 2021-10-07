@@ -12,11 +12,11 @@
           <DatePicker @next="next" />
           <h3>You're all set!</h3>
           <ul>
-            <li><span>Language(s) spoken:</span> {{ matchSettings.languageKnow.join(', ') }}</li>
-            <li><span>Language(s) learning:</span> {{ matchSettings.languageLearn.join(', ') }}</li>
-            <li><span>From:</span> {{ matchSettings.nationality }}</li>
-            <li><span>Lives in:</span> {{ matchSettings.residence }}</li>
-            <li><span>Gender:</span> {{ matchSettings.gender }}</li>
+            <li>Language(s) spoken: <span v-for="l in matchSettings.languageKnow" :key="l.language">{{l.language}}</span></li>
+            <li>Language(s) learning: <span v-for="l in matchSettings.languageLearn" :key="l.language">{{l.language}}</span></li>
+            <li>From: {{ matchSettings.nationality }}</li>
+            <li>Lives in: {{ matchSettings.residence }}</li>
+            <li>Gender: {{ matchSettings.gender }}</li>
           </ul>
           <p id="continue">Click the passport to continue</p>
         </div>
@@ -117,7 +117,6 @@
             newKeyVal = { "gender": val[0].toString() }
             break;
           case 5:
-            console.log(val)
             newKeyVal = { "birthday": val }
             break;
           default:
@@ -143,16 +142,33 @@
         this.error = false
         this.popupMessage = true
         
-        // if (this.matchSettings.languageKnow.length) {
-        //   this.matchSettings.languageKnow.map(lang => {
-        //     return [lang, 0]
-        //   })
-        // }
-        // if (this.matchSettings.languageLearn.length) {
-        //   this.matchSettings.languageLearn.map(lang => {
-        //     return [lang, 0]
-        //   })
-        // }
+        let updatedMatchSettings = {}
+        if (this.matchSettings?.languageKnow?.length) {
+          this.matchSettings.languageKnow.map((lang, index) => {
+            updatedMatchSettings = {
+              ...updatedMatchSettings,
+              [`languageKnow${index + 1}`]: lang.language,
+              [`languageKnow${index + 1}Level`]: index === 0 ? 3 : parseInt(lang.level),
+            }
+          })
+          delete this.matchSettings.languageKnow
+        }
+
+        if (this.matchSettings?.languageLearn?.length) {
+          this.matchSettings.languageLearn.map((lang, index) => {
+            updatedMatchSettings = {
+              ...updatedMatchSettings,
+              [`languageLearn${index + 1}`]: lang.language,
+              [`languageLearn${index + 1}Level`]: parseInt(lang.level),
+            }
+          })
+          delete this.matchSettings.languageLearn
+        }
+
+        this.matchSettings = {
+          ...this.matchSettings,
+          ...updatedMatchSettings,
+        }
 
         const response = await this.signup({ name: this.name, email: this.email, password: this.password, passwordConfirm: this.passwordConfirm, matchSettings: this.matchSettings })
         .then(res => res)

@@ -1,61 +1,70 @@
 <template>
   <form>
-    <fieldset>
+    <fieldset v-if="!!languagesLearn.length">
       <button
-        type="button"
-        value="all"
-        :class="activeFilter === 'all' ? 'active' : ''"
-        @click="handleClick('all')"
+        type='button'
+        :class="activeFilter === 0 ? 'active' : ''"
+        @click="handleClick(0)"
       >
         All
       </button>
       <button
-        type="button"
-        value="new"
-        :class="activeFilter === 'new' ? 'active' : ''"
-        @click="handleClick('new')"
+        type='button'
+        v-for="l in languagesLearn"
+        :key="l.language"
+        :value="l.language"
+        :class="activeFilter === l.language ? 'active' : ''"
+        @click="handleClick(l.language)"
       >
-        New
-      </button>
-      <button
-        type="button"
-        value="online"
-        :class="activeFilter === 'online' ? 'active' : ''"
-        @click="handleClick('online')"
-      >
-        Online
-      </button>
-      <button
-        type="button"
-        value="custom"
-        :class="activeFilter === 'custom' ? 'active' : ''"
-        @click="handleClick('custom')"
-      >
-        <i class="fas fa-sliders-h"></i>
+        {{ l.language }}
       </button>
     </fieldset>
   </form>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'SearchBar',
   emits: ['triggerSearch'],
+  data() {
+    return {
+      loading: true,
+      partnerType: 'learn'
+      // learn = partner should speak one of user's learning languages
+      // teach = partner learns one of user's known languages
+    }
+  },
   methods: {
-    ...mapMutations({
-      setActiveFilter: 'setActiveFilter'
-    }),
+    ...mapActions(['getOwnUserInfo']),
+    ...mapMutations(['setActiveFilter']),
+    ...mapGetters(['getLanguagesLearn', 'getLanguagesKnow']),
     handleClick(value) {
       this.setActiveFilter({ value })
-      this.$emit("triggerSearch")
+      this.$emit("triggerSearch", this.partnerType)
     },
   },
   computed: {
-    ...mapGetters({
-      activeFilter: 'activeFilter',
-    }),
+    ...mapGetters(['activeFilter']),
+    languagesLearn() {
+      const _languagesLearn = this.getLanguagesLearn()
+      if (!_languagesLearn.length) return []
+      return _languagesLearn.filter(lang => lang != null)
+    },
+    languagesKnow() {
+      const _languagesKnow = this.getLanguagesKnow()
+      if (!_languagesKnow.length) return []
+      return _languagesKnow.filter(lang => lang != null)
+    },
+  },
+  mounted() {
+    this.getOwnUserInfo()
+      .then(() => this.loading = false)
+      .catch(() => {
+        this.loading = false
+        this.error = true
+      })
   }
 }
 </script>
@@ -75,7 +84,7 @@ fieldset {
   border: none;
 }
 button {
-  width: 25%;
+  width: 20%;
   box-sizing: border-box;
   padding: 8px;
   margin: 0 5px;
@@ -92,11 +101,8 @@ button:hover, button:focus {
   background-color: var(--theme-color-main);
   color: var(--off-white-main);
 }
-button:last-child {
-  width: 40px;
-}
 .active {
-background-color: var(--theme-color-main);
+  background-color: var(--theme-color-main);
 }
 @media (min-width: 959px) {
   form {
