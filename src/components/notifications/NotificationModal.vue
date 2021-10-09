@@ -67,4 +67,21 @@ export default {
     padding-left: 10px;
     text-transform: capitalize;
   }
+  button {
+    height: 30px;
+    width: 30px;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    background-color: var(--theme-color-main);
+    font-size: 18px;
+    padding: 0;
+    text-align: center;
+    color: var(--off-white-main);
+    cursor: pointer;
+    transition: all ease-out 0.1s;
+  }
+  button:hover {
+    background-color: var(--red);
+  }
 </style>

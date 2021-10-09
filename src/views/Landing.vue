@@ -9,17 +9,16 @@
     <h2>Open Source Language Exchange</h2>
     <section class="content">
       <div>
-        <h2 style="margin: 10px 0;">Why use <span class="purple">Genkan</span>?</h2>
-        <p><span class="purple">Practice</span> a second <span class="purple">language</span>, share your language, or <span class="purple">share</span> your <span class="purple">culture</span> with others.</p>
-        <p><a class="purple bit-crush" href="https://github.com/genkan-language-exchange">Open source</a> so you can see what's going on behind the scenes.</p>
-        <p>Emphasizes <span class="purple">privacy</span> features to prevent harassment.</p>
-        <p><span class="purple">No ads</span> via direct message! (In fact, we have no ads at all currently!)</p>
-        <div>
-          <h2 style="margin: 10px 0;">What is "<span class="purple">Genkan</span>"?</h2>
-          <p>"Genkan" is a shortening of "<span class="purple">gen</span>go-kou<span class="purple">kan</span>" (<span class="jp-font"><span class="purple">言</span>語交<span class="purple">換</span></span>), the Japanese word for "language exchange".</p>
-          <p>Coincidentally, "Genkan" (<span class="jp-font">玄関</span>) also means "front door" or "entryway".</p>
-          <p>Think of us as your <span class="purple">door</span> to <span class="purple">language exchange</span> 😉</p>
-        </div>
+        <h2>Why use <span class="purple">Genkan</span>?</h2>
+        <p><span class="purple">Practice</span> a second <span class="purple">language</span> by reading or writing "stories".</p>
+        <p>Create mini-lessons to share your language, or <span class="purple">share</span> your <span class="purple">culture</span> with others.</p>
+      </div>
+
+      <div>
+        <h2>What is "<span class="purple">Genkan</span>"?</h2>
+        <p>"Genkan" is a shortening of "<span class="purple">gen</span>go kou<span class="purple">kan</span>" (<span class="jp-font"><span class="purple">言</span>語交<span class="purple">換</span></span>), which is Japanese for "language exchange".</p>
+        <p>Coincidentally, "Genkan" (<span class="jp-font">玄関</span>) also means "front door" or "entryway".</p>
+        <p>Think of us as your <span class="purple">door</span> to <span class="purple">language exchange</span> 😉</p>
       </div>
     </section>
     <section class="get-started">
@@ -33,8 +32,8 @@
     </section>
     <section class="disclaimer">
       <div>
-        <h3 class="purple bit-crush">Genkan is in early Alpha.</h3>
-        <p>Layout changes, missing/incomplete features, etc. should be expected.</p>
+        <a href="https://github.com/genkan-language-exchange" target="_"><h3 class="purple bit-crush">Genkan is in early Alpha.</h3></a>
+        <aside>Layout changes, missing/incomplete features, etc. should be expected.</aside>
       </div>
     </section>
     <footer>
@@ -57,7 +56,7 @@
 <style scoped>
 header {
   position: relative;
-  padding: 10px;
+  padding: 15px;
   border-bottom: 2px solid var(--theme-color-main);
 }
 header div {
@@ -74,12 +73,8 @@ h1 {
 h2 {
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   font-size: 2.8rem;
-  margin: 50px 0;
 }
-.jp-title {
-  font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
-}
-.jp-font {
+.jp-title, .jp-font {
   font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
 }
 .purple {
@@ -101,20 +96,21 @@ a:hover { color: var(--theme-color-secondary); }
   background-color: var(--bg-color-secondary);
   box-sizing: border-box;
 }
-.content div div {
+.content>div:last-child {
   border-top: 2px solid var(--theme-color-main);
-  padding: 30px 0;
+  padding-top: 20px;
+  margin-top: 10px;
 }
-.content div div p {
-  margin: 0 0 10px;
+section h2, section h3, section p {
+  margin: 0;
+  padding: 0;
+}
+section p {
+  padding: 8px 0;
 }
 .content p {
   line-height: 1.5;
-  margin: 20px 0;
   font-size: 2rem;
-}
-.get-started {
-  margin: 30px 0 15px;
 }
 .get-started button {
   font-size: 2.4rem;
@@ -122,12 +118,8 @@ a:hover { color: var(--theme-color-secondary); }
 .disclaimer {
   margin-bottom: 100px;
 }
-.disclaimer h3 {
-  margin: 0;
-}
-.disclaimer p {
+aside {
   font-size: 1.2rem;
-  margin: 10px;
 }
 @media (min-width: 750px) {
   header div {
@@ -139,17 +131,14 @@ a:hover { color: var(--theme-color-secondary); }
     border-radius: 8px;
     padding: 25px;
   }
-  .content p {
-    margin: 0 0 50px;
-  }
   .get-started {
-    margin: 90px 0 30px;
+    margin: 30px 0;
   }
   .disclaimer h3 {
     font-size: 3rem;
     text-decoration: underline;
   }
-  .disclaimer p {
+  aside {
     font-size: 1.6rem;
   }
 }

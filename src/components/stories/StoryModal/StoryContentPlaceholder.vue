@@ -2,7 +2,6 @@
   <div id="story-card">
   <div class="story-header">
     <div class="story-avatar">
-      <img ref="avatar" src='@/assets/usure.png' alt="User" draggable="false">
     </div>
     <div class="user-info">
       <div>

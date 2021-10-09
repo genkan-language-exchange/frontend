@@ -112,10 +112,4 @@ h2.title {
     opacity: 0.5;
   }
 }
-
-@media (min-height: 800px) {
-  .mini-list-view {
-    margin-top: 20%;
-  }
-}
 </style>

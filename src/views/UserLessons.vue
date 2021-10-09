@@ -68,7 +68,7 @@ export default {
       const _languagesKnow = this.getLanguagesKnow()
       if (!_languagesKnow.length) return
 
-      return this.mapToList(_languagesKnow.filter(l => l != null && l.level > 2))
+      return this.mapToList(_languagesKnow.filter(l => l != null && l.level > 1))
     },
     languagesLearn() {
       const _languagesLearn = this.getLanguagesLearn()
@@ -109,7 +109,7 @@ export default {
   font-size: 1.8rem;
 }
 .spacer {
-  margin: 65px 0 0;
+  margin: 45px 0 0;
 }
 .container>div {
   margin-top: 60px;

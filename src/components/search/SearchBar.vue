@@ -1,6 +1,6 @@
 <template>
   <form>
-    <fieldset v-if="!!languagesLearn.length">
+    <fieldset>
       <button
         type='button'
         :class="activeFilter === 0 ? 'active' : ''"
