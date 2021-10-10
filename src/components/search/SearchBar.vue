@@ -50,12 +50,12 @@ export default {
     languagesLearn() {
       const _languagesLearn = this.getLanguagesLearn()
       if (!_languagesLearn.length) return []
-      return _languagesLearn.filter(lang => lang != null)
+      return _languagesLearn.filter(lang => lang != null && lang.language !== 'Undecided')
     },
     languagesKnow() {
       const _languagesKnow = this.getLanguagesKnow()
       if (!_languagesKnow.length) return []
-      return _languagesKnow.filter(lang => lang != null)
+      return _languagesKnow.filter(lang => lang != null && lang.language !== 'Undecided')
     },
   },
   mounted() {

@@ -18,6 +18,16 @@ const router = createRouter({
       }
     },
     {
+      path: '/admin',
+      name: 'Admin',
+      component: () => import('../views/Admin.vue'),
+      meta: {
+        title: "Admin | Genkan",
+        requiresAuth: true,
+        requiresAdmin: true,
+      },
+    },
+    {
       path: '/chat',
       name: 'Chat',
       component: () => import('../views/Chat.vue'),
@@ -233,6 +243,10 @@ router.beforeEach((to, from, next) => {
     document.title = previousNearestWithMeta.meta.title;
   }
 
+  if (to.meta.requiresAdmin && store.getters.hasRole !== 'admin') {
+    console.log(store.getters.hasRole)
+    next(from)
+  }
   if (to.meta.requiresAuth && !store.getters.isAuth) {
     // route requires a user to be logged in
     // and the user is not logged in

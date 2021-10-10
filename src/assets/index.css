@@ -51,6 +51,7 @@ html {
   }
 }
 
+*::selection,
 h1::selection,
 h2::selection,
 h3::selection,
@@ -67,6 +68,7 @@ label::selection,
 input::selection,
 th::selection,
 td::selection,
+aside::selection,
 div::selection {
   background-color: var(--yellow);
   color: var(--bg-color-main);
@@ -92,6 +94,17 @@ p {
 }
 .title {
   font-family: 'DM Serif Display', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.genkan-button {
+  background-color: var(--theme-color-main);
+  border: 1px solid var(--theme-color-main);
+  padding: 8px 12px;
+  border-radius: 5px;
+  color: var(--off-white-main);
+  cursor: pointer;
+}
+.genkan-button:hover {
+  background-color: var(--theme-color-secondary);
 }
 
 .no-select {

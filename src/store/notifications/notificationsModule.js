@@ -14,6 +14,10 @@ export default {
         }
       })
       state.notifications = updatedNotifications
+    },
+    filterNotifications: (state, payload) => {
+      const updatedNotifications = [ ...state.notifications ]
+      state.notifications = updatedNotifications.filter(un => un._id !== payload.notificationToDelete._id)
     }
   },
   actions: {
@@ -31,8 +35,8 @@ export default {
     async removeNotification(ctx, payload) {
       const response = await deleteOwnNotification(payload.id)
       if (response.success) {
-        const updatedNotification = { _id: payload.id }
-        ctx.commit('updateNotifications', { updatedNotification })
+        const notificationToDelete = { _id: payload.id }
+        ctx.commit('filterNotifications', { notificationToDelete })
       }
     }
   },

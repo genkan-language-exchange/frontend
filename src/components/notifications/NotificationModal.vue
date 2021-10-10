@@ -1,5 +1,5 @@
 <template>
-  <BaseModal>
+  <BaseModal @closeModal="handleCloseModal">
     <div class="notification">
       <h2>{{ notification.title }}</h2>
       <p>{{ notification.content }}</p>
@@ -19,11 +19,16 @@ export default {
   components: {
     BaseModal
   },
+  emits: ['closeModal'],
   props: ['notification'],
   methods: {
     ...mapActions(['removeNotification']),
     handleDeleteNotification(id) {
       this.removeNotification({ id })
+      this.$emit('closeModal', this.notification._id)
+    },
+    handleCloseModal() {
+      this.$emit('closeModal', this.notification._id)
     }
   },
   computed: {

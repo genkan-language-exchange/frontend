@@ -1,12 +1,13 @@
 <template>
-  <div id="nav" v-if="isAuth">
+  <div id="nav" v-if="isAuth" :class="this.isAdminRoute && 'gold-route'">
     <ul>
-      <li v-if="canViewLink"><router-link to="/chat"><i class="fas fa-envelope"></i></router-link></li>
+      <li v-if="canViewLink"><router-link to="/chat" class="admin-route"><i class="fas fa-comments"></i></router-link></li>
       <!-- <li><router-link to="/chat"><i class="fas fa-comments"></i></router-link></li> -->
       <li><router-link to="/stories"><i class="fas fa-book-open"></i></router-link></li>
       <li><router-link to="/lessons"><i class="fas fa-language"></i></router-link></li>
-      <li><router-link to="/search"><i class="fas fa-globe"></i></router-link></li>
+      <li><router-link to="/search"><i class="fas fa-search"></i></router-link></li>
       <li><router-link to="/passport"><i class="fas fa-user-circle"></i></router-link></li>
+      <li v-if="canViewLink"><router-link to="/admin" class="admin-route"><i class="fas fa-tools"></i></router-link></li>
       <li class="no-select"><i @click="handleViewNotifications" class="notifications fas fa-bell"><span v-if="unreadNotifications.length">{{ unreadNotifications.length }}</span></i></li>
     </ul>
   </div>
@@ -42,6 +43,10 @@ export default {
     unreadNotifications() {
       if (!this.notifications?.length) return []
       return this.notifications.filter(noti => !noti.read)
+    },
+    isAdminRoute() {
+      console.log(this.$route.name)
+      return this.$route.name === 'Admin'
     }
   },
 }
@@ -57,6 +62,9 @@ export default {
   background-color: var(--bg-color-secondary);
   padding-top: 10px;
   z-index: 50;
+}
+.gold-route {
+  border-bottom-color: var(--yellow) !important;
 }
 h1 {
   font-family: 'Sriracha', cursive;
@@ -80,6 +88,9 @@ a {
   color: var(--off-white-main);
   text-decoration-line: none;
   outline: none;
+}
+.admin-route {
+  color: var(--vip-gold);
 }
 .notifications {
   font-size: 2.6rem;

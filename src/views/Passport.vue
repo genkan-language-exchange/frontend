@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!user._id && !isError">
+    <template v-if="!user && !isError">
       <div id="loading">
         <TheLoadSpinner />
       </div>
@@ -10,7 +10,7 @@
         <p>Invalid User ID 😣</p>
       </div>
     </template>
-    <template v-if="user._id">
+    <template v-if="user?._id">
       <div class="passport">
         <PassportCard :user="user" />
 

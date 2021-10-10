@@ -7,7 +7,7 @@ const prefix = `${process.env.VUE_APP_API_URL}/api/v1/notifications`
 // ***************************
 
 async function getOwnNotifications() {
-  const url = `${prefix}`
+  const url = prefix
 
   const token = localStorage.getItem('genkan-token');
   const config = {
@@ -63,6 +63,26 @@ async function deleteOwnNotification(id) {
   }
 }
 
+async function createNotification(payload, type) {
+  let url = prefix
+  if (type === 'global') url = `${prefix}/global`
+
+  const token = localStorage.getItem('genkan-token');
+  const config = {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await axios.post(url, payload, config)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    return false
+  }
+}
+
 // ********************
 // Global Notifications
 // ********************
@@ -108,6 +128,7 @@ export {
   getOwnNotifications,
   markOwnNotificationRead,
   deleteOwnNotification,
+  createNotification,
   getGlobalNotifications,
   markGlobalNotificationRead,
 }

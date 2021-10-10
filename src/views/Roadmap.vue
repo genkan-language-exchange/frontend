@@ -11,6 +11,7 @@
       <div class="timeline-item"><p>Corrections Feature</p></div>
       <div class="timeline-item"><p>Real Time Chatting</p></div>
       <div class="timeline-item"><p>Subscription Model to Support Development</p></div>
+      <div class="timeline-item"><p>i18n</p></div>
       <div class="timeline-item"><p>Custom Profile Pictures</p></div>
       <div class="timeline-item"><p>Voice Profile/Notes</p></div>
       <div class="timeline-item"><p>Communities</p></div>
